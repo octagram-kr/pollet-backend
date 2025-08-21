@@ -1,0 +1,56 @@
+name: ♻️ Refactor
+description: 기능 변화 없이 코드를 수정합니다. (코드 구조 개선, 가독성 향상 등)
+title: "[REFACTOR] "
+labels:
+  - ♻️ refactor
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### 이슈를 작성하기 전에 아래 내용을 확인해주세요:
+        - 동일한 작업에 대한 이슈가 없음을 확인했습니다.
+        - 리팩토링 사유가 명확합니다.
+
+  - type: input
+    id: task-target
+    attributes:
+      label: 📄 작업 대상
+      description: 무엇을 대상으로 리팩토링을 진행할 것인지 작성해주세요.
+      placeholder: ex) 사용자 추가 로직
+    validations:
+      required: true
+
+  - type: textarea
+    id: task-description
+    attributes:
+      label: 📄 작업 개요
+      description: 진행 할 리팩토링에 대한 이유와 설명을 작성해주세요.
+      placeholder: ex) 코드 가독성 향상을 위해 코드를 정리합니다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: task-steps
+    attributes:
+      label: 📈 진행 체크리스트
+      description: 어떤 작업을 진행할지 체크리스트 형식으로 작성해주세요. (선택 사항)
+      placeholder: |
+        - [ ] 작업 1
+        - [ ] 작업 2
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 👍🏻 추가 정보
+      description: 작업을 이해하는 데 도움이 될 스크린샷, 첨부파일, 링크 등 추가 정보를 작성해주세요. (선택 사항)
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### 이슈를 생성하기 전에 아래 내용을 확인해주세요:
+        - 제목이 작업의 내용을 잘 표현하고 있습니다.
+        - 작업자를 지정했습니다.
+        - Label이 단 하나만 선택되어 있습니다.
+        - 프로젝트를 연결했습니다.
