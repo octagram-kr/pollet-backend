@@ -1,4 +1,8 @@
 package com.octagram.reward.member.infrastructure;
 
-public class MemberRepositoryCustom {
+import com.octagram.reward.member.domain.Member;
+
+public interface MemberRepositoryCustom {
+
+	Member findByMemberNickname(String nickname);
 }

@@ -1,1 +1,5 @@
-spring.application.name=reward
+spring:
+  application:
+    name: reward
+  profiles:
+    active: dev
