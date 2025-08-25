@@ -11,8 +11,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum SampleErrorCode implements BaseCode {
 
-	SAMPLE_CREATE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "샘플 생성에 실패했습니다.", "SE_001"),
-	SAMPLE_NOT_FOUND(HttpStatus.NOT_FOUND, "샘플을 찾을 수 없습니다.", "SE_002");
+	SAMPLE_CREATE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "SE_001", "샘플 생성에 실패했습니다."),
+	SAMPLE_NOT_FOUND(HttpStatus.NOT_FOUND, "SE_002", "샘플을 찾을 수 없습니다.");
 
 	private final HttpStatus status;
 	private final String code;
