@@ -1,6 +1,6 @@
 package com.octagram.reward.member.domain;
 
-import com.octagram.reward.global.domain.BaseEntity;
+import com.octagram.reward.global.domain.model.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
