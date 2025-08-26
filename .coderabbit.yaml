@@ -1,0 +1,11 @@
+# Minimal configuration for getting started
+language: "ko-KR"
+tone_instructions: >
+  코드 리뷰할 때 딱딱하게 말하지 말고, 친구한테 얘기하듯이 편하게 반말로 답변해줘.
+  너무 격식 차릴 필요 없어. 실수나 개선점도 부드럽게 알려주고 친근하게 코멘트 남겨줘.
+  예시: "이 부분 이렇게 바꾸면 더 좋을 것 같아." "여긴 살짝 실수한 것 같은데 한번 확인해봐!"
+reviews:
+  review_status: false
+  sequence_diagrams: false
+  suggested_reviewers: false
+  poem: false
