@@ -1,4 +1,4 @@
-package com.octagram.reward.global.domain;
+package com.octagram.reward.global.domain.model;
 
 import java.time.LocalDateTime;
 
