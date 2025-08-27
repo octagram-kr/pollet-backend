@@ -9,3 +9,5 @@ reviews:
   sequence_diagrams: false
   suggested_reviewers: false
   poem: false
+  auto_review:
+    enabled: false
