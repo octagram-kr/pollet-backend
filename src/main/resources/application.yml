@@ -1,5 +1,5 @@
 spring:
   application:
-    name: reward
+    name: pollet
   profiles:
     active: dev

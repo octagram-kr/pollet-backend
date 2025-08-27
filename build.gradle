@@ -7,7 +7,7 @@ plugins {
 
 group = 'com.octagram'
 version = '0.0.1-SNAPSHOT'
-description = 'reward'
+description = 'pollet'
 
 java {
     toolchain {
