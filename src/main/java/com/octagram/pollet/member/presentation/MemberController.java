@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.octagram.pollet.member.application.MemberService;
 import com.octagram.pollet.member.application.dto.request.CreateMemberRequest;
-import com.octagram.pollet.member.domain.Member;
+import com.octagram.pollet.member.domain.model.Member;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

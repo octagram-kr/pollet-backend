@@ -1,4 +1,4 @@
-package com.octagram.pollet.member.domain;
+package com.octagram.pollet.member.domain.model;
 
 import com.octagram.pollet.global.domain.model.BaseEntity;
 

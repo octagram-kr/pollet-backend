@@ -3,7 +3,7 @@ package com.octagram.pollet.member.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.octagram.pollet.member.domain.Member;
+import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.member.infrastructure.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
