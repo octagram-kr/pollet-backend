@@ -3,6 +3,10 @@ package com.octagram.pollet.member.domain.model;
 import java.time.LocalDateTime;
 
 import com.octagram.pollet.global.domain.model.BaseEntity;
+import com.octagram.pollet.member.domain.type.AuthProvider;
+import com.octagram.pollet.member.domain.type.MemberStatus;
+import com.octagram.pollet.member.domain.type.Rank;
+import com.octagram.pollet.member.domain.type.Role;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,43 +34,48 @@ public class Member extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private AuthProvider authProvider;
 
 	@Column(nullable = false)
 	private String profileImageUrl;
 
-	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Role role;
 
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String memberId;
 
 	@Column(nullable = false)
 	private String email;
 
-	@Column(unique = true)
+	@Column(nullable = true, unique = true)
 	private String nickname;
 
+	@Column(nullable = true)
 	private String job;
 
+	@Column(nullable = true)
 	private String gender;
 
+	@Column(nullable = true)
 	private String yearOfBirth;
 
+	@Column(nullable = true)
 	private String phoneNumber;
 
-	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	@Builder.Default
 	private MemberStatus status = MemberStatus.ACTIVE;
 
-	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Rank rank;
 
+	@Column(nullable = true)
 	private LocalDateTime attendedAt;
 
 	@Column(nullable = false)
@@ -74,5 +83,5 @@ public class Member extends BaseEntity {
 
 	@Column(nullable = false)
 	@Builder.Default
-	private Boolean is_deleted = false;
+	private Boolean isDeleted = false;
 }
