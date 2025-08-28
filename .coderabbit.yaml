@@ -5,9 +5,13 @@ tone_instructions: >
   너무 격식 차릴 필요 없어. 실수나 개선점도 부드럽게 알려주고 친근하게 코멘트 남겨줘.
   예시: "이 부분 이렇게 바꾸면 더 좋을 것 같아." "여긴 살짝 실수한 것 같은데 한번 확인해봐!"
 reviews:
+  profile: "chill"
+  high_level_summary: true
+  request_changes_workflow: false
   review_status: false
   sequence_diagrams: false
   suggested_reviewers: false
   poem: false
   auto_review:
     enabled: false
+    drafts: false
