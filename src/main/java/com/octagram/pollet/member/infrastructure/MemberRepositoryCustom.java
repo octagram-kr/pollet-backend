@@ -1,8 +1,12 @@
 package com.octagram.pollet.member.infrastructure;
 
+import java.util.Optional;
+
 import com.octagram.pollet.member.domain.model.Member;
 
 public interface MemberRepositoryCustom {
 
 	Member findByMemberNickname(String nickname);
+
+	Optional<Member> findByMemberId(String memberId);
 }
