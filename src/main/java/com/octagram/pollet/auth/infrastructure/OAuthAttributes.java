@@ -6,8 +6,8 @@ import com.octagram.pollet.auth.infrastructure.userinfo.GoogleOAuth2UserInfo;
 import com.octagram.pollet.auth.infrastructure.userinfo.KakaoOAuth2UserInfo;
 import com.octagram.pollet.auth.infrastructure.userinfo.OAuth2UserInfo;
 import com.octagram.pollet.member.domain.model.Member;
-import com.octagram.pollet.member.domain.type.AuthProvider;
-import com.octagram.pollet.member.domain.type.Role;
+import com.octagram.pollet.member.domain.model.type.AuthProvider;
+import com.octagram.pollet.member.domain.model.type.Role;
 
 import lombok.Builder;
 

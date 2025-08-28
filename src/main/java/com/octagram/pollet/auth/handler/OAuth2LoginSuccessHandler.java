@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 import com.octagram.pollet.auth.infrastructure.CustomOAuth2User;
-import com.octagram.pollet.member.domain.type.Role;
+import com.octagram.pollet.member.domain.model.type.Role;
 import com.octagram.pollet.member.infrastructure.MemberRepository;
 
 @Slf4j

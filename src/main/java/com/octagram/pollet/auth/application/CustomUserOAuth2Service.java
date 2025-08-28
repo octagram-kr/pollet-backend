@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.octagram.pollet.auth.infrastructure.CustomOAuth2User;
 import com.octagram.pollet.auth.infrastructure.OAuthAttributes;
-import com.octagram.pollet.member.domain.type.AuthProvider;
+import com.octagram.pollet.member.domain.model.type.AuthProvider;
 import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.member.infrastructure.MemberRepository;
 

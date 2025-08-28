@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.member.domain.model.QMember;
-import com.octagram.pollet.member.domain.type.Role;
+import com.octagram.pollet.member.domain.model.type.Role;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;

@@ -3,10 +3,11 @@ package com.octagram.pollet.member.domain.model;
 import java.time.LocalDateTime;
 
 import com.octagram.pollet.global.domain.model.BaseEntity;
-import com.octagram.pollet.member.domain.type.AuthProvider;
-import com.octagram.pollet.member.domain.type.MemberStatus;
+import com.octagram.pollet.member.domain.model.type.AuthProvider;
+import com.octagram.pollet.member.domain.model.type.MemberGrade;
+import com.octagram.pollet.member.domain.model.type.MemberStatus;
 import com.octagram.pollet.member.domain.type.Rank;
-import com.octagram.pollet.member.domain.type.Role;
+import com.octagram.pollet.member.domain.model.type.Role;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -73,7 +74,7 @@ public class Member extends BaseEntity {
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private Rank rank;
+	private MemberGrade rank;
 
 	@Column(nullable = true)
 	private LocalDateTime attendedAt;
