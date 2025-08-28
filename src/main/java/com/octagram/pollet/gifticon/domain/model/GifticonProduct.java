@@ -1,7 +1,12 @@
 package com.octagram.pollet.gifticon.domain.model;
 
+import com.octagram.pollet.gifticon.domain.model.type.GifticonProductStatus;
+import com.octagram.pollet.member.domain.model.type.MemberGrade;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,11 +39,13 @@ public class GifticonProduct {
 	private String category; // TODO: ENUM 분리 필요
 
 	@Column(nullable = true)
-	private String unlockGrade; // TODO: 등급 별도 엔티티 분리 필요
+	@Enumerated(EnumType.STRING)
+	private MemberGrade unlockGrade;
 
 	@Column(nullable = true)
 	private String imageUrl;
 
 	@Column(nullable = false)
-	private String status; // TODO: ENUM 분리 필요
+	@Enumerated(EnumType.STRING)
+	private GifticonProductStatus status;
 }
