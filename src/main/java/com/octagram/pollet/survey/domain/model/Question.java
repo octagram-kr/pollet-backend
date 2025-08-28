@@ -27,7 +27,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "question")
 public class Question {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
