@@ -50,5 +50,5 @@ public class GifticonCode {
 	private GifticonCodeStatus status;
 
 	@Column(nullable = false)
-	private LocalDateTime expire_date;
+	private LocalDateTime expireDate;
 }
