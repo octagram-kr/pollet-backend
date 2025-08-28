@@ -3,6 +3,7 @@ package com.octagram.pollet.survey.domain.model;
 import java.time.LocalDateTime;
 
 import com.octagram.pollet.gifticon.domain.model.GifticonProduct;
+import com.octagram.pollet.member.domain.Member;
 import com.octagram.pollet.survey.domain.model.type.EndCondition;
 import com.octagram.pollet.survey.domain.model.type.PrivacyType;
 import com.octagram.pollet.survey.domain.model.type.RewardType;
@@ -16,6 +17,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -36,7 +38,9 @@ public class Survey {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	// TODO: 생성 멤버 연관관계 추가
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id", nullable = false)
+	private Member member;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "reward_gifticon_product_id", nullable = true)

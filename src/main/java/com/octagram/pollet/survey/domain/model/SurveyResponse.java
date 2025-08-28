@@ -2,6 +2,8 @@ package com.octagram.pollet.survey.domain.model;
 
 import java.time.LocalDateTime;
 
+import com.octagram.pollet.member.domain.Member;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -9,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -33,7 +36,9 @@ public class SurveyResponse {
 	@JoinColumn(name = "survey_id", nullable = false)
 	private Survey survey;
 
-	// TODO: 참여 회원 연관관계 추가
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id", nullable = true)
+	private Member member;
 
 	@Column(nullable = false)
 	private LocalDateTime startedAt;
