@@ -1,4 +1,4 @@
-package com.octagram.pollet.member.application.dto.request;
+package com.octagram.pollet.member.presentation.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 
