@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SurveyService {
     private final TagRepository tagRepository;
+    private final SurveyTagRepository surveyTagRepository;
 
     @Transactional(readOnly = true)
     public List<TagResponse> getAllTags() {
@@ -23,6 +24,14 @@ public class SurveyService {
                 .map(TagResponse::from)
                 .collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public List<TagResponse> getAllUsedTags() {
+        return surveyTagRepository.findAllUsedTags().stream()
+                .map(TagResponse::from)
+                .toList();
+    }
+
 
 
 
