@@ -22,5 +22,12 @@ public class SurveyController {
         return ResponseEntity.ok(tags);
     }
 
+    // 설문조사에 사용된 태그 중복 제거 후 조회
+    @GetMapping("/usedTags")
+    public ResponseEntity<List<TagResponse>> getAllUsedTags() {
+        List<TagResponse> tags = surveyService.getAllUsedTags();
+        return ResponseEntity.ok(tags);
+    }
+
 
 }
