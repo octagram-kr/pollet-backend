@@ -24,7 +24,6 @@ public class SurveyController {
         return ResponseEntity.ok(tags);
     }
 
-    // 설문조사에 사용된 태그 중복 제거 후 조회
     @GetMapping("/usedTags")
     @Operation(summary = "설문조사에서 사용된 태그 조회", description = "중복 제거된 설문조사 태그를 조회합니다.")
     public ResponseEntity<List<TagResponse>> getAllUsedTags() {
