@@ -3,6 +3,7 @@ package com.octagram.pollet.auth.application;
 import java.util.Collections;
 import java.util.Map;
 
+import com.octagram.pollet.member.domain.model.type.Role;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -66,7 +67,9 @@ public class CustomUserOAuth2Service implements OAuth2UserService<OAuth2UserRequ
 	}
 
 	private Member getMember(String provider, OAuthAttributes attributes, AuthProvider authProvider) {
-		return memberRepository.findByMemberId(provider + attributes.oAuth2UserInfo().getId())
+		return memberRepository.findByMemberIdAndRole(
+                provider + attributes.oAuth2UserInfo().getId(),
+                        Role.MEMBER)
 			.orElse(saveMember(provider, attributes, authProvider));
 	}
 

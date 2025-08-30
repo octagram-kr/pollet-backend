@@ -7,6 +7,4 @@ import com.octagram.pollet.member.domain.model.Member;
 public interface MemberRepositoryCustom {
 
 	Member findByMemberNickname(String nickname);
-
-	Optional<Member> findByMemberId(String memberId);
 }
