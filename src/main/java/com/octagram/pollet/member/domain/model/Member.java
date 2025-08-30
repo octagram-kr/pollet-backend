@@ -6,7 +6,6 @@ import com.octagram.pollet.global.domain.model.BaseEntity;
 import com.octagram.pollet.member.domain.model.type.AuthProvider;
 import com.octagram.pollet.member.domain.model.type.MemberGrade;
 import com.octagram.pollet.member.domain.model.type.MemberStatus;
-import com.octagram.pollet.member.domain.type.Rank;
 import com.octagram.pollet.member.domain.model.type.Role;
 
 import jakarta.persistence.Column;
