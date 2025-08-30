@@ -73,13 +73,15 @@ public class Member extends BaseEntity {
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private MemberGrade rank;
+    @Builder.Default
+	private MemberGrade rank = MemberGrade.BRONZE;
 
 	@Column(nullable = true)
 	private LocalDateTime attendedAt;
 
 	@Column(nullable = false)
-	private Long attendanceStreak;
+    @Enumerated(EnumType.STRING)
+	private Long attendanceStreak = 0L;
 
 	@Column(nullable = false)
 	@Builder.Default

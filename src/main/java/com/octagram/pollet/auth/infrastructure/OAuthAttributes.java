@@ -41,6 +41,7 @@ public record OAuthAttributes (
 		return Member.builder()
                 .authProvider(authProvider)
                 .memberId(provider + oAuth2UserInfo.getId())
+                .email(oAuth2UserInfo.getEmail())
                 .profileImageUrl(oAuth2UserInfo.getImageUrl())
                 .role(Role.GUEST)
 			.build();
