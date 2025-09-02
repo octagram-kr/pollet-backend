@@ -17,16 +17,14 @@ public class SurveyTagRepositoryImpl implements SurveyTagCustomRepository {
 
     @Override
     public List<Tag> findAllUsedTags() {
-        // Q 클래스 정의: SurveyTag, Tag 엔티티
         QSurveyTag surveyTag = QSurveyTag.surveyTag;
         QTag tag = QTag.tag;
 
-        // QueryDSL 쿼리
         return queryFactory
                 .select(surveyTag.tag)
                 .distinct()
                 .from(surveyTag)
-                .fetch(); // 결과 실행 및 반환
+                .fetch();
     }
 }
 
