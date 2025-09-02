@@ -10,7 +10,8 @@ import org.springframework.http.HttpStatus;
 public enum SurveySuccessCode implements BaseCode {
 
     READ_TAGS_SUCCESS(HttpStatus.OK, "SS_001", "전체 태그 목록을 성공적으로 조회했습니다."),
-    READ_SURVEY_TAGS_SUCCESS(HttpStatus.OK, "SS_002", "설문조사에 등록된 태그들을 성공적으로 조회했습니다.");
+    READ_SURVEY_TAGS_SUCCESS(HttpStatus.OK, "SS_002", "설문조사에 등록된 태그들을 성공적으로 조회했습니다."),
+    READ_SURVEY_DETAIL_SUCCESS(HttpStatus.OK, "SS_003", "설문조사 상세 정보를 성공적으로 조회했습니다.");
 
     private final HttpStatus status;
     private final String code;
