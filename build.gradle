@@ -101,3 +101,8 @@ tasks.withType(JavaCompile).configureEach {
 clean {
     delete file(querydslSrcDir)
 }
+
+// 빌드 시 실행 전용 plain 파일 생성 방지
+jar {
+    enabled = false
+}
