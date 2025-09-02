@@ -3,6 +3,7 @@ package com.octagram.pollet.survey.presentation.controller;
 import com.octagram.pollet.global.dto.ApiResponse;
 import com.octagram.pollet.survey.domain.service.SurveyService;
 import com.octagram.pollet.survey.domain.status.SurveySuccessCode;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyDetailResponse;
 import com.octagram.pollet.survey.presentation.dto.response.TagResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.*;
@@ -28,5 +29,12 @@ public class SurveyController {
     public ApiResponse<List<TagResponse>> getAllUsedTags() {
         List<TagResponse> tags = surveyService.getAllUsedTags();
         return ApiResponse.success(SurveySuccessCode.READ_SURVEY_TAGS_SUCCESS, tags);
+    }
+
+    @GetMapping("/{surveyId}")
+    @Operation(summary = "설문조사 상세 정보 조회", description = "설문조사 상세정보를 조회합니다.")
+    public ApiResponse<SurveyDetailResponse> getSurveyById(@PathVariable Long surveyId) {
+        SurveyDetailResponse SurveyDetail = surveyService.getSurveyById(surveyId);
+        return ApiResponse.success(SurveySuccessCode.READ_SURVEY_DETAIL_SUCCESS, SurveyDetail);
     }
 }
