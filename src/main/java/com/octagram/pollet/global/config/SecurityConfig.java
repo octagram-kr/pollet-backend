@@ -7,12 +7,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.octagram.pollet.auth.application.CustomUserOAuth2Service;
+
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
+
+	private final CustomUserOAuth2Service customUserOAuth2Service;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -21,6 +25,9 @@ public class SecurityConfig {
 			.authorizeHttpRequests(auth -> {
 				auth.anyRequest().permitAll();
 			})
+			.oauth2Login(oauth2 -> oauth2
+				.userInfoEndpoint(userInfoEndpointConfig
+					-> userInfoEndpointConfig.userService(customUserOAuth2Service)))
 			.build();
 	}
 }

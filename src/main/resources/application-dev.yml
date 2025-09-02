@@ -22,3 +22,37 @@ spring:
       hibernate:
         format_sql: true
         globally_quoted_identifiers: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-name: Google
+            redirect-uri: ${DEV_BASE_URL}${OAUTH2_API_END_POINT}${GOOGLE_OAUTH2}
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+          kakao:
+            client-name: Kakao
+            provider: kakao
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+            redirect-uri: ${DEV_BASE_URL}${OAUTH2_API_END_POINT}${KAKAO_OAUTH2}
+            client-id: ${KAKAO_REST_API_KEY}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+            scope:
+              - profile_nickname
+              - profile_image
+              - account_email
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+jwt:
+  secret: ${JWT_SECRET_KEY}

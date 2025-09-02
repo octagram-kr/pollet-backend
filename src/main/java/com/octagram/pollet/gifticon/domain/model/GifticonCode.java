@@ -3,7 +3,7 @@ package com.octagram.pollet.gifticon.domain.model;
 import java.time.LocalDateTime;
 
 import com.octagram.pollet.gifticon.domain.model.type.GifticonCodeStatus;
-import com.octagram.pollet.member.domain.Member;
+import com.octagram.pollet.member.domain.model.Member;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

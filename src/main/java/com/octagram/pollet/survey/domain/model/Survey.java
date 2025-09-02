@@ -3,7 +3,7 @@ package com.octagram.pollet.survey.domain.model;
 import java.time.LocalDateTime;
 
 import com.octagram.pollet.gifticon.domain.model.GifticonProduct;
-import com.octagram.pollet.member.domain.Member;
+import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.survey.domain.model.type.EndCondition;
 import com.octagram.pollet.survey.domain.model.type.PrivacyType;
 import com.octagram.pollet.survey.domain.model.type.RewardType;

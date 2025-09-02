@@ -1,4 +1,4 @@
-package com.octagram.pollet.member.presentation;
+package com.octagram.pollet.member.presentation.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.octagram.pollet.member.application.MemberService;
-import com.octagram.pollet.member.application.dto.request.CreateMemberRequest;
-import com.octagram.pollet.member.domain.Member;
+import com.octagram.pollet.member.presentation.dto.request.CreateMemberRequest;
+import com.octagram.pollet.member.domain.model.Member;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

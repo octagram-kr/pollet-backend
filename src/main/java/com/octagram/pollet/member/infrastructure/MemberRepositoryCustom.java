@@ -1,6 +1,8 @@
 package com.octagram.pollet.member.infrastructure;
 
-import com.octagram.pollet.member.domain.Member;
+import java.util.Optional;
+
+import com.octagram.pollet.member.domain.model.Member;
 
 public interface MemberRepositoryCustom {
 
