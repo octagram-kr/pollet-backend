@@ -1,20 +1,18 @@
 package com.octagram.pollet.survey.domain.service;
 
-import com.octagram.pollet.survey.domain.model.SurveyTag;
-import com.octagram.pollet.survey.dto.TagResponse;
+import com.octagram.pollet.survey.presentation.dto.response.TagResponse;
 import com.octagram.pollet.survey.repository.SurveyTagRepository;
 import com.octagram.pollet.survey.repository.TagRepository;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class SurveyService {
+
     private final TagRepository tagRepository;
     private final SurveyTagRepository surveyTagRepository;
 
@@ -31,13 +29,4 @@ public class SurveyService {
                 .map(TagResponse::from)
                 .toList();
     }
-
-
-
-
-
-
-
-
-
 }
