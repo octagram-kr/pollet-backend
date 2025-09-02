@@ -1,4 +1,4 @@
-package com.octagram.pollet.survey.dto;
+package com.octagram.pollet.survey.presentation.dto.response;
 
 import com.octagram.pollet.survey.domain.model.Tag;
 
