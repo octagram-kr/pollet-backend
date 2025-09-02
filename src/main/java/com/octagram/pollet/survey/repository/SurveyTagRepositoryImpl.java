@@ -6,7 +6,6 @@ import com.octagram.pollet.survey.domain.model.Tag;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 @Repository
@@ -27,4 +26,3 @@ public class SurveyTagRepositoryImpl implements SurveyTagCustomRepository {
                 .fetch();
     }
 }
-
