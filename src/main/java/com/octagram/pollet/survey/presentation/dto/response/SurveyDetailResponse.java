@@ -1,11 +1,9 @@
-package com.octagram.pollet.survey.presentation.dto;
+package com.octagram.pollet.survey.presentation.dto.response;
 
 import com.octagram.pollet.gifticon.domain.model.GifticonProduct;
 import com.octagram.pollet.survey.domain.model.Survey;
 import com.octagram.pollet.survey.domain.model.type.PrivacyType;
 import com.octagram.pollet.survey.domain.model.type.RewardType;
-import com.octagram.pollet.survey.presentation.dto.response.TagResponse;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,6 +13,7 @@ public record SurveyDetailResponse(
         String subtitle,
         String description,
         String SurveyImgUrl,
+//        설문 기간 (엔티티 필드 추가 필요)
 //        LocalDate startDate,
 //        LocalDate endDate,
         // 참여 예상 시간
@@ -24,23 +23,18 @@ public record SurveyDetailResponse(
         int currentResponseCount,
         // 리워드(포인트 or 기프티콘)
         RewardType rewardType,
-        int rewardPoint, // null 가능
-        GifticonProduct rewardGifticon, // null 가능
-
+        int rewardPoint,
+        GifticonProduct rewardGifticon,
         // 개인정보 처리
         PrivacyType privacyType,
-        Long privacyContents,        // 정의된 코드(항목 집합) 식별자
-        Long privacyPurposeType,     // 정의된 코드(목적) 식별자
-        String privacyPurposeValue,  // 목적 상세(자유기입)
-
+        Long privacyContents,
+        Long privacyPurposeType,
+        String privacyPurposeValue,
         // 응답 데이터 보관 만료
         LocalDate privacyExpireDate,
-//        설문 기간 (엔티티 필드 추가 필요)
-
         // 태그 정보 추가
         List<TagResponse> tags
 ) {
-    // 팩토리 메서드 추가
     public static SurveyDetailResponse from(Survey survey, List<TagResponse> tags) {
         return new SurveyDetailResponse(
                 survey.getId(),
