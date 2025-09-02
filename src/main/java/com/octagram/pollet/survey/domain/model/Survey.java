@@ -1,5 +1,6 @@
 package com.octagram.pollet.survey.domain.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.octagram.pollet.gifticon.domain.model.GifticonProduct;
@@ -72,6 +73,12 @@ public class Survey {
 
 	@Column(nullable = false)
 	private String purpose;
+
+	@Column(nullable = false)
+	private LocalDate startDate;
+
+	@Column(nullable = false)
+	private LocalDate endDate;
 
 	@Column(nullable = false)
 	private LocalDateTime startTime;

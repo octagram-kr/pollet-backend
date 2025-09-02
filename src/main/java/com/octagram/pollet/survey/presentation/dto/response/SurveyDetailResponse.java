@@ -13,9 +13,9 @@ public record SurveyDetailResponse(
         String subtitle,
         String description,
         String SurveyImgUrl,
-//        설문 기간 (엔티티 필드 추가 필요)
-//        LocalDate startDate,
-//        LocalDate endDate,
+        // 설문기간
+        LocalDate startDate,
+        LocalDate endDate,
         // 참여 예상 시간
         int estimatedMinutes,
         // 참여 현황
@@ -42,8 +42,8 @@ public record SurveyDetailResponse(
                 survey.getSubtitle(),
                 survey.getDescription(),
                 survey.getCoverUrl(),
-//                survey.getStartDate(),
-//                survey.getEndDate(),
+                survey.getStartDate(),
+                survey.getEndDate(),
                 survey.getEstimatedTime().intValue(),
                 survey.getRequireResponseCount().intValue(),
                 survey.getCurrentResponseCount().intValue(),
