@@ -1,26 +1,13 @@
 package com.octagram.pollet.survey.domain.model;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import com.octagram.pollet.gifticon.domain.model.GifticonProduct;
 import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.survey.domain.model.type.EndCondition;
 import com.octagram.pollet.survey.domain.model.type.PrivacyType;
 import com.octagram.pollet.survey.domain.model.type.RewardType;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import java.time.LocalDateTime;
+import java.time.LocalDate;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -75,20 +62,20 @@ public class Survey {
 	private String purpose;
 
 	@Column(nullable = false)
+	private int minAge;
+
+	@Column(nullable = false)
+	private int maxAge;
+
+	@Column(nullable = false)
 	private LocalDate startDate;
 
 	@Column(nullable = false)
 	private LocalDate endDate;
 
 	@Column(nullable = false)
-	private LocalDateTime startTime;
-
-	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private EndCondition endCondition;
-
-	@Column(nullable = false)
-	private LocalDateTime endTime;
 
 	@Column(nullable = false)
 	private LocalDateTime responseExpireDate;
