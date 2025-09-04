@@ -1,8 +1,8 @@
 package com.octagram.pollet.survey.presentation.controller;
 
 import com.octagram.pollet.global.dto.ApiResponse;
-import com.octagram.pollet.survey.application.service.SurveyService;
-import com.octagram.pollet.survey.application.status.SurveySuccessCode;
+import com.octagram.pollet.survey.application.SurveyService;
+import com.octagram.pollet.survey.domain.status.SurveySuccessCode;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyDetailResponse;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyResponse;
 import com.octagram.pollet.survey.presentation.dto.response.TagResponse;

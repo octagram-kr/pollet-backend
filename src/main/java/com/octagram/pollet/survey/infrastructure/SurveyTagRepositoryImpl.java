@@ -1,12 +1,15 @@
-package com.octagram.pollet.survey.repository;
+package com.octagram.pollet.survey.infrastructure;
 
 import com.octagram.pollet.survey.domain.model.QSurveyTag;
 import com.octagram.pollet.survey.domain.model.QTag;
 import com.octagram.pollet.survey.domain.model.Tag;
+import com.octagram.pollet.survey.domain.repository.SurveyTagCustomRepository;
+import org.springframework.stereotype.Repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 
+@Repository
 @RequiredArgsConstructor
 public class SurveyTagRepositoryImpl implements SurveyTagCustomRepository {
 

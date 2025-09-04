@@ -1,4 +1,4 @@
-package com.octagram.pollet.survey.repository;
+package com.octagram.pollet.survey.domain.repository;
 
 import com.octagram.pollet.survey.domain.model.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;

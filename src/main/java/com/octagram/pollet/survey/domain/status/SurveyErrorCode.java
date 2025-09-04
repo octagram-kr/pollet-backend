@@ -1,4 +1,4 @@
-package com.octagram.pollet.survey.application.status;
+package com.octagram.pollet.survey.domain.status;
 
 import com.octagram.pollet.global.status.BaseCode;
 import lombok.Getter;

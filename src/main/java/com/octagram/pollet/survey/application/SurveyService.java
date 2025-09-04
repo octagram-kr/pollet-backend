@@ -1,22 +1,21 @@
-package com.octagram.pollet.survey.application.service;
+package com.octagram.pollet.survey.application;
 
 import com.octagram.pollet.global.exception.BusinessException;
 import com.octagram.pollet.survey.domain.model.Survey;
-import com.octagram.pollet.survey.application.status.SurveyErrorCode;
+import com.octagram.pollet.survey.domain.status.SurveyErrorCode;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyDetailResponse;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyResponse;
 import com.octagram.pollet.survey.presentation.dto.response.TagResponse;
-import com.octagram.pollet.survey.repository.SurveyRepository;
-import com.octagram.pollet.survey.repository.SurveyTagRepository;
-import com.octagram.pollet.survey.repository.TagRepository;
+import com.octagram.pollet.survey.domain.repository.SurveyRepository;
+import com.octagram.pollet.survey.domain.repository.SurveyTagRepository;
+import com.octagram.pollet.survey.domain.repository.TagRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDate;
-import java.util.List;
 import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
