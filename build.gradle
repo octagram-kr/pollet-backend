@@ -57,11 +57,20 @@ dependencies {
 
     // OAuth2
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    // MapStruct
+    implementation 'org.mapstruct:mapstruct:1.6.3'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
     finalizedBy 'jacocoTestReport'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs.add("-Amapstruct.defaultComponentModel=spring")
 }
 
 // QueryDSL
