@@ -44,4 +44,11 @@ public class SurveyController {
         List<TagResponse> tags = surveyService.getTagsBySurveyId(surveyId);
         return ApiResponse.success(SurveySuccessCode.READ_SURVEY_TAGS_SUCCESS, tags);
     }
+
+    @GetMapping("/count")
+    @Operation(summary = "전체 설문조사의 수 조회", description = "등록된 전체 설문조사의 수를 조회합니다.")
+    public ApiResponse<Long> getActiveSurveys() {
+        Long surveyCount = surveyService.countActive();
+        return ApiResponse.success(SurveySuccessCode.READ_SURVEY_COUNT_SUCCESS, surveyCount);
+    }
 }

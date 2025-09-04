@@ -50,4 +50,9 @@ public class SurveyService {
                 .map(surveyTag -> TagResponse.from(surveyTag.getTag()))
                 .toList();
     }
+
+    @Transactional(readOnly = true)
+    public long countActive() {
+        return surveyRepository.countActive(LocalDate.now());
+    }
 }
