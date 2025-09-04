@@ -4,13 +4,23 @@ import com.octagram.pollet.gifticon.domain.model.GifticonProduct;
 import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.survey.domain.model.type.*;
 import java.time.LocalDateTime;
-import java.time.LocalDate;
-import jakarta.persistence.*;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.GenerationType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.Table;
 
 @Entity
 @Getter
@@ -64,21 +74,14 @@ public class Survey {
 	private Gender targetGender;
 
 	@Column(nullable = false)
-	private LocalDate startDate;
-
-	@Column(nullable = false)
-	private LocalDate endDate;
-
-	// 설문 시작 시간, 종료 시간 추가
-	@Column(nullable = false)
-	private LocalDateTime startTime;
+	private LocalDateTime startDateTime;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private EndCondition endCondition;
 
 	@Column(nullable = false)
-	private LocalDateTime endTime;
+	private LocalDateTime endDateTime;
 
 	@Column(nullable = false)
 	private LocalDateTime responseExpireDate;
