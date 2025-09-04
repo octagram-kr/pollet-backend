@@ -2,9 +2,7 @@ package com.octagram.pollet.survey.domain.model;
 
 import com.octagram.pollet.gifticon.domain.model.GifticonProduct;
 import com.octagram.pollet.member.domain.model.Member;
-import com.octagram.pollet.survey.domain.model.type.EndCondition;
-import com.octagram.pollet.survey.domain.model.type.PrivacyType;
-import com.octagram.pollet.survey.domain.model.type.RewardType;
+import com.octagram.pollet.survey.domain.model.type.*;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import jakarta.persistence.*;
@@ -62,10 +60,8 @@ public class Survey {
 	private String purpose;
 
 	@Column(nullable = false)
-	private int minAge;
-
-	@Column(nullable = false)
-	private int maxAge;
+	@Enumerated(EnumType.STRING)
+	private Gender targetGender;
 
 	@Column(nullable = false)
 	private LocalDate startDate;
@@ -73,9 +69,16 @@ public class Survey {
 	@Column(nullable = false)
 	private LocalDate endDate;
 
+	// 설문 시작 시간, 종료 시간 추가
+	@Column(nullable = false)
+	private LocalDateTime startTime;
+
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private EndCondition endCondition;
+
+	@Column(nullable = false)
+	private LocalDateTime endTime;
 
 	@Column(nullable = false)
 	private LocalDateTime responseExpireDate;
