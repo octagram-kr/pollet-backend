@@ -14,9 +14,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Getter
+@Getter // 매핑을 위해 필요함
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor // 매핑을 위해 필요함
 @Table(name = "board")
 public class Board extends BaseEntity {
 
