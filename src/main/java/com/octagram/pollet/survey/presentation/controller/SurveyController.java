@@ -4,8 +4,12 @@ import com.octagram.pollet.global.dto.ApiResponse;
 import com.octagram.pollet.survey.domain.service.SurveyService;
 import com.octagram.pollet.survey.domain.status.SurveySuccessCode;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyDetailResponse;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyResponse;
 import com.octagram.pollet.survey.presentation.dto.response.TagResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
@@ -50,5 +54,14 @@ public class SurveyController {
     public ApiResponse<Long> getActiveSurveys() {
         Long surveyCount = surveyService.countActive();
         return ApiResponse.success(SurveySuccessCode.READ_SURVEY_COUNT_SUCCESS, surveyCount);
+    }
+
+    @GetMapping("/search")
+    @Operation(summary = "키워드 기반 설문조사 검색", description = "키워드로 설문조사를 검색하고 페이징 처리된 결과를 반환합니다.")
+    public ApiResponse<Page<SurveyResponse>> searchSurveys(
+            @RequestParam String keyword,
+            @PageableDefault(size = 12) Pageable pageable) {
+        Page<SurveyResponse> surveys = surveyService.searchSurveys(keyword, pageable);
+        return ApiResponse.success(SurveySuccessCode.SEARCH_SURVEYS_SUCCESS, surveys);
     }
 }

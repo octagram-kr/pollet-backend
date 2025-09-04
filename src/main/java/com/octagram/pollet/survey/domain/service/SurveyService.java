@@ -4,10 +4,13 @@ import com.octagram.pollet.global.exception.BusinessException;
 import com.octagram.pollet.survey.domain.model.Survey;
 import com.octagram.pollet.survey.domain.status.SurveyErrorCode;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyDetailResponse;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyResponse;
 import com.octagram.pollet.survey.presentation.dto.response.TagResponse;
 import com.octagram.pollet.survey.repository.SurveyRepository;
 import com.octagram.pollet.survey.repository.SurveyTagRepository;
 import com.octagram.pollet.survey.repository.TagRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,5 +57,11 @@ public class SurveyService {
     @Transactional(readOnly = true)
     public long countActive() {
         return surveyRepository.countActive(LocalDate.now());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<SurveyResponse> searchSurveys(String keyword, Pageable pageable) {
+        return surveyRepository.findByTitleContainingIgnoreCase(keyword, pageable)
+                .map(SurveyResponse::from);
     }
 }
