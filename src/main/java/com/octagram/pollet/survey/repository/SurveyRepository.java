@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SurveyRepository extends JpaRepository<Survey, Long>, SurveyRepositoryCustom {
 
-    Page<Survey> findByTitleContainingIgnoreCase(String keyword, Pageable pageable);
+    Page<Survey> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 }
