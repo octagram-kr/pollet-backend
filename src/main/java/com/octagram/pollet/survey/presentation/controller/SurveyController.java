@@ -37,4 +37,11 @@ public class SurveyController {
         SurveyDetailResponse SurveyDetail = surveyService.getSurveyById(surveyId);
         return ApiResponse.success(SurveySuccessCode.READ_SURVEY_DETAIL_SUCCESS, SurveyDetail);
     }
+
+    @GetMapping("/{surveyId}/tags")
+    @Operation(summary = "설문조사 태그 조회", description = "특정 설문조사에 연결된 태그를 조회합니다.")
+    public ApiResponse<List<TagResponse>> getTagsBySurveyId(@PathVariable Long surveyId) {
+        List<TagResponse> tags = surveyService.getTagsBySurveyId(surveyId);
+        return ApiResponse.success(SurveySuccessCode.READ_SURVEY_TAGS_SUCCESS, tags);
+    }
 }

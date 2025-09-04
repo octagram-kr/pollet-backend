@@ -11,6 +11,7 @@ import com.octagram.pollet.survey.repository.TagRepository;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,11 +41,13 @@ public class SurveyService {
     public SurveyDetailResponse getSurveyById(Long surveyId) {
         Survey survey = surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
+        return SurveyDetailResponse.from(survey);
+    }
 
-        List<TagResponse> tags = surveyTagRepository.findBySurveyId(surveyId).stream()
+    @Transactional(readOnly = true)
+    public List<TagResponse> getTagsBySurveyId(Long surveyId) {
+        return surveyTagRepository.findBySurveyId(surveyId).stream()
                 .map(surveyTag -> TagResponse.from(surveyTag.getTag()))
                 .toList();
-
-        return SurveyDetailResponse.from(survey, tags);
     }
 }
