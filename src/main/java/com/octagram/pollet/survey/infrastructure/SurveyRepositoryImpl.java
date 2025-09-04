@@ -9,15 +9,13 @@ import java.time.LocalDateTime;
 
 @Repository
 @RequiredArgsConstructor
-public class SurveyRepositorympl implements SurveyRepositoryCustom {
+public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public long countActive() {
+    public long countActive(LocalDateTime now) {
         QSurvey survey = QSurvey.survey;
-
-        LocalDateTime now = LocalDateTime.now();
 
         return queryFactory
                 .select(survey.count())
