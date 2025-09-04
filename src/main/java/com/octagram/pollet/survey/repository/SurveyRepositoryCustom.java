@@ -4,5 +4,5 @@ import java.time.LocalDate;
 
 public interface SurveyRepositoryCustom {
 
-    long countActive(LocalDate today);
+    long countActive();
 }

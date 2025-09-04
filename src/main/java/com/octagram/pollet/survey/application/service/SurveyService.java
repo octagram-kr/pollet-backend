@@ -1,8 +1,8 @@
-package com.octagram.pollet.survey.domain.service;
+package com.octagram.pollet.survey.application.service;
 
 import com.octagram.pollet.global.exception.BusinessException;
 import com.octagram.pollet.survey.domain.model.Survey;
-import com.octagram.pollet.survey.domain.status.SurveyErrorCode;
+import com.octagram.pollet.survey.application.status.SurveyErrorCode;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyDetailResponse;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyResponse;
 import com.octagram.pollet.survey.presentation.dto.response.TagResponse;
@@ -56,7 +56,7 @@ public class SurveyService {
 
     @Transactional(readOnly = true)
     public long countActive() {
-        return surveyRepository.countActive(LocalDate.now());
+        return surveyRepository.countActive();
     }
 
     @Transactional(readOnly = true)
