@@ -33,7 +33,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 			CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
 			if(oAuth2User.getRole() == Role.GUEST) {
-				String accessToken = jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getRole().toString());
+				String accessToken = jwtService.createAccessToken(
+					oAuth2User.getMemberId(), oAuth2User.getEmail(), oAuth2User.getRole().toString()
+				);
 				jwtService.sendAccessToken(response, accessToken);
 
 				// TODO: 프론트 추가정보 작성 폼 주소로 리다이렉트
@@ -47,9 +49,10 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 	}
 
-	// TODO: access, refresh 토큰 생성
 	private void loginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
-		String accessToken = jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getRole().toString());
+		String accessToken = jwtService.createAccessToken(
+			oAuth2User.getMemberId(), oAuth2User.getEmail(), oAuth2User.getRole().toString()
+		);
 		String refreshToken = jwtService.createRefreshToken();
 
 		jwtService.sendAccessToken(response, accessToken);

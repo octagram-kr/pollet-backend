@@ -46,16 +46,18 @@ public class JwtService {
 
 	private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
 	private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
+	private static final String MEMBER_ID_CLAIM = "memberId";
 	private static final String EMAIL_CLAIM = "email";
 	private static final String ROLE_CLAIM = "role";
 	private static final String BEARER = "Bearer ";
 
 	private final MemberRepository memberRepository;
 
-	public String createAccessToken(String email, String role) {
+	public String createAccessToken(String memberId, String email, String role) {
 		Date now = new Date();
 		return Jwts.builder()
 			.subject(ACCESS_TOKEN_SUBJECT)
+			.claim(MEMBER_ID_CLAIM, memberId)
 			.claim(EMAIL_CLAIM, email)
 			.claim(ROLE_CLAIM, role)
 			.issuedAt(now)
