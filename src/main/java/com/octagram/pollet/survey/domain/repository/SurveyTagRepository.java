@@ -2,9 +2,9 @@ package com.octagram.pollet.survey.domain.repository;
 
 import com.octagram.pollet.survey.domain.model.SurveyTag;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.Collection;
+import java.util.List;
 
-public interface SurveyTagRepository extends JpaRepository<SurveyTag, Long>, SurveyTagCustomRepository {
+public interface SurveyTagRepository extends JpaRepository<SurveyTag, Long>, SurveyTagRepositoryCustom {
 
-    Collection<SurveyTag> findBySurveyId(Long surveyId);
+    List<SurveyTag> findBySurveyId(Long surveyId);
 }
