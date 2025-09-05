@@ -80,7 +80,7 @@ public class Member extends BaseEntity {
 	private LocalDateTime attendedAt;
 
 	@Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+	@Builder.Default
 	private Long attendanceStreak = 0L;
 
 	@Column(nullable = false)

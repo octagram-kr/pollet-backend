@@ -13,6 +13,7 @@ import lombok.Getter;
 @Getter
 public class CustomOAuth2User extends DefaultOAuth2User {
 
+	private final String memberId;
 	private final String email;
 	private final Role role;
 
@@ -20,10 +21,12 @@ public class CustomOAuth2User extends DefaultOAuth2User {
 		Collection<? extends GrantedAuthority> authorities,
 		Map<String, Object> attributes,
 		String nameAttributeKey,
+		String memberId,
 		String email,
 		Role role
 	) {
 		super(authorities, attributes, nameAttributeKey);
+		this.memberId = memberId;
 		this.email = email;
 		this.role = role;
 	}
