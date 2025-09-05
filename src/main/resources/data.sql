@@ -37,12 +37,19 @@ INSERT INTO `survey_response` (id, completed_at, started_at, member_id, survey_i
 
 INSERT INTO `question_response` (id, answer, question_id, survey_response_id) VALUES (1,NULL,1,1);
 INSERT INTO `question_response` (id, answer, question_id, survey_response_id) VALUES (2,NULL,2,1);
-INSERT INTO `question_response` (id, answer, question_id, survey_response_id) VALUES (3,NULL,3,1);
-INSERT INTO `question_response` (id, answer, question_id, survey_response_id) VALUES (4,NULL,4,1);
+INSERT INTO `question_response` (id, answer, question_id, survey_response_id) VALUES (3,'2',3,1);
+INSERT INTO `question_response` (id, answer, question_id, survey_response_id) VALUES (4,'금액형 기프티콘을 가장 선호합니다. 특정 제품 교환권은 다른 메뉴로 바꾸기 어렵거나 추가 금액을 내야 하는 경우가 많아서, 원하는 메뉴를 자유롭게 선택할 수 있는 금액형이 훨씬 실용적이라고 생각합니다.',4,1);
 INSERT INTO `question_response` (id, answer, question_id, survey_response_id) VALUES (5,NULL,5,2);
 INSERT INTO `question_response` (id, answer, question_id, survey_response_id) VALUES (6,NULL,6,2);
-INSERT INTO `question_response` (id, answer, question_id, survey_response_id) VALUES (7,NULL,7,2);
-INSERT INTO `question_response` (id, answer, question_id, survey_response_id) VALUES (8,NULL,8,2);
+INSERT INTO `question_response` (id, answer, question_id, survey_response_id) VALUES (7,'포인트 소멸되기 전에 알림을 더 자주 보내주면 좋겠습니다.',7,2);
+INSERT INTO `question_response` (id, answer, question_id, survey_response_id) VALUES (8,'포인트를 쌓아두고 잊어버리는 경우가 많은데, 유효기간이 너무 짧아서 사용하지 못하고 소멸되는 포인트가 많아 아깝습니다. 유효기간을 더 늘려주거나 자동 갱신 제도가 있었으면 합니다.',8,2);
+
+INSERT INTO `question_option_response` (id, question_option_id, question_response_id) VALUES (1, 1, 1);
+INSERT INTO `question_option_response` (id, question_option_id, question_response_id) VALUES (2, 5, 2);
+INSERT INTO `question_option_response` (id, question_option_id, question_response_id) VALUES (3, 7, 2);
+INSERT INTO `question_option_response` (id, question_option_id, question_response_id) VALUES (4, 12, 5);
+INSERT INTO `question_option_response` (id, question_option_id, question_response_id) VALUES (5, 14, 6);
+INSERT INTO `question_option_response` (id, question_option_id, question_response_id) VALUES (6, 15, 6);
 
 INSERT INTO `tag` (id, name, parent_tag_id) VALUES (1,'AI',NULL);
 INSERT INTO `tag` (id, name, parent_tag_id) VALUES (2,'교육',NULL);
