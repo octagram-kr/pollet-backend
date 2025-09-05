@@ -116,12 +116,7 @@ public class JwtService {
 
 	public void validateToken(String token) {
 		try {
-			Claims claims = Jwts
-				.parser()
-				.verifyWith(getSecretKey())
-				.build()
-				.parseSignedClaims(token)
-				.getPayload();
+			Claims claims = getClaims(token);
 
 			String email = claims.get(EMAIL_CLAIM, String.class);
 
@@ -134,16 +129,31 @@ public class JwtService {
 
 	public Optional<String> getMemberIdFromToken(String token) {
 		try {
-			Claims claims = Jwts
-				.parser()
-				.verifyWith(getSecretKey())
-				.build()
-				.parseSignedClaims(token)
-				.getPayload();
+			Claims claims = getClaims(token);
+
 			return Optional.ofNullable(claims.get(MEMBER_ID_CLAIM, String.class));
 		} catch (JwtException | IllegalArgumentException e) {
 			return Optional.empty();
 		}
+	}
+
+	public Optional<String> getRoleFromToken(String token) {
+		try {
+			Claims claims = getClaims(token);
+
+			return Optional.ofNullable(claims.get(ROLE_CLAIM, String.class));
+		} catch (JwtException | IllegalArgumentException e) {
+			return Optional.empty();
+		}
+	}
+
+	private Claims getClaims(String token) {
+		return Jwts
+			.parser()
+			.verifyWith(getSecretKey())
+			.build()
+			.parseSignedClaims(token)
+			.getPayload();
 	}
 
 	private SecretKey getSecretKey() {
