@@ -132,7 +132,7 @@ public class JwtService {
 		}
 	}
 
-	public Optional<String> getEmailFromToken(String token) {
+	public Optional<String> getMemberIdFromToken(String token) {
 		try {
 			Claims claims = Jwts
 				.parser()
@@ -140,7 +140,7 @@ public class JwtService {
 				.build()
 				.parseSignedClaims(token)
 				.getPayload();
-			return Optional.ofNullable(claims.get(EMAIL_CLAIM, String.class));
+			return Optional.ofNullable(claims.get(MEMBER_ID_CLAIM, String.class));
 		} catch (JwtException | IllegalArgumentException e) {
 			return Optional.empty();
 		}
