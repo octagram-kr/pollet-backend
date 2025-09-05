@@ -1,4 +1,4 @@
-package com.octagram.pollet.member.infrastructure;
+package com.octagram.pollet.member.domain.repository;
 
 import com.octagram.pollet.member.domain.model.type.Role;
 import org.springframework.data.jpa.repository.JpaRepository;

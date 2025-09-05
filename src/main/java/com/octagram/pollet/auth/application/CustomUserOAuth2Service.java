@@ -16,7 +16,7 @@ import com.octagram.pollet.auth.infrastructure.CustomOAuth2User;
 import com.octagram.pollet.auth.infrastructure.OAuthAttributes;
 import com.octagram.pollet.member.domain.model.type.AuthProvider;
 import com.octagram.pollet.member.domain.model.Member;
-import com.octagram.pollet.member.infrastructure.MemberRepository;
+import com.octagram.pollet.member.domain.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
