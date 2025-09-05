@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -43,12 +44,13 @@ public class SecurityConfig {
 		http
 			.cors(cors -> cors.configurationSource(corsConfigurationSource))
 			.csrf(AbstractHttpConfigurer::disable)
-			.authorizeHttpRequests(auth -> {
-				auth.anyRequest().permitAll()
-					.requestMatchers("/admin/**").hasRole("ADMIN");
-			})
+			.authorizeHttpRequests(auth -> auth
+				.requestMatchers("/auth/login", "/auth/refresh", "/health", "/actuator/**").permitAll() // 임시
+				.requestMatchers("/admin/**").hasRole("ADMIN")
+				.anyRequest().authenticated()
+			)
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.addFilter(jwtAuthFilter)
+			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 			.oauth2Login(oauth2 -> oauth2
 				.userInfoEndpoint(userInfoEndpointConfig
 					-> userInfoEndpointConfig.userService(customUserOAuth2Service))
