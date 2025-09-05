@@ -1,6 +1,4 @@
-package com.octagram.pollet.member.infrastructure;
-
-import java.util.Optional;
+package com.octagram.pollet.member.domain.repository;
 
 import com.octagram.pollet.member.domain.model.Member;
 

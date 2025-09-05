@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.octagram.pollet.global.exception.BusinessException;
 import com.octagram.pollet.global.jwt.status.JwtErrorCode;
-import com.octagram.pollet.member.infrastructure.MemberRepository;
+import com.octagram.pollet.member.domain.repository.MemberRepository;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;

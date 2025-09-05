@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.octagram.pollet.member.domain.model.Member;
-import com.octagram.pollet.member.infrastructure.MemberRepository;
+import com.octagram.pollet.member.domain.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

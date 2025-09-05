@@ -1,4 +1,4 @@
-package com.octagram.pollet.member.presentation.controller;
+package com.octagram.pollet.member.presentation;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

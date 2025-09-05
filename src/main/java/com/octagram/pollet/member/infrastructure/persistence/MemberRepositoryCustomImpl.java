@@ -1,7 +1,8 @@
-package com.octagram.pollet.member.infrastructure;
+package com.octagram.pollet.member.infrastructure.persistence;
 
 import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.member.domain.model.QMember;
+import com.octagram.pollet.member.domain.repository.MemberRepositoryCustom;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
