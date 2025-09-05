@@ -21,8 +21,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(toBuilder = true)
+@AllArgsConstructor
+@Builder
 @Table(name = "survey_point_history")
 public class SurveyPointHistory {
 

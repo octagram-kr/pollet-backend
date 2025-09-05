@@ -3,7 +3,10 @@ package com.octagram.pollet.survey.domain.model;
 import com.octagram.pollet.gifticon.domain.model.GifticonProduct;
 import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.survey.domain.model.type.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.FetchType;
@@ -25,8 +28,8 @@ import jakarta.persistence.Table;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(toBuilder = true)
+@AllArgsConstructor
+@Builder
 @Table(name = "survey")
 public class Survey {
 
@@ -71,7 +74,7 @@ public class Survey {
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private Gender targetGender;
+	private TargetGender targetGender;
 
 	@Column(nullable = false)
 	private LocalDateTime startDateTime;
@@ -84,7 +87,7 @@ public class Survey {
 	private LocalDateTime endDateTime;
 
 	@Column(nullable = false)
-	private LocalDateTime responseExpireDate;
+	private LocalDate responseExpireDate;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -100,7 +103,7 @@ public class Survey {
 	private String privacyPurposeValue;
 
 	@Column(nullable = false)
-	private LocalDateTime privacyExpireDate;
+	private LocalDate privacyExpireDate;
 
 	@Column(nullable = false)
 	private Long estimatedTime;
