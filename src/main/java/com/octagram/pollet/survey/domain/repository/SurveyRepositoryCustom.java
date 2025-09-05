@@ -7,6 +7,6 @@ import com.octagram.pollet.survey.domain.model.Survey;
 
 public interface SurveyRepositoryCustom {
 
-    long getActiveCount(LocalDateTime now);
-    Optional<Survey> findByIdQueryDsl(Long id);
+	long getActiveCount(LocalDateTime now);
+	Optional<Survey> findByIdQueryDsl(Long id);
 }
