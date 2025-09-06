@@ -39,4 +39,10 @@ public class QuestionOption {
 
 	@Column(nullable = true)
 	private String imageUrl;
+
+	@Column(nullable = false)
+	private Boolean isCheckTarget;
+
+	@Column(nullable = false)
+	private Boolean isCheckDiligent;
 }
