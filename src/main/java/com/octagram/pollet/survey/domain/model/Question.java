@@ -55,6 +55,9 @@ public class Question {
 	private Boolean isRequired;
 
 	@Column(nullable = false)
+	private Boolean isCheckTarget;
+
+	@Column(nullable = false)
 	private Boolean isCheckDiligent;
 
 	@Column(nullable = true)
