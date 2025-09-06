@@ -1,5 +1,6 @@
 package com.octagram.pollet.survey.domain.model;
 
+import com.octagram.pollet.global.domain.model.BaseEntity;
 import com.octagram.pollet.member.domain.model.Member;
 
 import jakarta.persistence.Column;
@@ -24,7 +25,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Table(name = "survey_point_history")
-public class SurveyPointHistory {
+public class SurveyPointHistory extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
