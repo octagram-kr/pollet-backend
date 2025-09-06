@@ -2,6 +2,7 @@ package com.octagram.pollet.survey.domain.model;
 
 import java.time.LocalDateTime;
 
+import com.octagram.pollet.global.domain.model.BaseEntity;
 import com.octagram.pollet.member.domain.model.Member;
 
 import jakarta.persistence.Column;
@@ -26,7 +27,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Table(name = "survey_response")
-public class SurveyResponse {
+public class SurveyResponse extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

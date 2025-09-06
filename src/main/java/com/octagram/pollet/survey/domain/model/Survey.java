@@ -1,6 +1,7 @@
 package com.octagram.pollet.survey.domain.model;
 
 import com.octagram.pollet.gifticon.domain.model.GifticonProduct;
+import com.octagram.pollet.global.domain.model.BaseEntity;
 import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.survey.domain.model.type.*;
 
@@ -31,7 +32,7 @@ import jakarta.persistence.Table;
 @AllArgsConstructor
 @Builder
 @Table(name = "survey")
-public class Survey {
+public class Survey extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

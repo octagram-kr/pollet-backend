@@ -1,5 +1,7 @@
 package com.octagram.pollet.survey.domain.model;
 
+import com.octagram.pollet.global.domain.model.BaseEntity;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Table(name = "survey_tag")
-public class SurveyTag {
+public class SurveyTag extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
