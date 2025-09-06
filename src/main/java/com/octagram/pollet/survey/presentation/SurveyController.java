@@ -5,17 +5,14 @@ import com.octagram.pollet.survey.application.SurveyService;
 import com.octagram.pollet.survey.domain.status.SurveySuccessCode;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyGetDetailResponse;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyGetResponse;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyGetRecentResponse;
 import com.octagram.pollet.survey.presentation.dto.response.TagGetResponse;
-
 import io.swagger.v3.oas.annotations.Operation;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
 import lombok.RequiredArgsConstructor;
-
 import java.util.List;
 
 @RestController
@@ -68,5 +65,12 @@ public class SurveyController {
 	) {
 		Page<SurveyGetResponse> surveys = surveyService.searchSurveys(keyword, pageable);
 		return ApiResponse.success(SurveySuccessCode.SEARCH_SURVEYS_SUCCESS, surveys);
+	}
+
+	@GetMapping("/recent")
+	@Operation(summary = "최근 등록된 설문조사 조회", description = "가장 최근에 등록된 설문조사 4개를 생성일 기준 내림차순으로 조회합니다.")
+	public ApiResponse<List<SurveyGetRecentResponse>> getLatest4Surveys() {
+		List<SurveyGetRecentResponse> newSurveys = surveyService.getLatest4Surveys();
+		return ApiResponse.success(SurveySuccessCode.READ_RECENT_SURVEYS_SUCCESS, newSurveys);
 	}
 }

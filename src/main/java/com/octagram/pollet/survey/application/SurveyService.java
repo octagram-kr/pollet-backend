@@ -7,18 +7,16 @@ import com.octagram.pollet.survey.domain.model.Survey;
 import com.octagram.pollet.survey.domain.status.SurveyErrorCode;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyGetDetailResponse;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyGetResponse;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyGetRecentResponse;
 import com.octagram.pollet.survey.presentation.dto.response.TagGetResponse;
 import com.octagram.pollet.survey.domain.repository.SurveyRepository;
 import com.octagram.pollet.survey.domain.repository.SurveyTagRepository;
 import com.octagram.pollet.survey.domain.repository.TagRepository;
-
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import lombok.RequiredArgsConstructor;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -70,5 +68,12 @@ public class SurveyService {
 	public Page<SurveyGetResponse> searchSurveys(String keyword, Pageable pageable) {
 		return surveyRepository.findByTitleContainingIgnoreCase(keyword, pageable)
 			.map(surveyMapper::toGetResponse);
+	}
+
+	@Transactional(readOnly = true)
+	public List<SurveyGetRecentResponse> getLatest4Surveys() {
+		return surveyRepository.findTop4ByOrderByCreatedAtDesc().stream()
+				.map(surveyMapper::toGetRecentResponse)
+				.toList();
 	}
 }
