@@ -1,15 +1,26 @@
 package com.octagram.pollet.survey.presentation;
 
+import com.octagram.pollet.global.aws.service.S3Service;
 import com.octagram.pollet.global.dto.ApiResponse;
 import com.octagram.pollet.survey.application.SurveyService;
 import com.octagram.pollet.survey.domain.status.SurveySuccessCode;
 import com.octagram.pollet.survey.presentation.dto.response.*;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyGetDetailResponse;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyGetResponse;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyImageGetResponse;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyImageUploadResponse;
+import com.octagram.pollet.survey.presentation.dto.response.TagGetResponse;
+
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.RequiredArgsConstructor;
+
+import java.time.Duration;
 import java.util.List;
 
 @RestController
@@ -18,6 +29,7 @@ import java.util.List;
 public class SurveyController {
 
 	private final SurveyService surveyService;
+	private final S3Service s3Service;
 
 	@GetMapping("/tags")
 	@Operation(summary = "모든 태그 조회", description = "등록 가능한 모든 태그를 조회합니다.")
@@ -76,5 +88,17 @@ public class SurveyController {
 	public ApiResponse<List<TargetQuestionResponse>> getLatest4SurveysTargetQuestions() {
 		List<TargetQuestionResponse> newSurveyQuestion = surveyService.getLatest4SurveysTargetQuestions();
 		return ApiResponse.success(SurveySuccessCode.READ_RECENT_REPRESENTATIVE_QUESTIONS_SUCCESS, newSurveyQuestion);
+	}
+
+	@PostMapping("/upload-temp-image")
+	public ApiResponse<SurveyImageUploadResponse> uploadImage(@RequestParam("image") MultipartFile image) {
+		String tempFileName = s3Service.uploadToTemp(image);
+		return ApiResponse.success(new SurveyImageUploadResponse(tempFileName));
+	}
+
+	@GetMapping("/get-temp-image")
+	public ApiResponse<SurveyImageGetResponse> getImage(@RequestParam("key") String key) {
+		String tempFileUrl = s3Service.getPresignedUrl(key, Duration.ofMinutes(5));
+		return ApiResponse.success(new SurveyImageGetResponse(tempFileUrl));
 	}
 }
