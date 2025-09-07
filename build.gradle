@@ -63,6 +63,12 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.6.3'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
     annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
+    // AWS S3
+    implementation 'software.amazon.awssdk:s3:2.33.3'
+
+    // Apache Commons IO
+    implementation 'commons-io:commons-io:2.20.0'
 }
 
 tasks.named('test') {
