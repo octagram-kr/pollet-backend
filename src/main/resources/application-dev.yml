@@ -73,3 +73,13 @@ jwt:
   refresh:
     expiration: 1209600000
     header: Authorization-refresh
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_S3_ACCESS_KEY}
+      secret-key: ${AWS_S3_SECRET_KEY}
+    s3:
+      bucket: pollet-prod-bucket
+    region:
+      static: ap-northeast-2
