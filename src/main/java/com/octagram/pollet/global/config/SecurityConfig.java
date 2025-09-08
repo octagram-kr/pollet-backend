@@ -32,6 +32,13 @@ public class SecurityConfig {
 		// 프론트엔드 배포 주소
 	);
 	private static final List<String> ALLOWED_METHOD = List.of("GET", "POST", "PUT", "DELETE", "PATCH");
+	private static final String [] PERMIT_ALL_END_POINTS = {
+		"/",
+		"/oauth2/authorization/**",
+		"/login/oauth2/**",
+		"/health",
+		"/actuator/**"
+	};
 
 	private final JwtAuthFilter jwtAuthFilter;
 	private final CustomUserOAuth2Service customUserOAuth2Service;
@@ -44,8 +51,10 @@ public class SecurityConfig {
 		http
 			.cors(cors -> cors.configurationSource(corsConfigurationSource))
 			.csrf(AbstractHttpConfigurer::disable)
+			.formLogin(AbstractHttpConfigurer::disable)
+			.httpBasic(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/auth/login", "/auth/refresh", "/health", "/actuator/**").permitAll() // 임시
+				.requestMatchers(PERMIT_ALL_END_POINTS).permitAll()
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.anyRequest().authenticated()
 			)
