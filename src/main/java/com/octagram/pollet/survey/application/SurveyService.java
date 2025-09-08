@@ -1,14 +1,14 @@
 package com.octagram.pollet.survey.application;
 
 import com.octagram.pollet.global.exception.BusinessException;
+import com.octagram.pollet.survey.application.mapper.QuestionMapper;
 import com.octagram.pollet.survey.application.mapper.SurveyMapper;
 import com.octagram.pollet.survey.application.mapper.TagMapper;
+import com.octagram.pollet.survey.domain.model.Question;
 import com.octagram.pollet.survey.domain.model.Survey;
+import com.octagram.pollet.survey.domain.repository.QuestionRepository;
 import com.octagram.pollet.survey.domain.status.SurveyErrorCode;
-import com.octagram.pollet.survey.presentation.dto.response.SurveyGetDetailResponse;
-import com.octagram.pollet.survey.presentation.dto.response.SurveyGetResponse;
-import com.octagram.pollet.survey.presentation.dto.response.SurveyGetRecentResponse;
-import com.octagram.pollet.survey.presentation.dto.response.TagGetResponse;
+import com.octagram.pollet.survey.presentation.dto.response.*;
 import com.octagram.pollet.survey.domain.repository.SurveyRepository;
 import com.octagram.pollet.survey.domain.repository.SurveyTagRepository;
 import com.octagram.pollet.survey.domain.repository.TagRepository;
@@ -26,9 +26,11 @@ public class SurveyService {
 
 	private final SurveyRepository surveyRepository;
 	private final TagRepository tagRepository;
+	private final QuestionRepository questionRepository;
 	private final SurveyTagRepository surveyTagRepository;
 	private final SurveyMapper surveyMapper;
 	private final TagMapper tagMapper;
+	private final QuestionMapper questionMapper;
 
 	@Transactional(readOnly = true)
 	public List<TagGetResponse> getAllTags() {
@@ -72,7 +74,7 @@ public class SurveyService {
 
 	@Transactional(readOnly = true)
 	public List<SurveyGetRecentResponse> getLatest4Surveys() {
-		return surveyRepository.findTop4ByOrderByCreatedAtDesc().stream()
+		return surveyRepository.findTop4ByOrderByCreatedAt().stream()
 				.map(surveyMapper::toGetRecentResponse)
 				.toList();
 	}

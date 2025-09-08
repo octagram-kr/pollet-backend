@@ -10,5 +10,5 @@ public interface SurveyRepository extends JpaRepository<Survey, Long>, SurveyRep
 
 	Page<Survey> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 
-	List<Survey> findTop4ByOrderByCreatedAtDesc();
+	List<Survey> findTop4ByOrderByCreatedAt();
 }
