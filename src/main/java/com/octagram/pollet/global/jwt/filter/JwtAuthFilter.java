@@ -26,7 +26,14 @@ import lombok.RequiredArgsConstructor;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
 	private static final String ROLE_PREFIX = "ROLE_";
-	private static final String NO_CHECK_URL = "/auth/login";
+    private static final List<String> NO_CHECK_URL_PREFIXES = List.of(
+		"/",
+		"/oauth2/authorization/**",
+		"/login/oauth2/**",
+		"/health",
+		"/actuator",
+		"/swagger-ui/**"
+	);
 
 	private final JwtService jwtService;
 
@@ -34,7 +41,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 		throws ServletException, IOException {
 		if (SecurityContextHolder.getContext().getAuthentication() != null ||
-			request.getRequestURI().startsWith(NO_CHECK_URL)) {
+            isNoCheckUrl(request.getRequestURI())) {
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -54,6 +61,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 		filterChain.doFilter(request, response);
 	}
+
+    private boolean isNoCheckUrl(String uri) {
+        return NO_CHECK_URL_PREFIXES.stream().anyMatch(uri::startsWith);
+    }
 
 	private void setAuthentication(String memberId, HttpServletRequest request, List<SimpleGrantedAuthority> authorities) {
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(

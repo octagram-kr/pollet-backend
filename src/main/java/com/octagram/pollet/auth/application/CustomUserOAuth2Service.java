@@ -68,10 +68,8 @@ public class CustomUserOAuth2Service implements OAuth2UserService<OAuth2UserRequ
 	}
 
 	private Member getMember(String provider, OAuthAttributes attributes, AuthProvider authProvider) {
-		return memberRepository.findByMemberIdAndRole(
-                provider + attributes.oAuth2UserInfo().getId(),
-                        Role.MEMBER)
-			.orElse(saveMember(provider, attributes, authProvider));
+		return memberRepository.findByMemberId(provider + "_" + attributes.oAuth2UserInfo().getId())
+			.orElseGet(() -> saveMember(provider, attributes, authProvider));
 	}
 
 	private Member saveMember(String provider, OAuthAttributes attributes, AuthProvider authProvider) {

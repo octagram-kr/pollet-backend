@@ -40,7 +40,7 @@ public record OAuthAttributes (
 	public Member toEntity(AuthProvider authProvider, String provider, OAuth2UserInfo oAuth2UserInfo) {
 		return Member.builder()
                 .authProvider(authProvider)
-                .memberId(provider + oAuth2UserInfo.getId())
+                .memberId(provider + "_" + oAuth2UserInfo.getId())
                 .email(oAuth2UserInfo.getEmail())
                 .profileImageUrl(oAuth2UserInfo.getImageUrl())
                 .role(Role.GUEST)
