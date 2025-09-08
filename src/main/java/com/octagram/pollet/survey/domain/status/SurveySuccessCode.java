@@ -14,7 +14,8 @@ public enum SurveySuccessCode implements BaseCode {
 	READ_SURVEY_DETAIL_SUCCESS(HttpStatus.OK, "SS_003", "설문조사 상세 정보를 성공적으로 조회했습니다."),
 	READ_SURVEY_COUNT_SUCCESS(HttpStatus.OK, "SS_004", "전체 설문조사의 수를 성공적으로 조회했습니다."),
 	SEARCH_SURVEYS_SUCCESS(HttpStatus.OK, "SS_005", "설문조사를 성공적으로 조회했습니다."),
-	READ_RECENT_SURVEYS_SUCCESS(HttpStatus.OK, "SS_006", "최근 등록된 설문조사 목록을 성공적으로 조회했습니다.");
+	READ_RECENT_SURVEYS_SUCCESS(HttpStatus.OK, "SS_006", "최근 등록된 설문조사 목록을 성공적으로 조회했습니다."),
+	READ_RECENT_REPRESENTATIVE_QUESTIONS_SUCCESS(HttpStatus.OK, "SS_007", "최근 등록된 설문조사의 대표 질문을 성공적으로 조회했습니다.");
 
 	private final HttpStatus status;
 	private final String code;

@@ -1,10 +1,8 @@
 package com.octagram.pollet.survey.domain.status;
 
 import com.octagram.pollet.global.status.BaseCode;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 
 @Getter
@@ -16,7 +14,8 @@ public enum SurveyErrorCode implements BaseCode {
 	INVALID_TAG(HttpStatus.BAD_REQUEST, "SE_003", "유효하지 않은 태그입니다."),
 	TAG_LIMIT_EXCEEDED(HttpStatus.BAD_REQUEST, "SE_004", "설문조사에 등록 가능한 태그 개수를 초과했습니다."),
 	SURVEY_NOT_FOUND(HttpStatus.NOT_FOUND, "SE_005", "요청한 설문이 존재하지 않습니다."),
-	INVALID_ACCESS(HttpStatus.FORBIDDEN, "SE_006", "잘못된 접근입니다.");
+	INVALID_ACCESS(HttpStatus.FORBIDDEN, "SE_006", "잘못된 접근입니다."),
+	QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "SE_007", "설문조사의 대표 질문이 존재하지 않습니다.");
 
 	private final HttpStatus status;
 	private final String code;
