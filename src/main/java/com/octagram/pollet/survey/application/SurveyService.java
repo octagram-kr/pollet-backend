@@ -1,24 +1,22 @@
 package com.octagram.pollet.survey.application;
 
 import com.octagram.pollet.global.exception.BusinessException;
+import com.octagram.pollet.survey.application.mapper.QuestionMapper;
 import com.octagram.pollet.survey.application.mapper.SurveyMapper;
 import com.octagram.pollet.survey.application.mapper.TagMapper;
+import com.octagram.pollet.survey.domain.model.Question;
 import com.octagram.pollet.survey.domain.model.Survey;
+import com.octagram.pollet.survey.domain.repository.QuestionRepository;
 import com.octagram.pollet.survey.domain.status.SurveyErrorCode;
-import com.octagram.pollet.survey.presentation.dto.response.SurveyGetDetailResponse;
-import com.octagram.pollet.survey.presentation.dto.response.SurveyGetResponse;
-import com.octagram.pollet.survey.presentation.dto.response.TagGetResponse;
+import com.octagram.pollet.survey.presentation.dto.response.*;
 import com.octagram.pollet.survey.domain.repository.SurveyRepository;
 import com.octagram.pollet.survey.domain.repository.SurveyTagRepository;
 import com.octagram.pollet.survey.domain.repository.TagRepository;
-
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import lombok.RequiredArgsConstructor;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,9 +26,11 @@ public class SurveyService {
 
 	private final SurveyRepository surveyRepository;
 	private final TagRepository tagRepository;
+	private final QuestionRepository questionRepository;
 	private final SurveyTagRepository surveyTagRepository;
 	private final SurveyMapper surveyMapper;
 	private final TagMapper tagMapper;
+	private final QuestionMapper questionMapper;
 
 	@Transactional(readOnly = true)
 	public List<TagGetResponse> getAllTags() {
@@ -70,5 +70,33 @@ public class SurveyService {
 	public Page<SurveyGetResponse> searchSurveys(String keyword, Pageable pageable) {
 		return surveyRepository.findByTitleContainingIgnoreCase(keyword, pageable)
 			.map(surveyMapper::toGetResponse);
+	}
+
+	@Transactional(readOnly = true)
+	public List<SurveyGetRecentResponse> getLatest4Surveys() {
+		return surveyRepository.findTop4ByOrderByCreatedAt().stream()
+				.map(surveyMapper::toGetRecentResponse)
+				.toList();
+	}
+
+	@Transactional(readOnly = true)
+	public List<TargetQuestionResponse> getLatest4SurveysTargetQuestions() {
+		List<Survey> latestSurveys = surveyRepository.findTop4ByOrderByCreatedAt();
+
+		return latestSurveys.stream().map(survey -> {
+			List<Question> questions = questionRepository.findQuestionsBySurveyId(survey.getId());
+
+			Question targetQuestion = questions.stream()
+					.filter(Question::getIsCheckTarget)
+					.findFirst()
+					.orElseThrow(() -> new BusinessException(SurveyErrorCode.QUESTION_NOT_FOUND));
+
+			List<QuestionOptionListResponse> questionOptions = questionRepository.findOptionsByQuestionId(targetQuestion.getId())
+					.stream()
+					.map(questionMapper::toQuestionOptionListResponse)
+					.toList();
+
+			return questionMapper.toTargetQuestionResponse(targetQuestion, questionOptions);
+		}).toList();
 	}
 }
