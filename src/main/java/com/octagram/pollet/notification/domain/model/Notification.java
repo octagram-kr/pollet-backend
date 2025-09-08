@@ -38,4 +38,12 @@ public class Notification extends BaseEntity {
 	@Builder.Default
 	@Column(nullable = false)
 	private boolean isRead = false;
+
+	public void markAsRead() {
+		if (!this.isRead) {
+			this.isRead = true;
+			// 추후 필요시 readAt 추가
+			// this.readAt = LocalDateTime.now();
+		}
+	}
 }
