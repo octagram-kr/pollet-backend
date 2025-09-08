@@ -31,7 +31,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		"/oauth2/authorization/**",
 		"/login/oauth2/**",
 		"/health",
-		"/actuator"
+		"/actuator",
+		"/swagger-ui/**"
 	);
 
 	private final JwtService jwtService;

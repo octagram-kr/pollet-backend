@@ -37,7 +37,8 @@ public class SecurityConfig {
 		"/oauth2/authorization/**",
 		"/login/oauth2/**",
 		"/health",
-		"/actuator/**"
+		"/actuator/**",
+		"/swagger-ui/**"
 	};
 
 	private final JwtAuthFilter jwtAuthFilter;
