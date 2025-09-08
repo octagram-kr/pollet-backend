@@ -12,7 +12,7 @@ public interface QuestionMapper {
 
 	QuestionOptionListResponse toQuestionOptionListResponse(QuestionOption questionOption);
 
-	default TargetQuestionResponse totargetQuestionResponse(
+	default TargetQuestionResponse toTargetQuestionResponse(
 			Question question, List<QuestionOptionListResponse> questionOptions) {
 		return new TargetQuestionResponse(
 				question.getId(),

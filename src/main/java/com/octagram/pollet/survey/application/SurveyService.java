@@ -96,7 +96,7 @@ public class SurveyService {
 					.map(questionMapper::toQuestionOptionListResponse)
 					.toList();
 
-			return questionMapper.totargetQuestionResponse(targetQuestion, questionOptions);
+			return questionMapper.toTargetQuestionResponse(targetQuestion, questionOptions);
 		}).toList();
 	}
 }
