@@ -70,4 +70,11 @@ public class SurveyController {
 		List<SurveyGetRecentResponse> newSurveys = surveyService.getLatest4Surveys();
 		return ApiResponse.success(SurveySuccessCode.READ_RECENT_SURVEYS_SUCCESS, newSurveys);
 	}
+
+	@GetMapping("/recent/targetQuestion")
+	@Operation(summary = "최근 등록된 설문조사 조회", description = "가장 최근에 등록된 설문조사 4개의 대상자 판별 질문을 조회합니다.")
+	public ApiResponse<List<TargetQuestionResponse>> getLatest4SurveysTargetQuestions() {
+		List<TargetQuestionResponse> newSurveyQuestion = surveyService.getLatest4SurveysTargetQuestions();
+		return ApiResponse.success(SurveySuccessCode.READ_RECENT_REPRESENTATIVE_QUESTIONS_SUCCESS, newSurveyQuestion);
+	}
 }

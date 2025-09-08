@@ -78,4 +78,25 @@ public class SurveyService {
 				.map(surveyMapper::toGetRecentResponse)
 				.toList();
 	}
+
+	@Transactional(readOnly = true)
+	public List<TargetQuestionResponse> getLatest4SurveysTargetQuestions() {
+		List<Survey> latestSurveys = surveyRepository.findTop4ByOrderByCreatedAt();
+
+		return latestSurveys.stream().map(survey -> {
+			List<Question> questions = questionRepository.findQuestionsBySurveyId(survey.getId());
+
+			Question targetQuestion = questions.stream()
+					.filter(Question::getIsCheckTarget)
+					.findFirst()
+					.orElseThrow(() -> new BusinessException(SurveyErrorCode.QUESTION_NOT_FOUND));
+
+			List<QuestionOptionListResponse> questionOptions = questionRepository.findOptionsByQuestionId(targetQuestion.getId())
+					.stream()
+					.map(questionMapper::toQuestionOptionListResponse)
+					.toList();
+
+			return questionMapper.totargetQuestionResponse(targetQuestion, questionOptions);
+		}).toList();
+	}
 }
