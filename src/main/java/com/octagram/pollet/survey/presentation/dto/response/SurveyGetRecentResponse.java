@@ -7,6 +7,5 @@ public record SurveyGetRecentResponse(
 		String gifticonName,
 		String rewardPoint,
 		String estimatedTime
-		// 조사 질문 필드 추가 예정
 ) {
 }
