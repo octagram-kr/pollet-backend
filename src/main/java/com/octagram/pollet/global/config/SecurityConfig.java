@@ -14,7 +14,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.octagram.pollet.auth.application.CustomUserOAuth2Service;
+import com.octagram.pollet.auth.application.service.CustomUserOAuth2Service;
 import com.octagram.pollet.auth.handler.OAuth2LoginFailureHandler;
 import com.octagram.pollet.auth.handler.OAuth2LoginSuccessHandler;
 import com.octagram.pollet.global.jwt.filter.JwtAuthFilter;
