@@ -16,7 +16,5 @@ public interface SurveyMapper {
 	@Mapping(source = "rewardPoint", target = "rewardPoint", defaultValue = "0L")
 	SurveyGetDetailResponse toGetDetailResponse(Survey survey);
 
-	@Mapping(source = "coverUrl", target = "coverUrl")
-	@Mapping(source = "rewardPoint", target = "rewardPoint")
 	SurveyGetRecentResponse toGetRecentResponse(Survey survey);
 }
