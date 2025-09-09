@@ -4,11 +4,11 @@ import org.springframework.http.HttpStatus;
 
 import com.octagram.pollet.global.status.BaseCode;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum S3ErrorCode implements BaseCode {
 
 	FILE_EMPTY(HttpStatus.BAD_REQUEST, "S3E_001", "파일이 비어있습니다."),
