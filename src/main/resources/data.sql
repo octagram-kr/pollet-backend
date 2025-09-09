@@ -110,18 +110,35 @@ INSERT INTO `question_option_response` (id, created_at, updated_at, question_opt
 INSERT INTO `question_option_response` (id, created_at, updated_at, question_option_id, question_response_id) VALUES (13,'2025-09-06 16:03:45.777000','2025-09-06 16:03:45.777000',36,15);
 INSERT INTO `question_option_response` (id, created_at, updated_at, question_option_id, question_response_id) VALUES (14,'2025-09-06 16:03:45.777000','2025-09-06 16:03:45.777000',39,18);
 
-INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id) VALUES (1,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','AI',NULL);
-INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id) VALUES (2,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','교육',NULL);
-INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id) VALUES (3,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','금융',NULL);
-INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id) VALUES (4,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','헬스케어',NULL);
-INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id) VALUES (5,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','여행',NULL);
-INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id) VALUES (6,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','패션뷰티',NULL);
-INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id) VALUES (7,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','커머스',NULL);
-INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id) VALUES (8,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','라이프스타일',NULL);
-INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id) VALUES (9,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','엔터테인먼트',NULL);
-INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id) VALUES (10,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','웰빙',NULL);
-INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id) VALUES (11,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','식품',NULL);
-INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id) VALUES (12,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','반려동물',NULL);
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (1,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','AI',NULL, 'GENERAL');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (2,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','교육',NULL, 'GENERAL');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (3,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','금융',NULL, 'GENERAL');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (4,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','헬스케어',NULL, 'GENERAL');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (5,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','여행',NULL, 'GENERAL');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (6,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','패션뷰티',NULL, 'GENERAL');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (7,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','커머스',NULL, 'GENERAL');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (8,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','라이프스타일',NULL, 'GENERAL');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (9,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','엔터테인먼트',NULL, 'GENERAL');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (10,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','웰빙',NULL, 'GENERAL');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (11,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','식품',NULL, 'GENERAL');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (12,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','반려동물',NULL, 'GENERAL');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (13,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','남자',NULL, 'GENDER');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (14,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','여자',NULL, 'GENDER');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (15,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','10대',NULL, 'AGE');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (16,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','20대',NULL, 'AGE');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (17,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','30대',NULL, 'AGE');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (18,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','40대',NULL, 'AGE');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (19,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','50대',NULL, 'AGE');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (20,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','60대_이상',NULL, 'AGE');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (21,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','중학생',NULL, 'JOB');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (22,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','고등학생',NULL, 'JOB');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (23,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','대학생',NULL, 'JOB');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (24,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','취준생',NULL, 'JOB');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (25,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','직장인',NULL, 'JOB');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (26,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','전문직',NULL, 'JOB');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (27,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','프리랜서',NULL, 'JOB');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (28,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','창업자',NULL, 'JOB');
+INSERT INTO `tag` (id, created_at, updated_at, name, parent_tag_id, type) VALUES (29,'2025-09-01 10:50:00.000000','2025-09-01 11:05:00.000000','자영업자',NULL, 'JOB');
 
 INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (1,'2025-09-03 11:05:00.000000','2025-09-03 11:05:00.000000',1,1);
 INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (2,'2025-09-03 11:05:00.000000','2025-09-03 11:05:00.000000',1,2);
@@ -129,10 +146,21 @@ INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES 
 INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (4,'2025-09-03 11:10:00.000000','2025-09-03 11:10:00.000000',2,4);
 INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (5,'2025-09-03 11:10:00.000000','2025-09-03 11:10:00.000000',2,5);
 INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (6,'2025-09-03 11:10:00.000000','2025-09-03 11:10:00.000000',2,6);
-
 INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (7,'2025-09-06 11:15:00.000000','2025-09-06 11:15:00.000000',3,7);
 INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (8,'2025-09-06 11:15:00.000000','2025-09-06 11:15:00.000000',3,8);
 INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (9,'2025-09-06 11:15:00.000000','2025-09-06 11:15:00.000000',3,9);
 INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (10,'2025-09-06 11:20:00.000000','2025-09-06 11:20:00.000000',4,10);
 INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (11,'2025-09-06 11:20:00.000000','2025-09-06 11:20:00.000000',4,11);
 INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (12,'2025-09-06 11:20:00.000000','2025-09-06 11:20:00.000000',4,8);
+INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (13,'2025-09-03 11:05:00.000000','2025-09-03 11:05:00.000000',1,13); -- 남자
+INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (14,'2025-09-03 11:05:00.000000','2025-09-03 11:05:00.000000',1,16); -- 20대
+INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (15,'2025-09-03 11:05:00.000000','2025-09-03 11:05:00.000000',1,23); -- 대학생
+INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (16,'2025-09-03 11:10:00.000000','2025-09-03 11:10:00.000000',2,14); -- 여자
+INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (17,'2025-09-03 11:10:00.000000','2025-09-03 11:10:00.000000',2,17); -- 30대
+INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (18,'2025-09-03 11:10:00.000000','2025-09-03 11:10:00.000000',2,26); -- 전문직
+INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (19,'2025-09-06 11:15:00.000000','2025-09-06 11:15:00.000000',3,13); -- 남자
+INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (20,'2025-09-06 11:15:00.000000','2025-09-06 11:15:00.000000',3,18); -- 40대
+INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (21,'2025-09-06 11:15:00.000000','2025-09-06 11:15:00.000000',3,29); -- 자영업자
+INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (22,'2025-09-06 11:20:00.000000','2025-09-06 11:20:00.000000',4,14); -- 여자
+INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (23,'2025-09-06 11:20:00.000000','2025-09-06 11:20:00.000000',4,19); -- 50대
+INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (24,'2025-09-06 11:20:00.000000','2025-09-06 11:20:00.000000',4,28); -- 창업자
