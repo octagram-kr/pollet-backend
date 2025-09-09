@@ -129,7 +129,7 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
 			case HIGHEST_POINTS -> survey.rewardPoint.desc();
 			case SHORTEST_TIME -> survey.estimatedTime.asc();
 			case LONGEST_TIME -> survey.estimatedTime.desc();
-			case FEWEST_RESPONSES -> survey.currentResponseCount.asc();
+			case FEWEST_SUBMISSIONS -> survey.currentSubmissionCount.asc();
 		};
 	}
 
