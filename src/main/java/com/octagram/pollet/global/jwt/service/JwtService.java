@@ -1,11 +1,13 @@
 package com.octagram.pollet.global.jwt.service;
 
+import java.time.Duration;
 import java.util.Date;
 import java.util.Optional;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
@@ -66,10 +68,11 @@ public class JwtService {
 			.compact();
 	}
 
-	public String createRefreshToken() {
+	public String createRefreshToken(String memberId) {
 		Date now = new Date();
 		return Jwts.builder()
 			.subject(REFRESH_TOKEN_SUBJECT)
+			.claim(MEMBER_ID_CLAIM, memberId)
 			.issuedAt(now)
 			.expiration(new Date(now.getTime() + refreshTokenExpiration))
 			.signWith(getSecretKey())
@@ -77,19 +80,20 @@ public class JwtService {
 	}
 
 	public void sendAccessToken(HttpServletResponse response, String accessToken) {
-		response.addHeader(accessHeader, BEARER + accessToken);
-
 		response.setStatus(HttpServletResponse.SC_OK);
-		response.setHeader(accessHeader, accessToken);
+		response.setHeader(accessHeader, BEARER + accessToken);
 	}
 
 	public void setRefreshToken(HttpServletResponse response, String refreshToken) {
 		ResponseCookie refreshTokenCookie = ResponseCookie.from(REFRESH_TOKEN_SUBJECT, refreshToken)
 			.httpOnly(true)
 			.secure(true)
+			.sameSite("None")
+			.path("/")
+			.maxAge(Duration.ofMillis(refreshTokenExpiration))
 			.build();
 
-		response.addHeader(refreshHeader, refreshTokenCookie.getValue());
+		response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
 	}
 
 	public Optional<String> extractAccessToken(HttpServletRequest request) {
@@ -144,6 +148,19 @@ public class JwtService {
 			return Optional.ofNullable(claims.get(ROLE_CLAIM, String.class));
 		} catch (JwtException | IllegalArgumentException e) {
 			return Optional.empty();
+		}
+	}
+
+	public boolean validateRefreshToken(String token) {
+		try {
+			Jwts
+				.parser()
+				.verifyWith(getSecretKey())
+				.build()
+				.parseSignedClaims(token);
+			return true;
+		} catch (JwtException e) {
+			throw new BusinessException(JwtErrorCode.REFRESH_TOKEN_INVALID);
 		}
 	}
 
