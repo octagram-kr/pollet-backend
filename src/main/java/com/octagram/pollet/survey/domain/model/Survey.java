@@ -7,8 +7,11 @@ import com.octagram.pollet.survey.domain.model.type.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -45,6 +48,12 @@ public class Survey extends BaseEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "reward_gifticon_product_id", nullable = true)
 	private GifticonProduct gifticonProduct;
+
+	@OneToMany(mappedBy = "survey")
+	private List<SurveyTag> surveyTags = new ArrayList<>();
+
+	@OneToMany(mappedBy = "survey")
+	private List<Question> questions = new ArrayList<>();
 
 	@Column(nullable = false)
 	private String title;
