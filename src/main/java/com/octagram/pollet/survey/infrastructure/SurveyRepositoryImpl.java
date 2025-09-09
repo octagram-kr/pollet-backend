@@ -41,8 +41,8 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
 		return Optional.ofNullable(
 			queryFactory
 				.selectFrom(survey)
-				.join(survey.gifticonProduct, gifticonProduct)
-				.fetchJoin()
+				.leftJoin(survey.gifticonProduct, gifticonProduct).fetchJoin()
+				.where(survey.id.eq(id))
 				.fetchOne()
 		);
 	}
