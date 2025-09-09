@@ -19,8 +19,8 @@ public class TokenRedisRepository {
 	@Value("${jwt.refresh.expiration}")
 	public Long refreshTokenExpiration;
 
-	public void save(String email, String token) {
-		String key = getRedisKey(email, token);
+	public void save(String memberId, String token) {
+		String key = getRedisKey(memberId, token);
 
 		redisTemplate.opsForValue().set(
 			key,
@@ -30,19 +30,19 @@ public class TokenRedisRepository {
 		);
 	}
 
-	public boolean existsToken(String email, String token) {
-		String key = getRedisKey(email, token);
+	public boolean existsToken(String memberId, String token) {
+		String key = getRedisKey(memberId, token);
 
 		return redisTemplate.hasKey(key);
 	}
 
-	public void delete(String email, String token) {
-		String key = getRedisKey(email, token);
+	public void delete(String memberId, String token) {
+		String key = getRedisKey(memberId, token);
 
 		redisTemplate.delete(key);
 	}
 
-	private String getRedisKey(String email, String token) {
-		return String.format(REDIS_REFRESH_TOKEN_KEY, email, token);
+	private String getRedisKey(String memberId, String token) {
+		return String.format(REDIS_REFRESH_TOKEN_KEY, memberId, token);
 	}
 }
