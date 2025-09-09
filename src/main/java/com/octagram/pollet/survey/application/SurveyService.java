@@ -8,6 +8,11 @@ import com.octagram.pollet.survey.domain.model.Question;
 import com.octagram.pollet.survey.domain.model.Survey;
 import com.octagram.pollet.survey.domain.repository.QuestionRepository;
 import com.octagram.pollet.survey.domain.status.SurveyErrorCode;
+import com.octagram.pollet.survey.presentation.dto.request.SurveyFilterRequest;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyFilterResponse;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyGetDetailResponse;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyGetResponse;
+import com.octagram.pollet.survey.presentation.dto.response.TagGetResponse;
 import com.octagram.pollet.survey.presentation.dto.response.*;
 import com.octagram.pollet.survey.domain.repository.SurveyRepository;
 import com.octagram.pollet.survey.domain.repository.SurveyTagRepository;
@@ -18,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -98,5 +104,26 @@ public class SurveyService {
 
 			return questionMapper.toTargetQuestionResponse(targetQuestion, questionOptions);
 		}).toList();
+	}
+
+	@Transactional(readOnly = true)
+	public List<SurveyFilterResponse> filterSurveys(SurveyFilterRequest filter, Pageable pageable) {
+		List<String> allTags = new ArrayList<>();
+		if (filter.genders() != null) allTags.addAll(filter.genders());
+		if (filter.ages() != null) allTags.addAll(filter.ages());
+		if (filter.jobs() != null) allTags.addAll(filter.jobs());
+		if (filter.tags() != null) allTags.addAll(filter.tags());
+		List<Survey> surveysResult = surveyRepository.findByFilter(allTags, filter, pageable);
+		return surveysResult.stream()
+			.map(surveyMapper::toFilterResponse)
+			.toList();
+	}
+
+	@Transactional(readOnly = true)
+	public List<QuestionResponse> getQuestions(Long surveyId) {
+		List<Question> result = questionRepository.findBySurveyId(surveyId);
+		return result.stream()
+			.map(questionMapper::toResponse)
+			.toList();
 	}
 }
