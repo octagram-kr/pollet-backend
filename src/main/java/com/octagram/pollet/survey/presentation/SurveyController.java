@@ -4,6 +4,7 @@ import com.octagram.pollet.global.aws.service.S3Service;
 import com.octagram.pollet.global.dto.ApiResponse;
 import com.octagram.pollet.survey.application.SurveyService;
 import com.octagram.pollet.survey.domain.status.SurveySuccessCode;
+import com.octagram.pollet.survey.presentation.dto.request.SurveyFilterRequest;
 import com.octagram.pollet.survey.presentation.dto.response.*;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyGetDetailResponse;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyGetResponse;
@@ -100,5 +101,20 @@ public class SurveyController {
 	public ApiResponse<SurveyImageGetResponse> getImage(@RequestParam("key") String key) {
 		String tempFileUrl = s3Service.getPresignedUrl(key, Duration.ofMinutes(5));
 		return ApiResponse.success(new SurveyImageGetResponse(tempFileUrl));
+	}
+
+	@GetMapping
+	public ApiResponse<List<SurveyFilterResponse>> getSurveysByFilter(
+		@ModelAttribute SurveyFilterRequest request,
+		Pageable pageable
+	) {
+		List<SurveyFilterResponse> surveys = surveyService.filterSurveys(request, pageable);
+		return ApiResponse.success(surveys);
+	}
+
+	@GetMapping("/{surveyId}/questions")
+	public ApiResponse<List<QuestionResponse>> getSurveyQuestions(@PathVariable Long surveyId) {
+		List<QuestionResponse> result = surveyService.getQuestions(surveyId);
+		return ApiResponse.success(result);
 	}
 }
