@@ -97,7 +97,7 @@ public class Survey extends BaseEntity {
 	private LocalDateTime endDateTime;
 
 	@Column(nullable = false)
-	private LocalDate responseExpireDate;
+	private LocalDate submissionExpireDate;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -119,10 +119,10 @@ public class Survey extends BaseEntity {
 	private Long estimatedTime;
 
 	@Column(nullable = false)
-	private Long requireResponseCount;
+	private Long requireSubmissionCount;
 
 	@Column(nullable = false)
-	private Long currentResponseCount;
+	private Long currentSubmissionCount;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
