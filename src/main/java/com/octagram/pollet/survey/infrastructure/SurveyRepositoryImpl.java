@@ -63,6 +63,7 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
 			.leftJoin(survey.surveyTags, surveyTag).fetchJoin()
 			.leftJoin(surveyTag.tag, tag).fetchJoin()
 			.where(
+				keywordCondition(filter.keyword()),
 				tagsCondition(allTags),
 				pointCondition(filter.minPoint(), filter.maxPoint()),
 				estimatedTimeCondition(filter.estimatedTime()),
@@ -130,5 +131,13 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
 			case LONGEST_TIME -> survey.estimatedTime.desc();
 			case FEWEST_RESPONSES -> survey.currentResponseCount.asc();
 		};
+	}
+
+	private BooleanExpression keywordCondition(String keyword) {
+		if (keyword != null) {
+			return survey.title.contains(keyword);
+		} else {
+			return null;
+		}
 	}
 }
