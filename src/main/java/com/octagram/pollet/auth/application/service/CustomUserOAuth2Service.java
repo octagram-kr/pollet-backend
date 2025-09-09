@@ -1,9 +1,8 @@
-package com.octagram.pollet.auth.application;
+package com.octagram.pollet.auth.application.service;
 
 import java.util.Collections;
 import java.util.Map;
 
-import com.octagram.pollet.member.domain.model.type.Role;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
