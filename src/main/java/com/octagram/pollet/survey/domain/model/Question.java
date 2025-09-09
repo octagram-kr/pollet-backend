@@ -1,5 +1,7 @@
 package com.octagram.pollet.survey.domain.model;
 
+import java.util.List;
+
 import com.octagram.pollet.global.domain.model.BaseEntity;
 import com.octagram.pollet.survey.domain.model.type.QuestionType;
 
@@ -13,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -35,6 +38,9 @@ public class Question extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "survey_id", nullable = false)
 	private Survey survey;
+
+	@OneToMany(mappedBy = "question")
+	private List<QuestionOption> options;
 
 	@Column(nullable = false)
 	private Long order;
