@@ -44,6 +44,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 			.leftJoin(question.options, questionOption).fetchJoin()
 			.where(question.survey.id.eq(surveyId))
 			.orderBy(question.order.asc())
+			.orderBy(questionOption.order.asc())
 			.fetch();
 	}
 }
