@@ -11,4 +11,6 @@ public interface QuestionRepositoryCustom {
 
 	// SurveyID를 기반으로 Question 리스트 조회
 	List<Question> findQuestionsBySurveyId(Long surveyId);
+
+	List<Question> findBySurveyId(Long surveyId);
 }

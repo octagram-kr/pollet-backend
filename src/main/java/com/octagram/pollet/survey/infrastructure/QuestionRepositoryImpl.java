@@ -1,5 +1,8 @@
 package com.octagram.pollet.survey.infrastructure;
 
+import static com.octagram.pollet.survey.domain.model.QQuestion.*;
+import static com.octagram.pollet.survey.domain.model.QQuestionOption.*;
+
 import com.octagram.pollet.survey.domain.model.QQuestion;
 import com.octagram.pollet.survey.domain.model.QQuestionOption;
 import com.octagram.pollet.survey.domain.model.Question;
@@ -32,5 +35,15 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 		return queryFactory.selectFrom(question)
 				.where(question.survey.id.eq(surveyId))
 				.fetch();
+	}
+
+	@Override
+	public List<Question> findBySurveyId(Long surveyId) {
+		return queryFactory
+			.selectFrom(question)
+			.leftJoin(question.options, questionOption).fetchJoin()
+			.where(question.survey.id.eq(surveyId))
+			.orderBy(question.order.asc())
+			.fetch();
 	}
 }
