@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 import com.octagram.pollet.auth.infrastructure.CustomOAuth2User;
+import com.octagram.pollet.global.jwt.repository.TokenRedisRepository;
 import com.octagram.pollet.global.jwt.service.JwtService;
 import com.octagram.pollet.member.domain.model.type.Role;
 
@@ -21,6 +22,7 @@ import com.octagram.pollet.member.domain.model.type.Role;
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 	private final JwtService jwtService;
+	private final TokenRedisRepository tokenRepository;
 
 	@Override
 	public void onAuthenticationSuccess(
@@ -53,10 +55,12 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 		String accessToken = jwtService.createAccessToken(
 			oAuth2User.getMemberId(), oAuth2User.getEmail(), oAuth2User.getRole().toString()
 		);
-		String refreshToken = jwtService.createRefreshToken();
+		String refreshToken = jwtService.createRefreshToken(oAuth2User.getMemberId());
 
 		jwtService.sendAccessToken(response, accessToken);
 		jwtService.setRefreshToken(response, refreshToken);
+
+		tokenRepository.save(oAuth2User.getMemberId(), refreshToken);
 
 		// TODO: 프론트 메인 페이지 주소로 리다이렉트
 		response.sendRedirect("/");
