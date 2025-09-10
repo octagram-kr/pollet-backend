@@ -23,7 +23,7 @@ public class MemberController {
 	private final MemberService memberService;
 
 	@PutMapping("/update")
-	@Operation(summary = "회원 정보 수정", description = "최초 로그인 후 추가 정보를 입력하거나 마이페이지에서 회원 정보를 수정합니다.")
+	@Operation(summary = "회원 정보 수정", description = "최초 로그인 후 추가 정보를 입력하거나 회원 정보를 수정합니다.")
 	public ApiResponse<Void> updateMember(@AuthenticationPrincipal String memberId, @RequestBody @Valid MemberUpdateRequest request) {
 		memberService.updateMember(memberId, request);
 		return ApiResponse.success(MemberSuccessCode.MEMBER_UPDATE_SUCCESS);
