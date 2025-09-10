@@ -324,4 +324,11 @@ public class SurveyController {
 		surveyService.createSurvey(memberId, request);
 		return ApiResponse.success(SurveySuccessCode.CREATE_SURVEY_SUCCESS);
 	}
+
+	@GetMapping("/{surveyId}/results/total")
+	@Operation(summary = "설문조사 전체 결과 조회(문항별 응답 통계 조회)", description = "특정 설문조사의 전체 결과를 조회합니다.(특정 설문조사의 각 문항별 응답 통계를 조회합니다.)")
+	public ApiResponse<List<QuestionStatisticsResponse>> getSurveyResults(@PathVariable Long surveyId) {
+		List<QuestionStatisticsResponse> result = surveyService.getSurveyResults(surveyId);
+		return ApiResponse.success(result);
+	}
 }

@@ -60,6 +60,9 @@ import java.util.List;
 public class SurveyService {
 
 	private final GifticonService gifticonService;
+	private final QuestionOptionSubmissionRepository questionOptionSubmissionRepository;
+	private final QuestionSubmissionRepository questionSubmissionRepository;
+	private final SurveySubmissionRepository surveySubmissionRepository;
 	private final SurveyRepository surveyRepository;
 	private final TagRepository tagRepository;
 	private final QuestionRepository questionRepository;
@@ -277,5 +280,60 @@ public class SurveyService {
 		}
 
 		surveyRepository.save(survey);
+	}
+
+	@Transactional(readOnly = true)
+	public List<QuestionStatisticsResponse> getSurveyResults(Long surveyId) {
+		Survey survey = surveyRepository.findById(surveyId)
+				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
+
+		int respondentCount = surveySubmissionRepository.countBySurvey(survey);
+
+		List<QuestionStatisticsResponse.QuestionResult> questionResults = survey.getQuestions().stream()
+				.map(question -> mapToQuestionResult(question))
+				.toList();
+
+		return List.of(new QuestionStatisticsResponse( // 리스트로 감싸 반환
+				survey.getId(),
+				survey.getTitle(),
+				respondentCount,
+				questionResults
+		));
+	}
+
+	private QuestionStatisticsResponse.QuestionResult mapToQuestionResult(Question question) {
+		int answeredCount = questionSubmissionRepository.countByQuestion(question);
+
+		List<QuestionStatisticsResponse.OptionResult> options = List.of();
+		List<String> etcAnswers = List.of();
+
+		switch (question.getType()) {
+			case SINGLE_CHOICE, MULTIPLE_CHOICE -> {
+				options = question.getOptions().stream()
+						.map(option -> {
+							int responseCount = questionOptionSubmissionRepository.countByQuestionOption(option);
+							double ratio = answeredCount == 0 ? 0 : (double) responseCount / answeredCount;
+							return new QuestionStatisticsResponse.OptionResult(
+									option.getId(),
+									option.getContent(),
+									responseCount,
+									ratio
+							);
+						})
+						.toList();
+			}
+			case SHORT_ANSWER, LONG_ANSWER -> {
+				etcAnswers = questionSubmissionRepository.findAnswersByQuestion(question);
+			}
+		}
+
+		return new QuestionStatisticsResponse.QuestionResult(
+				question.getId(),
+				question.getTitle(),
+				question.getType().name(),
+				answeredCount,
+				options,
+				etcAnswers
+		);
 	}
 }
