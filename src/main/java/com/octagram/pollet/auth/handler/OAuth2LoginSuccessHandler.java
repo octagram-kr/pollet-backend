@@ -41,7 +41,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 				jwtService.sendAccessToken(response, accessToken);
 
 				// TODO: 프론트 추가정보 작성 폼 주소로 리다이렉트
-				response.sendRedirect("/");
+				response.sendRedirect("/auth-test/login");
 			} else {
 				loginSuccess(response, oAuth2User);
 			}
@@ -63,6 +63,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 		tokenRepository.save(oAuth2User.getMemberId(), refreshToken);
 
 		// TODO: 프론트 메인 페이지 주소로 리다이렉트
-		response.sendRedirect("/");
+		response.sendRedirect("/auth-test/login");
 	}
 }
