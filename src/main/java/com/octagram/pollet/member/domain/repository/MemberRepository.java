@@ -1,6 +1,5 @@
 package com.octagram.pollet.member.domain.repository;
 
-import com.octagram.pollet.member.domain.model.type.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.octagram.pollet.member.domain.model.Member;
@@ -11,4 +10,5 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
 
     Optional<Member> findByMemberId(String memberId);
     Optional<Member> findByEmail(String email);
+	boolean existsByNicknameAndIdNot(String nickname, Long id);
 }

@@ -86,4 +86,13 @@ public class Member extends BaseEntity {
 	@Column(nullable = false)
 	@Builder.Default
 	private Boolean isDeleted = false;
+
+	public void updateInfo(String nickname, String gender, String yearOfBirth, String job, String phoneNumber, Role newRole) {
+		this.nickname = nickname;
+		this.gender = gender;
+		this.yearOfBirth = yearOfBirth;
+		this.job = job;
+		this.phoneNumber = phoneNumber;
+		this.role = newRole;
+	}
 }
