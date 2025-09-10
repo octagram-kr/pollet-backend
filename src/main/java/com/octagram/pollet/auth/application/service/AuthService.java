@@ -11,6 +11,8 @@ import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.member.domain.repository.MemberRepository;
 import com.octagram.pollet.member.domain.status.MemberErrorCode;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -49,5 +51,19 @@ public class AuthService {
 		}
 
 		return memberId;
+	}
+
+	public void logout(HttpServletRequest request, HttpServletResponse response, String memberId) {
+		String accessToken = jwtService.extractAccessToken(request)
+			.orElseThrow(() -> new BusinessException(JwtErrorCode.TOKEN_INVALID));
+
+		jwtService.validateToken(accessToken);
+
+		String refreshToken = jwtService.extractRefreshToken(request)
+			.orElseThrow(() -> new BusinessException(JwtErrorCode.REFRESH_TOKEN_INVALID));
+
+		tokenRepository.delete(memberId, refreshToken);
+
+		jwtService.setExpiredRefreshToken(response);
 	}
 }

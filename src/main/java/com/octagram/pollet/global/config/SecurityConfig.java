@@ -30,8 +30,8 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
 	private static final List<String> ALLOWED_ORIGINS = List.of(
-		"http://localhost:8080"
-		// 프론트엔드 로컬 주소
+		"http://localhost:8080",
+		"http://localhost:3000"
 		// 프론트엔드 배포 주소
 	);
 	private static final List<String> ALLOWED_METHOD = List.of("GET", "POST", "PUT", "DELETE", "PATCH");
