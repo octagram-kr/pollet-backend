@@ -22,16 +22,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@Table(name = "question_response")
-public class QuestionResponse extends BaseEntity {
+@Table(name = "question_submission")
+public class QuestionSubmission extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "survey_response_id", nullable = false)
-	private SurveyResponse surveyResponse;
+	@JoinColumn(name = "survey_submission_id", nullable = false)
+	private SurveySubmission surveySubmission;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "question_id", nullable = false)

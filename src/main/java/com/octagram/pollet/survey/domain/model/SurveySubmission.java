@@ -26,8 +26,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@Table(name = "survey_response")
-public class SurveyResponse extends BaseEntity {
+@Table(name = "survey_submission")
+public class SurveySubmission extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

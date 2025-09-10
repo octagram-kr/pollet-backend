@@ -3,7 +3,7 @@ package com.octagram.pollet.gifticon.presentation.dto.response;
 import com.octagram.pollet.gifticon.domain.model.type.GifticonProductStatus;
 import com.octagram.pollet.member.domain.model.type.MemberGrade;
 
-public record GifticonProductInSurveyGetDetailResponse(
+public record GifticonProductResponse(
 	Long id,
 	String name,
 	Long price,

@@ -7,18 +7,19 @@ import org.mapstruct.Mapping;
 
 import com.octagram.pollet.gifticon.application.mapper.GifticonMapper;
 import com.octagram.pollet.survey.domain.model.Survey;
-import com.octagram.pollet.survey.presentation.dto.response.SurveyFilterResponse;
-import com.octagram.pollet.survey.presentation.dto.response.SurveyGetDetailResponse;
-import com.octagram.pollet.survey.presentation.dto.response.SurveyGetResponse;
+import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyResponse;
+import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyWithQuestionResponse;
+
 import org.mapstruct.Named;
 
 @Mapper(uses = {GifticonMapper.class, TagMapper.class})
 public interface SurveyMapper {
 
-	SurveyGetResponse toGetResponse(Survey survey);
+	@Mapping(source = "rewardPoint", target = "rewardPoint", defaultValue = "0L")
+	SurveyResponse toSurveyResponse(Survey survey);
 
 	@Mapping(source = "rewardPoint", target = "rewardPoint", defaultValue = "0L")
-	SurveyGetDetailResponse toGetDetailResponse(Survey survey);
+	SurveyWithQuestionResponse toSurveyWithQuestionResponse(Survey survey);
 
 	@Mapping(source = "survey", target = "gifticonName", qualifiedByName = "resolveGifticonName")
 	@Mapping(source = "rewardPoint", target = "rewardPoint")
@@ -31,8 +32,4 @@ public interface SurveyMapper {
 		}
 		return null; // 보상 상품이 없거나 GIFTICON이 아닌 경우 null 반환
 	}
-
-	@Mapping(source = "surveyTags", target = "tags")
-	@Mapping(source = "gifticonProduct", target = "rewardGifticonProduct")
-	SurveyFilterResponse toFilterResponse(Survey survey);
 }

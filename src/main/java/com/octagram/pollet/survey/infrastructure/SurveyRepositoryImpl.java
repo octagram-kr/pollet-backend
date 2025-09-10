@@ -48,6 +48,8 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
 		return Optional.ofNullable(
 			queryFactory
 				.selectFrom(survey)
+				.leftJoin(survey.surveyTags, surveyTag).fetchJoin()
+				.leftJoin(surveyTag.tag, tag).fetchJoin()
 				.leftJoin(survey.gifticonProduct, gifticonProduct).fetchJoin()
 				.where(survey.id.eq(id))
 				.fetchOne()
@@ -59,7 +61,7 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
 		OrderSpecifier<?> orderSpecifier = getOrderSpecifier(filter.sortType());
 
 		return queryFactory
-			.selectFrom(survey).distinct()
+			.selectFrom(survey)
 			.leftJoin(survey.surveyTags, surveyTag).fetchJoin()
 			.leftJoin(surveyTag.tag, tag).fetchJoin()
 			.where(
@@ -129,7 +131,7 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
 			case HIGHEST_POINTS -> survey.rewardPoint.desc();
 			case SHORTEST_TIME -> survey.estimatedTime.asc();
 			case LONGEST_TIME -> survey.estimatedTime.desc();
-			case FEWEST_RESPONSES -> survey.currentResponseCount.asc();
+			case FEWEST_SUBMISSIONS -> survey.currentSubmissionCount.asc();
 		};
 	}
 
