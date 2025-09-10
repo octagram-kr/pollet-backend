@@ -96,6 +96,18 @@ public class JwtService {
 		response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
 	}
 
+	public void setExpiredRefreshToken(HttpServletResponse response) {
+		ResponseCookie expiredCookie = ResponseCookie.from("RefreshToken", "")
+			.httpOnly(true)
+			.secure(true)
+			.sameSite("None")
+			.path("/")
+			.maxAge(0)
+			.build();
+
+		response.addHeader(HttpHeaders.SET_COOKIE, expiredCookie.toString());
+	}
+
 	public Optional<String> extractAccessToken(HttpServletRequest request) {
 		String header = request.getHeader(accessHeader);
 		if (header != null && header.startsWith(BEARER)) {
@@ -122,9 +134,9 @@ public class JwtService {
 		try {
 			Claims claims = getClaims(token);
 
-			String email = claims.get(EMAIL_CLAIM, String.class);
+			String memberId = claims.get(MEMBER_ID_CLAIM, String.class);
 
-			memberRepository.findByEmail(email)
+			memberRepository.findByMemberId(memberId)
 				.orElseThrow(() -> new BusinessException(JwtErrorCode.TOKEN_INVALID));
 		} catch (JwtException e) {
 			throw new BusinessException(JwtErrorCode.TOKEN_INVALID);
