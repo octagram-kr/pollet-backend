@@ -1,7 +1,5 @@
 package com.octagram.pollet.auth.application.service;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
 import com.octagram.pollet.auth.presentation.dto.response.AuthReissueResponse;
