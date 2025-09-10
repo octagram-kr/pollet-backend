@@ -27,12 +27,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 	private static final String ROLE_PREFIX = "ROLE_";
     private static final List<String> NO_CHECK_URL_PREFIXES = List.of(
-		"/",
+		"/auth-test/login",
 		"/oauth2/authorization/**",
 		"/login/oauth2/**",
 		"/api/v1/auth/reissue",
 		"/health",
-		"/actuator",
+		"/actuator/**",
 		"/swagger-ui/**"
 	);
 
