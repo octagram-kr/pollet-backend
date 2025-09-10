@@ -22,8 +22,7 @@ public class MemberService {
 
 	@Transactional
 	public void updateMember(String memberId, MemberUpdateRequest request) {
-		Member member = memberRepository.findByMemberId(memberId)
-			.orElseThrow(() -> new BusinessException(MemberErrorCode.MEMBER_NOT_FOUND));
+		Member member = getMember(memberId);
 
 		if (memberRepository.existsByNicknameAndIdNot(request.nickname(), member.getId())) {
 			throw new BusinessException(MemberErrorCode.DUPLICATE_NICKNAME);
@@ -37,5 +36,11 @@ public class MemberService {
 			request.phoneNumber().trim(),
 			Role.MEMBER
 		);
+	}
+
+	@Transactional(readOnly = true)
+	public Member getMember(String memberId) {
+		return memberRepository.findByMemberId(memberId)
+			.orElseThrow(() -> new BusinessException(MemberErrorCode.MEMBER_NOT_FOUND));
 	}
 }
