@@ -136,3 +136,138 @@ INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES 
 INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (10,'2025-09-06 11:20:00.000000','2025-09-06 11:20:00.000000',4,10);
 INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (11,'2025-09-06 11:20:00.000000','2025-09-06 11:20:00.000000',4,11);
 INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (12,'2025-09-06 11:20:00.000000','2025-09-06 11:20:00.000000',4,8);
+
+
+
+# -- [GENERAL] member(2): 포인트 충전
+-- [SURVEY] member(2): 포인트 충전  (GENERAL -> SURVEY)
+INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+VALUES (1, 2, NULL, '10,000 포인트를 충전했습니다.', '[포인트 충전] 10,000 별바구니', 'SURVEY', 0, DATE_SUB(NOW(), INTERVAL 2 HOUR), DATE_SUB(NOW(), INTERVAL 2 HOUR));
+
+-- [SURVEY] member(2): 포인트 사용  (GENERAL -> SURVEY)
+INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+VALUES (2, 2, NULL, '2,000 포인트를 사용했습니다.', '[포인트 사용] 따뜻한 아이스 아메리카노', 'SURVEY', 0, DATE_SUB(NOW(), INTERVAL 6 HOUR), DATE_SUB(NOW(), INTERVAL 6 HOUR));
+
+-- [SURVEY] member(2): 설문 리워드 지급  (GENERAL -> SURVEY)
+INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+VALUES (3, 2, NULL, '2,000 포인트를 획득했습니다.', '[설문 리워드] 테스트 설문조사 (포인트)', 'SURVEY', 0, DATE_SUB(NOW(), INTERVAL 10 MINUTE), DATE_SUB(NOW(), INTERVAL 10 MINUTE));
+
+-- [SURVEY] member(2): 참여 설문 종료
+INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+VALUES (4, 2, NULL, '참여하신 설문이 종료되었습니다.', '[설문] 테스트 설문조사 (기프티콘)', 'SURVEY', 0, DATE_SUB(NOW(), INTERVAL 30 MINUTE), DATE_SUB(NOW(), INTERVAL 30 MINUTE));
+
+-- [INTERVIEW] member(2): 인터뷰 일정 확정
+INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+VALUES (5, 2, NULL, '인터뷰 일정이 확정되었습니다.', '2025년 08월 20일 (수) 오후 1시 15분 — [인터뷰] 테스트 설문조사2 (기프티콘)', 'INTERVIEW', 0, DATE_SUB(NOW(), INTERVAL 3 DAY), DATE_SUB(NOW(), INTERVAL 3 DAY));
+
+-- [INTERVIEW] member(2): 인터뷰 3시간 전 알림
+INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+VALUES (6, 2, NULL, '인터뷰 3시간 전입니다.', '[인터뷰] 테스트 설문조사2 (기프티콘)', 'INTERVIEW', 0, DATE_SUB(NOW(), INTERVAL 3 HOUR), DATE_SUB(NOW(), INTERVAL 3 HOUR));
+
+-- [INTERVIEW] member(2): 인터뷰 1시간 전 알림
+INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+VALUES (7, 2, NULL, '인터뷰 1시간 전입니다.', '[인터뷰] 테스트 설문조사2 (기프티콘)', 'INTERVIEW', 0, DATE_SUB(NOW(), INTERVAL 1 HOUR), DATE_SUB(NOW(), INTERVAL 1 HOUR));
+
+-- [INTERVIEW] member(2): 인터뷰 리워드 지급 완료
+INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+VALUES (8, 2, NULL, '인터뷰 리워드가 지급되었습니다.', '[인터뷰 종료] 테스트 설문조사2 (기프티콘)', 'INTERVIEW', 0, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY));
+
+-- [SURVEY] member(1): 내가 만든 설문 종료
+INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+VALUES (9, 1, NULL, '설문 조사가 종료되었습니다.', '[내 설문] 테스트 설문조사 (기프티콘)', 'SURVEY', 0, DATE_SUB(NOW(), INTERVAL 40 MINUTE), DATE_SUB(NOW(), INTERVAL 40 MINUTE));
+
+-- [SURVEY] member(1): 설문 리워드 지급 완료(참여자에게 지급됨)
+INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+VALUES (10, 1, NULL, '설문 참여자에게 리워드가 지급되었습니다.', '[내 설문] 테스트 설문조사 (포인트)', 'SURVEY', 0, DATE_SUB(NOW(), INTERVAL 6 HOUR), DATE_SUB(NOW(), INTERVAL 6 HOUR));
+
+-- [SURVEY] member(1): 새로운 인터뷰 신청 알림 (설문 작성자 관점)
+INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+VALUES (11, 1, NULL, '새로운 인터뷰 신청이 들어왔어요!', '[인터뷰] 테스트 설문조사2 (기프티콘)', 'SURVEY', 0, DATE_SUB(NOW(), INTERVAL 2 HOUR), DATE_SUB(NOW(), INTERVAL 2 HOUR));
+
+-- [INTERVIEW] member(1): 인터뷰 일정 확정 공유
+INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+VALUES (12, 1, NULL, '인터뷰 일정이 확정되었습니다.', '2025년 08월 20일 (수) 오후 1시 15분 — [인터뷰] 테스트 설문조사2 (기프티콘)', 'INTERVIEW', 0, DATE_SUB(NOW(), INTERVAL 3 DAY), DATE_SUB(NOW(), INTERVAL 3 DAY));
+
+-- [INTERVIEW] member(1): 인터뷰 리워드 지급 안내
+INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+VALUES (13, 1, NULL, '인터뷰 리워드 지급이 완료되었습니다.', '[인터뷰 종료] 테스트 설문조사2 (기프티콘)', 'INTERVIEW', 0, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY));
+
+-- [SURVEY] member(1): 포인트 충전  (GENERAL -> SURVEY)
+INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+VALUES (14, 1, NULL, '10,000 포인트를 충전했습니다.', '[포인트 충전] 10,000 별바구니', 'SURVEY', 0, DATE_SUB(NOW(), INTERVAL 5 HOUR), DATE_SUB(NOW(), INTERVAL 5 HOUR));
+
+-- [SURVEY] member(1): 포인트 사용  (GENERAL -> SURVEY)
+INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+VALUES (15, 1, NULL, '2,000 포인트를 사용했습니다.', '[포인트 사용] 따뜻한 아이스 아메리카노', 'SURVEY', 0, DATE_SUB(NOW(), INTERVAL 7 HOUR), DATE_SUB(NOW(), INTERVAL 7 HOUR));
+
+-- [SURVEY] member(1): 설문 리워드 지급  (GENERAL -> SURVEY)
+INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+VALUES (16, 1, NULL, '2,000 포인트를 획득했습니다.', '[설문 리워드] 테스트 설문조사 (포인트)', 'SURVEY', 0, DATE_SUB(NOW(), INTERVAL 50 MINUTE), DATE_SUB(NOW(), INTERVAL 50 MINUTE));
+
+-- Member(3)
+-- (선택) 기존 데이터 초기화
+-- TRUNCATE TABLE `notification`;
+
+-- [GENERAL] member(3): 포인트 충전
+# INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+# VALUES (1, 3, NULL, '10,000 포인트를 충전했습니다.', '[포인트 충전] 10,000 별바구니', 'GENERAL', 0, DATE_SUB(NOW(), INTERVAL 2 HOUR), DATE_SUB(NOW(), INTERVAL 2 HOUR));
+#
+# -- [GENERAL] member(3): 포인트 사용
+# INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+# VALUES (2, 3, NULL, '2,000 포인트를 사용했습니다.', '[포인트 사용] 따뜻한 아이스 아메리카노', 'GENERAL', 0, DATE_SUB(NOW(), INTERVAL 6 HOUR), DATE_SUB(NOW(), INTERVAL 6 HOUR));
+#
+# -- [GENERAL] member(3): 설문 리워드 지급
+# INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+# VALUES (3, 3, NULL, '2,000 포인트를 획득했습니다.', '[설문 리워드] 테스트 설문조사 (포인트)', 'GENERAL', 0, DATE_SUB(NOW(), INTERVAL 10 MINUTE), DATE_SUB(NOW(), INTERVAL 10 MINUTE));
+#
+# -- [SURVEY] member(3): 참여 설문 종료 알림
+# INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+# VALUES (4, 3, NULL, '참여하신 설문이 종료되었습니다.', '[설문] 테스트 설문조사 (기프티콘)', 'SURVEY', 0, DATE_SUB(NOW(), INTERVAL 30 MINUTE), DATE_SUB(NOW(), INTERVAL 30 MINUTE));
+#
+# -- [INTERVIEW] member(3): 인터뷰 일정 확정
+# INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+# VALUES (5, 3, NULL, '인터뷰 일정이 확정되었습니다.', '2025년 08월 20일 (수) 오후 1시 15분 — [인터뷰] 테스트 설문조사2 (기프티콘)', 'INTERVIEW', 0, DATE_SUB(NOW(), INTERVAL 3 DAY), DATE_SUB(NOW(), INTERVAL 3 DAY));
+#
+# -- [INTERVIEW] member(3): 인터뷰 3시간 전 알림
+# INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+# VALUES (6, 3, NULL, '인터뷰 3시간 전입니다.', '[인터뷰] 테스트 설문조사2 (기프티콘)', 'INTERVIEW', 0, DATE_SUB(NOW(), INTERVAL 3 HOUR), DATE_SUB(NOW(), INTERVAL 3 HOUR));
+#
+# -- [INTERVIEW] member(3): 인터뷰 1시간 전 알림
+# INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+# VALUES (7, 3, NULL, '인터뷰 1시간 전입니다.', '[인터뷰] 테스트 설문조사2 (기프티콘)', 'INTERVIEW', 0, DATE_SUB(NOW(), INTERVAL 1 HOUR), DATE_SUB(NOW(), INTERVAL 1 HOUR));
+#
+# -- [INTERVIEW] member(3): 인터뷰 리워드 지급 완료
+# INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+# VALUES (8, 3, NULL, '인터뷰 리워드가 지급되었습니다.', '[인터뷰 종료] 테스트 설문조사2 (기프티콘)', 'INTERVIEW', 0, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY));
+#
+# -- [SURVEY] member(3): 내가 만든 설문 종료
+# INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+# VALUES (9, 3, NULL, '설문 조사가 종료되었습니다.', '[내 설문] 테스트 설문조사 (기프티콘)', 'SURVEY', 0, DATE_SUB(NOW(), INTERVAL 40 MINUTE), DATE_SUB(NOW(), INTERVAL 40 MINUTE));
+#
+# -- [SURVEY] member(3): 설문 리워드 지급 완료
+# INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+# VALUES (10, 3, NULL, '설문 참여자에게 리워드가 지급되었습니다.', '[내 설문] 테스트 설문조사 (포인트)', 'SURVEY', 0, DATE_SUB(NOW(), INTERVAL 6 HOUR), DATE_SUB(NOW(), INTERVAL 6 HOUR));
+#
+# -- [INTERVIEW] member(3): 새로운 인터뷰 신청 알림
+# INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+# VALUES (11, 3, NULL, '새로운 인터뷰 신청이 들어왔어요!', '[인터뷰] 테스트 설문조사2 (기프티콘)', 'INTERVIEW', 0, DATE_SUB(NOW(), INTERVAL 2 HOUR), DATE_SUB(NOW(), INTERVAL 2 HOUR));
+#
+# -- [INTERVIEW] member(3): 인터뷰 일정 확정 공유
+# INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+# VALUES (12, 3, NULL, '인터뷰 일정이 확정되었습니다.', '2025년 08월 20일 (수) 오후 1시 15분 — [인터뷰] 테스트 설문조사2 (기프티콘)', 'INTERVIEW', 0, DATE_SUB(NOW(), INTERVAL 3 DAY), DATE_SUB(NOW(), INTERVAL 3 DAY));
+#
+# -- [INTERVIEW] member(3): 인터뷰 리워드 지급 안내
+# INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+# VALUES (13, 3, NULL, '인터뷰 리워드 지급이 완료되었습니다.', '[인터뷰 종료] 테스트 설문조사2 (기프티콘)', 'INTERVIEW', 0, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY));
+#
+# -- [GENERAL] member(3): 포인트 충전
+# INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+# VALUES (14, 3, NULL, '10,000 포인트를 충전했습니다.', '[포인트 충전] 10,000 별바구니', 'GENERAL', 0, DATE_SUB(NOW(), INTERVAL 5 HOUR), DATE_SUB(NOW(), INTERVAL 5 HOUR));
+#
+# -- [GENERAL] member(3): 포인트 사용
+# INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+# VALUES (15, 3, NULL, '2,000 포인트를 사용했습니다.', '[포인트 사용] 따뜻한 아이스 아메리카노', 'GENERAL', 0, DATE_SUB(NOW(), INTERVAL 7 HOUR), DATE_SUB(NOW(), INTERVAL 7 HOUR));
+#
+# -- [GENERAL] member(3): 설문 리워드 지급
+# INSERT INTO `notification` (id, receiver_id, sender_id, title, message, notification_type, is_read, created_at, updated_at)
+# VALUES (16, 3, NULL, '2,000 포인트를 획득했습니다.', '[설문 리워드] 테스트 설문조사 (포인트)', 'GENERAL', 0, DATE_SUB(NOW(), INTERVAL 50 MINUTE), DATE_SUB(NOW(), INTERVAL 50 MINUTE));
