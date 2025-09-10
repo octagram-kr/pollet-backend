@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.octagram.pollet.global.exception.BusinessException;
@@ -33,10 +34,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		"/api/v1/auth/reissue",
 		"/health",
 		"/actuator/**",
-		"/swagger-ui/**"
+		"/swagger-ui/**",
+		"/v3/api-docs/**"
 	);
 
 	private final JwtService jwtService;
+	private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -64,7 +67,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	}
 
     private boolean isNoCheckUrl(String uri) {
-        return NO_CHECK_URL_PREFIXES.stream().anyMatch(uri::startsWith);
+        return NO_CHECK_URL_PREFIXES.stream().anyMatch(s -> pathMatcher.match(s, uri));
     }
 
 	private void setAuthentication(String memberId, HttpServletRequest request, List<SimpleGrantedAuthority> authorities) {
