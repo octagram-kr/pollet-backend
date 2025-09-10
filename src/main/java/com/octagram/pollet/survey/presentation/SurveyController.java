@@ -15,6 +15,7 @@ import com.octagram.pollet.survey.presentation.dto.response.standard.TagResponse
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -80,19 +81,22 @@ public class SurveyController {
 		return ApiResponse.success(SurveySuccessCode.READ_RECENT_REPRESENTATIVE_QUESTIONS_SUCCESS, newSurveyQuestion);
 	}
 
-	@PostMapping("/upload-temp-image")
-	public ApiResponse<SurveyImageUploadResponse> uploadImage(@RequestParam("image") MultipartFile image) {
+	@PostMapping(value = "/upload-temp-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@Operation(summary = "설문 생성 중 임시 이미지 업로드", description = "이미지를 임시 경로에 업로드 합니다.")
+	public ApiResponse<SurveyImageUploadResponse> uploadImage(@RequestPart("image") MultipartFile image) {
 		String tempFileName = s3Service.uploadToTemp(image);
 		return ApiResponse.success(new SurveyImageUploadResponse(tempFileName));
 	}
 
 	@GetMapping("/get-temp-image")
+	@Operation(summary = "임시 경로에 존재하는 이미지 URL 조회", description = "임시 경로에 존재하는 이미지의 5분 제한 URL을 조회합니다.")
 	public ApiResponse<SurveyImageGetResponse> getImage(@RequestParam("key") String key) {
 		String tempFileUrl = s3Service.getPresignedUrl(key, Duration.ofMinutes(5));
 		return ApiResponse.success(new SurveyImageGetResponse(tempFileUrl));
 	}
 
 	@GetMapping
+	@Operation(summary = "설문조사 목록 조회 (필터링)", description = "다양한 조건으로 설문조사를 필터링하여 조회합니다.")
 	public ApiResponse<List<SurveyResponse>> getSurveysByFilter(
 		@ModelAttribute SurveyFilterRequest request,
 		@PageableDefault(size = 12) Pageable pageable
@@ -102,6 +106,7 @@ public class SurveyController {
 	}
 
 	@GetMapping("/{surveyId}/questions")
+	@Operation(summary = "특정 설문조사의 문항 조회 (선택지 포함)", description = "설문조사 아이디로 문항과 문항 선택지를 조회합니다.")
 	public ApiResponse<List<QuestionResponse>> getSurveyQuestions(@PathVariable Long surveyId) {
 		List<QuestionResponse> result = surveyService.getQuestions(surveyId);
 		return ApiResponse.success(result);
