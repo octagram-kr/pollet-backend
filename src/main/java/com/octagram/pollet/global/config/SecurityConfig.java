@@ -36,6 +36,7 @@ public class SecurityConfig {
 	);
 	private static final List<String> ALLOWED_METHOD = List.of("GET", "POST", "PUT", "DELETE", "PATCH");
 	private static final String [] PERMIT_ALL_END_POINTS = {
+		"/api/v1/auth/test-jwt/**",
 		"/auth-test/login",
 		"/oauth2/authorization/**",
 		"/login/oauth2/**",
