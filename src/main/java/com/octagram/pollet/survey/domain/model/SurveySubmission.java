@@ -33,7 +33,7 @@ public class SurveySubmission extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "survey_id", nullable = false)
 	private Survey survey;
 

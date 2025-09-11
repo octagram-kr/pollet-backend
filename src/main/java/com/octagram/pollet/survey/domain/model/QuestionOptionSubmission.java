@@ -33,7 +33,7 @@ public class QuestionOptionSubmission extends BaseEntity {
 	@JoinColumn(name = "question_submission_id", nullable = false)
 	private QuestionSubmission questionSubmission;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "question_option_id", nullable = false)
 	private QuestionOption questionOption;
 }
