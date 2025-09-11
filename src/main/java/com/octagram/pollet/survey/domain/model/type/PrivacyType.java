@@ -1,5 +1,5 @@
 package com.octagram.pollet.survey.domain.model.type;
 
 public enum PrivacyType {
-	TYPE_1, TYPE_2, TYPE_3
+	NOT_COLLECTED, AGREEMENT_FOR_COLLECTION_AND_USE, THIRD_PARTY_AGREEMENT
 }
