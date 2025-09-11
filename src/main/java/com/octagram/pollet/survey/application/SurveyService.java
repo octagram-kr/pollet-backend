@@ -392,4 +392,36 @@ public class SurveyService {
 			);
 		});
 	}
+
+	@Transactional(readOnly = true)
+	public SurveyMetadataResponse getSurveyMetadata(String memberId, Long surveyId) {
+		Survey survey = surveyRepository.findById(surveyId)
+				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
+
+		// 설문 생성자가 현재 사용자와 일치하는지 검증
+		if (!survey.getMember().getId().equals(memberId)) {
+			throw new BusinessException(SurveyErrorCode.INVALID_ACCESS);
+		}
+
+		String status = resolveSurveyStatus(survey.getStartDateTime(), survey.getEndDateTime());
+
+		return new SurveyMetadataResponse(
+				survey.getTitle(),
+				survey.getSubtitle(),
+				survey.getDescription(),
+				survey.getCreatorName(),
+				survey.getStartDateTime(),
+				survey.getEndDateTime(),
+				survey.getRequireSubmissionCount(),
+				survey.getCurrentSubmissionCount(),
+				status
+		);
+	}
+
+	private String resolveSurveyStatus(LocalDateTime start, LocalDateTime end) {
+		LocalDateTime now = LocalDateTime.now();
+		if (now.isBefore(start)) return "대기중";
+		if (now.isAfter(end)) return "종료";
+		return "진행중";
+	}
 }
