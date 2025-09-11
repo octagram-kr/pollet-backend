@@ -324,9 +324,8 @@ public class SurveyService {
 	}
 
 	private void validateSurveyCreator(String memberId, Survey survey) {
-		if (!survey.getMember().getId().equals(memberId)) {
-			throw new BusinessException(SurveyErrorCode.INVALID_ACCESS);
-		}
+		Member member = memberService.findByMemberId(memberId)
+				.orElseThrow(() -> new BusinessException(MemberErrorCode.MEMBER_NOT_FOUND));
 	}
 
 	@Transactional(readOnly = true)
@@ -334,9 +333,8 @@ public class SurveyService {
 		Survey survey = surveyRepository.findById(surveyId)
 				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
 
-		if (!survey.getMember().getId().equals(memberId)) {
-			throw new BusinessException(SurveyErrorCode.INVALID_ACCESS);
-		}
+		Member member = memberService.findByMemberId(memberId)
+				.orElseThrow(() -> new BusinessException(MemberErrorCode.MEMBER_NOT_FOUND));
 
 		SurveySubmission submission = surveySubmissionRepository.findById(submissionId)
 				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SUBMISSION_NOT_FOUND));
@@ -360,14 +358,12 @@ public class SurveyService {
 	}
 
 	@Transactional(readOnly = true)
-	public SurveyMetadataResponse getSurveyMetadata(String memberId,Long surveyId) {
+	public SurveyMetadataResponse getSurveyMetadata(String memberId, Long surveyId) {
 		Survey survey = surveyRepository.findById(surveyId)
 				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
 
-		// 설문 생성자가 현재 사용자와 일치하는지 검증
-		if (!survey.getMember().getId().equals(memberId)) {
-			throw new BusinessException(SurveyErrorCode.INVALID_ACCESS);
-		}
+		Member member = memberService.findByMemberId(memberId)
+				.orElseThrow(() -> new BusinessException(MemberErrorCode.MEMBER_NOT_FOUND));
 
 		return surveyMapper.toSurveyMetadataResponse(survey);
 	}
