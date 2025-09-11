@@ -6,6 +6,7 @@ import com.octagram.pollet.member.application.MemberService;
 import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.survey.application.SurveyService;
 import com.octagram.pollet.survey.domain.status.SurveySuccessCode;
+import com.octagram.pollet.survey.presentation.dto.request.SurveyCreateRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyFilterRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveySubmissionRequest;
 import com.octagram.pollet.survey.presentation.dto.response.*;
@@ -16,6 +17,7 @@ import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyRespo
 import com.octagram.pollet.survey.presentation.dto.response.standard.TagResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
@@ -24,6 +26,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -130,5 +135,193 @@ public class SurveyController {
 		Member member = memberService.getMember(memberId);
 		surveyService.submitSurvey(surveyId, member, request);
 		return ApiResponse.success(SurveySuccessCode.CREATE_SURVEY_SUBMISSION_SUCCESS);
+	}
+
+	@PostMapping
+	@Operation(summary = "설문조사 생성", requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+		content = @Content(
+			mediaType = "application/json",
+			schema = @Schema(implementation = SurveyResponse.class),
+			examples = @ExampleObject(
+				name = "설문조사 생성 DTO 예시",
+				value = """
+					{
+						"coverUrl": null,
+						"title": "대학생 취업 준비 현황과 지원 필요도 조사",
+						"purpose": "연구 과제",
+						"startDateTime": "2025-09-10T19:02:33.170Z",
+						"endDateTime": "2025-09-10T19:02:33.170Z",
+						"endCondition": "END_BY_DATE",
+						"submissionExpireDate": "2025-09-10",
+						"description": "안녕하세요, 팀 Octagram 입니다.\\n본 설문은...",
+						"privacyType": "AGREEMENT_FOR_COLLECTION_AND_USE",
+						"privacyPurposeValue": "추후 인터뷰 모집",
+						"privacyContents": 12,
+						"privacyExpireDate": "2025-09-10",
+						"primaryColor": "0x51D0B6",
+						"secondaryColor": "0xF7F7F7",
+						"targetGender": null,
+						"targetAge": "20대",
+						"targetJob": "고등학생",
+						"tags": [
+							"AI",
+							"교육"
+						],
+						"questions": [
+							{
+								"page": 0,
+								"order": 0,
+								"title": "질문을 작성해주세요",
+								"description": null,
+								"type": "MULTIPLE_CHOICE",
+								"isRequired": true,
+								"isCheckTarget": true,
+								"isCheckDiligent": false,
+								"imageUrl": null,
+								"options": [
+									{
+										"order": 1,
+										"content": "질문지 작성란입니다",
+										"imageUrl": null,
+										"isCheckTarget": true,
+										"isCheckDiligent": false
+									},
+									{
+										"order": 2,
+										"content": "질문지 작성란입니다",
+										"imageUrl": null,
+										"isCheckTarget": true,
+										"isCheckDiligent": false
+									},
+									{
+										"order": 3,
+										"content": "질문지 작성란입니다",
+										"imageUrl": null,
+										"isCheckTarget": false,
+										"isCheckDiligent": false
+									}
+								]
+							},
+							{
+								"page": 1,
+								"order": 1,
+								"title": "현재 귀하의 학적 상태를 선택해주세요",
+								"description": null,
+								"type": "SINGLE_CHOICE",
+								"isRequired": false,
+								"isCheckTarget": false,
+								"isCheckDiligent": false,
+								"imageUrl": null,
+								"options": [
+									{
+										"order": 1,
+										"content": "재학 중",
+										"imageUrl": null,
+										"isCheckTarget": false,
+										"isCheckDiligent": false
+									},
+									{
+										"order": 2,
+										"content": "휴학 중",
+										"imageUrl": null,
+										"isCheckTarget": false,
+										"isCheckDiligent": false
+									},
+									{
+										"order": 3,
+										"content": "졸업 예정",
+										"imageUrl": null,
+										"isCheckTarget": false,
+										"isCheckDiligent": false
+									},
+									{
+										"order": 4,
+										"content": "졸업",
+										"imageUrl": null,
+										"isCheckTarget": false,
+										"isCheckDiligent": false
+									}
+								]
+							},
+							{
+								"page": 1,
+								"order": 2,
+								"title": "취업 준비 시 가장 많이 활용하는 정보 채널은 무엇인가요?",
+								"description": null,
+								"type": "MULTIPLE_CHOICE",
+								"isRequired": false,
+								"isCheckTarget": false,
+								"isCheckDiligent": false,
+								"imageUrl": null,
+								"options": [
+									{
+										"order": 1,
+										"content": "취업 포털 사이트",
+										"imageUrl": null,
+										"isCheckTarget": false,
+										"isCheckDiligent": false
+									},
+									{
+										"order": 2,
+										"content": "학교 취업지원센터",
+										"imageUrl": null,
+										"isCheckTarget": false,
+										"isCheckDiligent": false
+									},
+									{
+										"order": 3,
+										"content": "SNS/커뮤니티",
+										"imageUrl": null,
+										"isCheckTarget": false,
+										"isCheckDiligent": false
+									},
+									{
+										"order": 4,
+										"content": "기타",
+										"imageUrl": null,
+										"isCheckTarget": false,
+										"isCheckDiligent": false
+									}
+								]
+							},
+							{
+								"page": 1,
+								"order": 3,
+								"title": "현재 가장 집중하고 있는 취업 준비 활동은 무엇인가요?",
+								"description": "현재 가장 많은 시간을 들이고 있는 취업 준비 활동을 한 두 단어로 간단히 작성해 주세요.",
+								"type": "SHORT_ANSWER",
+								"isRequired": false,
+								"isCheckTarget": false,
+								"isCheckDiligent": false,
+								"imageUrl": null,
+								"options": []
+							},
+							{
+								"page": 1,
+								"order": 4,
+								"title": "본인이 원하는 이상적인 취업 지원 서비스나 프로그램이 있다면 자유롭게 설명해 주세요.",
+								"description": "기존에 경험했거나 부족하다고 느낀 지원 제도와 비교해 구체적으로 설명해 주셔도 좋습니다.",
+								"type": "LONG_ANSWER",
+								"isRequired": false,
+								"isCheckTarget": false,
+								"isCheckDiligent": false,
+								"imageUrl": null,
+								"options": []
+							}
+						],
+						"rewardType": "POINT",
+						"requireSubmissionCount": 150,
+						"estimatedTime": 3,
+						"rewardPoint": 480,
+						"rewardGifticonProductId": 1,
+						"rewardGifticonProductCount": 15
+					}
+					"""
+			)
+		)
+	))
+	public ApiResponse<?> createSurvey(@AuthenticationPrincipal String memberId, @RequestBody @Valid SurveyCreateRequest request) {
+		surveyService.createSurvey(memberId, request);
+		return ApiResponse.success(SurveySuccessCode.CREATE_SURVEY_SUCCESS);
 	}
 }

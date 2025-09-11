@@ -8,7 +8,6 @@ import com.octagram.pollet.gifticon.presentation.dto.response.GifticonProductRes
 import com.octagram.pollet.survey.domain.model.type.EndCondition;
 import com.octagram.pollet.survey.domain.model.type.PrivacyType;
 import com.octagram.pollet.survey.domain.model.type.RewardType;
-import com.octagram.pollet.survey.domain.model.type.TargetGender;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -53,9 +52,6 @@ public record SurveyResponse(
 
 	@Schema(description = "템플릿 여부")
 	Boolean isTemplate,
-
-	@Schema(description = "대상 성별")
-	TargetGender targetGender,
 
 	@Schema(description = "응답 보유 만료일")
 	LocalDate submissionExpireDate,
