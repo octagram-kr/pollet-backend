@@ -329,11 +329,12 @@ public class SurveyController {
 	@GetMapping("{surveyId}/results")
 	@Operation(summary = "설문조사 전체 결과 조회(문항별 응답 통계 조회)", description = "특정 설문조사의 전체 결과를 조회합니다.(특정 설문조사의 각 문항별 응답 통계를 조회합니다.)")
 	public ApiResponse<Slice<QuestionStatisticsResponse>> getSurveyResults(
+			@AuthenticationPrincipal String memberId,
 			@PathVariable Long surveyId,
 			@PageableDefault(size = 10) Pageable pageable
 
 	) {
-		Slice<QuestionStatisticsResponse> result = surveyService.getSurveyResults(surveyId, pageable);
+		Slice<QuestionStatisticsResponse> result = surveyService.getSurveyResults(memberId, surveyId, pageable);
 		return ApiResponse.success(result);
 	}
 }

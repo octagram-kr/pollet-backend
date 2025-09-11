@@ -284,9 +284,12 @@ public class SurveyService {
 	}
 
 	@Transactional(readOnly = true)
-	public Slice<QuestionStatisticsResponse> getSurveyResults(Long surveyId, Pageable pageable) {
+	public Slice<QuestionStatisticsResponse> getSurveyResults(String memberId, Long surveyId, Pageable pageable) {
 		Survey survey = surveyRepository.findById(surveyId)
 				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
+
+		// 설문조사 생성자 검증
+		validateSurveyCreator(memberId, survey);
 
 		int respondentCount = surveySubmissionRepository.countBySurvey(survey);
 
@@ -336,5 +339,11 @@ public class SurveyService {
 				options,
 				etcAnswers
 		);
+	}
+
+	private void validateSurveyCreator(String memberId, Survey survey) {
+		if (!survey.getMember().getId().equals(memberId)) {
+			throw new BusinessException(SurveyErrorCode.INVALID_ACCESS);
+		}
 	}
 }
