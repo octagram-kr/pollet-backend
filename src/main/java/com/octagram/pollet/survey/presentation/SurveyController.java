@@ -17,8 +17,10 @@ import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyRespo
 import com.octagram.pollet.survey.presentation.dto.response.standard.TagResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,7 +32,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
 import java.util.List;
@@ -325,10 +326,14 @@ public class SurveyController {
 		return ApiResponse.success(SurveySuccessCode.CREATE_SURVEY_SUCCESS);
 	}
 
-	@GetMapping("/{surveyId}/results/total")
+	@GetMapping("{surveyId}/results")
 	@Operation(summary = "설문조사 전체 결과 조회(문항별 응답 통계 조회)", description = "특정 설문조사의 전체 결과를 조회합니다.(특정 설문조사의 각 문항별 응답 통계를 조회합니다.)")
-	public ApiResponse<List<QuestionStatisticsResponse>> getSurveyResults(@PathVariable Long surveyId) {
-		List<QuestionStatisticsResponse> result = surveyService.getSurveyResults(surveyId);
+	public ApiResponse<Slice<QuestionStatisticsResponse>> getSurveyResults(
+			@PathVariable Long surveyId,
+			@PageableDefault(size = 10) Pageable pageable
+
+	) {
+		Slice<QuestionStatisticsResponse> result = surveyService.getSurveyResults(surveyId, pageable);
 		return ApiResponse.success(result);
 	}
 }

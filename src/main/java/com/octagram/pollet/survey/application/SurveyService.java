@@ -43,6 +43,7 @@ import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyRespo
 import com.octagram.pollet.survey.presentation.dto.response.standard.TagResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Slice;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -283,21 +284,21 @@ public class SurveyService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<QuestionStatisticsResponse> getSurveyResults(Long surveyId) {
+	public Slice<QuestionStatisticsResponse> getSurveyResults(Long surveyId, Pageable pageable) {
 		Survey survey = surveyRepository.findById(surveyId)
 				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
 
 		int respondentCount = surveySubmissionRepository.countBySurvey(survey);
 
-		List<QuestionStatisticsResponse.QuestionResult> questionResults = survey.getQuestions().stream()
-				.map(question -> mapToQuestionResult(question))
-				.toList();
+		Slice<Question> questionsPage = questionRepository.findBySurveyId(surveyId, pageable);
 
-		return List.of(new QuestionStatisticsResponse( // 리스트로 감싸 반환
+		Slice<QuestionStatisticsResponse.QuestionResult> questionResults = questionsPage.map(this::mapToQuestionResult);
+
+		return questionResults.map(questionResult -> new QuestionStatisticsResponse(
 				survey.getId(),
 				survey.getTitle(),
 				respondentCount,
-				questionResults
+				List.of(questionResult)
 		));
 	}
 
