@@ -1,5 +1,15 @@
 package com.octagram.pollet.survey.application;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.octagram.pollet.gifticon.application.GifticonService;
 import com.octagram.pollet.gifticon.domain.model.GifticonProduct;
 import com.octagram.pollet.gifticon.domain.status.GifticonErrorCode;
@@ -8,8 +18,8 @@ import com.octagram.pollet.member.application.MemberService;
 import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.member.domain.status.MemberErrorCode;
 import com.octagram.pollet.survey.application.mapper.QuestionMapper;
-import com.octagram.pollet.survey.application.mapper.QuestionSubmissionMapper;
 import com.octagram.pollet.survey.application.mapper.QuestionOptionSubmissionMapper;
+import com.octagram.pollet.survey.application.mapper.QuestionSubmissionMapper;
 import com.octagram.pollet.survey.application.mapper.SurveyMapper;
 import com.octagram.pollet.survey.application.mapper.SurveySubmissionMapper;
 import com.octagram.pollet.survey.application.mapper.TagMapper;
@@ -18,41 +28,36 @@ import com.octagram.pollet.survey.domain.model.QuestionOption;
 import com.octagram.pollet.survey.domain.model.QuestionOptionSubmission;
 import com.octagram.pollet.survey.domain.model.QuestionSubmission;
 import com.octagram.pollet.survey.domain.model.Survey;
+import com.octagram.pollet.survey.domain.model.SurveySubmission;
 import com.octagram.pollet.survey.domain.model.SurveyTag;
 import com.octagram.pollet.survey.domain.model.Tag;
-import com.octagram.pollet.survey.domain.model.SurveySubmission;
 import com.octagram.pollet.survey.domain.repository.QuestionOptionSubmissionRepository;
 import com.octagram.pollet.survey.domain.repository.QuestionRepository;
 import com.octagram.pollet.survey.domain.repository.QuestionSubmissionRepository;
+import com.octagram.pollet.survey.domain.repository.SurveyRepository;
 import com.octagram.pollet.survey.domain.repository.SurveySubmissionRepository;
+import com.octagram.pollet.survey.domain.repository.SurveyTagRepository;
+import com.octagram.pollet.survey.domain.repository.TagRepository;
 import com.octagram.pollet.survey.domain.status.SurveyErrorCode;
 import com.octagram.pollet.survey.domain.status.TagErrorCode;
+import com.octagram.pollet.survey.presentation.dto.request.QuestionSubmissionRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyCreateQuestionOptionRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyCreateQuestionRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyCreateRequest;
-import com.octagram.pollet.survey.presentation.dto.request.QuestionSubmissionRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyFilterRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveySubmissionRequest;
-import com.octagram.pollet.survey.presentation.dto.response.*;
-import com.octagram.pollet.survey.domain.repository.SurveyRepository;
-import com.octagram.pollet.survey.domain.repository.SurveyTagRepository;
-import com.octagram.pollet.survey.domain.repository.TagRepository;
+import com.octagram.pollet.survey.presentation.dto.response.ParticipantResultResponse;
+import com.octagram.pollet.survey.presentation.dto.response.QuestionOptionListResponse;
+import com.octagram.pollet.survey.presentation.dto.response.QuestionStatisticsResponse;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyGetRecentResponse;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyMetadataResponse;
+import com.octagram.pollet.survey.presentation.dto.response.TargetQuestionResponse;
 import com.octagram.pollet.survey.presentation.dto.response.standard.QuestionResponse;
 import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyResponse;
 import com.octagram.pollet.survey.presentation.dto.response.standard.TagResponse;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.domain.Slice;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -68,15 +73,11 @@ public class SurveyService {
 	private final TagRepository tagRepository;
 	private final QuestionRepository questionRepository;
 	private final SurveyTagRepository surveyTagRepository;
-	private final SurveySubmissionRepository surveySubmissionRepository;
-	private final QuestionSubmissionRepository questionSubmissionRepository;
-	private final QuestionOptionSubmissionRepository questionOptionSubmissionRepository;
 	private final SurveyMapper surveyMapper;
 	private final TagMapper tagMapper;
 	private final QuestionMapper questionMapper;
 	private final MemberService memberService;
 	private final SurveySubmissionMapper surveySubmissionMapper;
-	private final QuestionSubmissionMapper questionSubmissionMapper;
 	private final QuestionOptionSubmissionMapper questionOptionSubmissionMapper;
 
 	@Transactional(readOnly = true)
