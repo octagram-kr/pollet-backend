@@ -2,9 +2,12 @@ package com.octagram.pollet.survey.presentation;
 
 import com.octagram.pollet.global.aws.service.S3Service;
 import com.octagram.pollet.global.dto.ApiResponse;
+import com.octagram.pollet.member.application.MemberService;
+import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.survey.application.SurveyService;
 import com.octagram.pollet.survey.domain.status.SurveySuccessCode;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyFilterRequest;
+import com.octagram.pollet.survey.presentation.dto.request.SurveySubmissionRequest;
 import com.octagram.pollet.survey.presentation.dto.response.*;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyImageGetResponse;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyImageUploadResponse;
@@ -16,14 +19,18 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/surveys")
 @RequiredArgsConstructor
@@ -31,6 +38,7 @@ public class SurveyController {
 
 	private final SurveyService surveyService;
 	private final S3Service s3Service;
+	private final MemberService memberService;
 
 	@GetMapping("/tags")
 	@Operation(summary = "모든 태그 조회", description = "등록 가능한 모든 태그를 조회합니다.")
@@ -110,5 +118,17 @@ public class SurveyController {
 	public ApiResponse<List<QuestionResponse>> getSurveyQuestions(@PathVariable Long surveyId) {
 		List<QuestionResponse> result = surveyService.getQuestions(surveyId);
 		return ApiResponse.success(result);
+	}
+
+	@PostMapping("/{surveyId}/submissions")
+	@Operation(summary = "설문 응답 제출", description = "진행한 설문조사의 응답을 제출합니다.")
+	public ApiResponse<Void> submitSurvey(
+		@PathVariable Long surveyId,
+		@AuthenticationPrincipal String memberId,
+		@RequestBody @Valid SurveySubmissionRequest request
+	) {
+		Member member = memberService.getMember(memberId);
+		surveyService.submitSurvey(surveyId, member, request);
+		return ApiResponse.success(SurveySuccessCode.CREATE_SURVEY_SUBMISSION_SUCCESS);
 	}
 }
