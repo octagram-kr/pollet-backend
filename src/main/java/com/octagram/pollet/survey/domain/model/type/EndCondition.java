@@ -1,5 +1,5 @@
 package com.octagram.pollet.survey.domain.model.type;
 
 public enum EndCondition {
-	TYPE_1, TYPE_2
+	END_BY_DATE, END_BY_SUBMISSION_COUNT
 }
