@@ -7,10 +7,9 @@ import com.octagram.pollet.global.exception.BusinessException;
 import com.octagram.pollet.member.application.MemberService;
 import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.member.domain.status.MemberErrorCode;
-import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.survey.application.mapper.QuestionMapper;
-import com.octagram.pollet.survey.application.mapper.QuestionOptionSubmissionMapper;
 import com.octagram.pollet.survey.application.mapper.QuestionSubmissionMapper;
+import com.octagram.pollet.survey.application.mapper.QuestionOptionSubmissionMapper;
 import com.octagram.pollet.survey.application.mapper.SurveyMapper;
 import com.octagram.pollet.survey.application.mapper.SurveySubmissionMapper;
 import com.octagram.pollet.survey.application.mapper.TagMapper;
@@ -61,6 +60,7 @@ import java.util.List;
 public class SurveyService {
 
 	private final GifticonService gifticonService;
+	private final QuestionSubmissionMapper questionSubmissionMapper;
 	private final QuestionOptionSubmissionRepository questionOptionSubmissionRepository;
 	private final QuestionSubmissionRepository questionSubmissionRepository;
 	private final SurveySubmissionRepository surveySubmissionRepository;
@@ -296,7 +296,24 @@ public class SurveyService {
 
 		Slice<Question> questionsPage = questionRepository.findBySurveyId(surveyId, pageable);
 
-		Slice<QuestionStatisticsResponse.QuestionResult> questionResults = questionsPage.map(this::mapToQuestionResult);
+		Slice<QuestionStatisticsResponse.QuestionResult> questionResults = questionsPage.map(question -> {
+			int answeredCount = questionSubmissionRepository.countByQuestion(question);
+
+			List<QuestionStatisticsResponse.OptionResult> options = question.getOptions().stream()
+					.map(option -> {
+						int responseCount = questionOptionSubmissionRepository.countByQuestionOption(option);
+						double ratio = answeredCount == 0 ? 0 : (double) responseCount / answeredCount;
+						return questionMapper.toOptionResult(option, responseCount, ratio);
+					})
+					.toList();
+
+			List<String> etcAnswers = switch (question.getType()) {
+				case SINGLE_CHOICE, MULTIPLE_CHOICE -> List.of();
+				case SHORT_ANSWER, LONG_ANSWER -> questionSubmissionRepository.findAnswersByQuestion(question);
+			};
+
+			return questionMapper.toQuestionResult(question, options, answeredCount, etcAnswers);
+		});
 
 		return questionResults.map(questionResult -> new QuestionStatisticsResponse(
 				survey.getId(),
@@ -304,42 +321,6 @@ public class SurveyService {
 				respondentCount,
 				List.of(questionResult)
 		));
-	}
-
-	private QuestionStatisticsResponse.QuestionResult mapToQuestionResult(Question question) {
-		int answeredCount = questionSubmissionRepository.countByQuestion(question);
-
-		List<QuestionStatisticsResponse.OptionResult> options = List.of();
-		List<String> etcAnswers = List.of();
-
-		switch (question.getType()) {
-			case SINGLE_CHOICE, MULTIPLE_CHOICE -> {
-				options = question.getOptions().stream()
-						.map(option -> {
-							int responseCount = questionOptionSubmissionRepository.countByQuestionOption(option);
-							double ratio = answeredCount == 0 ? 0 : (double) responseCount / answeredCount;
-							return new QuestionStatisticsResponse.OptionResult(
-									option.getId(),
-									option.getContent(),
-									responseCount,
-									ratio
-							);
-						})
-						.toList();
-			}
-			case SHORT_ANSWER, LONG_ANSWER -> {
-				etcAnswers = questionSubmissionRepository.findAnswersByQuestion(question);
-			}
-		}
-
-		return new QuestionStatisticsResponse.QuestionResult(
-				question.getId(),
-				question.getTitle(),
-				question.getType().name(),
-				answeredCount,
-				options,
-				etcAnswers
-		);
 	}
 
 	private void validateSurveyCreator(String memberId, Survey survey) {
@@ -350,16 +331,13 @@ public class SurveyService {
 
 	@Transactional(readOnly = true)
 	public Slice<ParticipantResultResponse.QuestionAnswer> getParticipantResult(String memberId, Long surveyId, Long submissionId, Pageable pageable) {
-		// 설문조사 정보 조회
 		Survey survey = surveyRepository.findById(surveyId)
 				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
 
-		// 현재 사용자가 설문조사의 소유자인지 확인
 		if (!survey.getMember().getId().equals(memberId)) {
 			throw new BusinessException(SurveyErrorCode.INVALID_ACCESS);
 		}
 
-		// 설문 제출 정보 조회
 		SurveySubmission submission = surveySubmissionRepository.findById(submissionId)
 				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SUBMISSION_NOT_FOUND));
 
@@ -367,35 +345,22 @@ public class SurveyService {
 			throw new BusinessException(SurveyErrorCode.INVALID_SUBMISSION);
 		}
 
-		// `QuestionSubmission` 조회 시 페이지 처리
 		Slice<QuestionSubmission> questionSubmissions = questionSubmissionRepository
 				.findBySurveySubmissionId(submissionId, pageable);
 
-		// `QuestionAnswer` 변환 및 생성
 		return questionSubmissions.map(qs -> {
-			Question question = qs.getQuestion();
-			// 객관식 응답(QuestionOptionSubmission) 조회
 			List<QuestionOptionSubmission> optionSubmissions = questionOptionSubmissionRepository
 					.findByQuestionSubmissionId(qs.getId());
 			List<ParticipantResultResponse.SelectedOption> selectedOptions = optionSubmissions.stream()
-					.map(qos -> new ParticipantResultResponse.SelectedOption(
-							qos.getQuestionOption().getId(),
-							qos.getQuestionOption().getContent()
-					))
+					.map(questionSubmissionMapper::toSelectedOption)
 					.toList();
 
-			return new ParticipantResultResponse.QuestionAnswer(
-					question.getId(),
-					question.getTitle(),
-					question.getType().name(),
-					selectedOptions,
-					qs.getAnswer() // 주관식 응답
-			);
+			return questionSubmissionMapper.toQuestionAnswer(qs, selectedOptions);
 		});
 	}
 
 	@Transactional(readOnly = true)
-	public SurveyMetadataResponse getSurveyMetadata(String memberId, Long surveyId) {
+	public SurveyMetadataResponse getSurveyMetadata(String memberId,Long surveyId) {
 		Survey survey = surveyRepository.findById(surveyId)
 				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
 
@@ -404,19 +369,7 @@ public class SurveyService {
 			throw new BusinessException(SurveyErrorCode.INVALID_ACCESS);
 		}
 
-		String status = resolveSurveyStatus(survey.getStartDateTime(), survey.getEndDateTime());
-
-		return new SurveyMetadataResponse(
-				survey.getTitle(),
-				survey.getSubtitle(),
-				survey.getDescription(),
-				survey.getCreatorName(),
-				survey.getStartDateTime(),
-				survey.getEndDateTime(),
-				survey.getRequireSubmissionCount(),
-				survey.getCurrentSubmissionCount(),
-				status
-		);
+		return surveyMapper.toSurveyMetadataResponse(survey);
 	}
 
 	private String resolveSurveyStatus(LocalDateTime start, LocalDateTime end) {
