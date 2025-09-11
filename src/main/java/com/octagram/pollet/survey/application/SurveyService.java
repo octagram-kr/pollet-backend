@@ -1,6 +1,12 @@
 package com.octagram.pollet.survey.application;
 
+import com.octagram.pollet.gifticon.application.GifticonService;
+import com.octagram.pollet.gifticon.domain.model.GifticonProduct;
+import com.octagram.pollet.gifticon.domain.status.GifticonErrorCode;
 import com.octagram.pollet.global.exception.BusinessException;
+import com.octagram.pollet.member.application.MemberService;
+import com.octagram.pollet.member.domain.model.Member;
+import com.octagram.pollet.member.domain.status.MemberErrorCode;
 import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.survey.application.mapper.QuestionMapper;
 import com.octagram.pollet.survey.application.mapper.QuestionOptionSubmissionMapper;
@@ -9,15 +15,22 @@ import com.octagram.pollet.survey.application.mapper.SurveyMapper;
 import com.octagram.pollet.survey.application.mapper.SurveySubmissionMapper;
 import com.octagram.pollet.survey.application.mapper.TagMapper;
 import com.octagram.pollet.survey.domain.model.Question;
+import com.octagram.pollet.survey.domain.model.QuestionOption;
 import com.octagram.pollet.survey.domain.model.QuestionOptionSubmission;
 import com.octagram.pollet.survey.domain.model.QuestionSubmission;
 import com.octagram.pollet.survey.domain.model.Survey;
+import com.octagram.pollet.survey.domain.model.SurveyTag;
+import com.octagram.pollet.survey.domain.model.Tag;
 import com.octagram.pollet.survey.domain.model.SurveySubmission;
 import com.octagram.pollet.survey.domain.repository.QuestionOptionSubmissionRepository;
 import com.octagram.pollet.survey.domain.repository.QuestionRepository;
 import com.octagram.pollet.survey.domain.repository.QuestionSubmissionRepository;
 import com.octagram.pollet.survey.domain.repository.SurveySubmissionRepository;
 import com.octagram.pollet.survey.domain.status.SurveyErrorCode;
+import com.octagram.pollet.survey.domain.status.TagErrorCode;
+import com.octagram.pollet.survey.presentation.dto.request.SurveyCreateQuestionOptionRequest;
+import com.octagram.pollet.survey.presentation.dto.request.SurveyCreateQuestionRequest;
+import com.octagram.pollet.survey.presentation.dto.request.SurveyCreateRequest;
 import com.octagram.pollet.survey.presentation.dto.request.QuestionSubmissionRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyFilterRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveySubmissionRequest;
@@ -29,19 +42,24 @@ import com.octagram.pollet.survey.presentation.dto.response.standard.QuestionRes
 import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyResponse;
 import com.octagram.pollet.survey.presentation.dto.response.standard.TagResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SurveyService {
 
+	private final GifticonService gifticonService;
 	private final SurveyRepository surveyRepository;
 	private final TagRepository tagRepository;
 	private final QuestionRepository questionRepository;
@@ -52,6 +70,7 @@ public class SurveyService {
 	private final SurveyMapper surveyMapper;
 	private final TagMapper tagMapper;
 	private final QuestionMapper questionMapper;
+	private final MemberService memberService;
 	private final SurveySubmissionMapper surveySubmissionMapper;
 	private final QuestionSubmissionMapper questionSubmissionMapper;
 	private final QuestionOptionSubmissionMapper questionOptionSubmissionMapper;
@@ -176,5 +195,88 @@ public class SurveyService {
 		if (!optionSubs.isEmpty()) {
 			questionOptionSubmissionRepository.saveAll(optionSubs);
 		}
+	}
+
+	@Transactional
+	public void createSurvey(String memberId, SurveyCreateRequest request) {
+		log.info(memberId);
+		Member member = memberService.findByMemberId(memberId)
+			.orElseThrow(() -> new BusinessException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+		GifticonProduct gifticonProduct = gifticonService.findProductById(request.rewardGifticonProductId())
+			.orElseThrow(() -> new BusinessException(GifticonErrorCode.GIFTICON_PRODUCT_NOT_FOUND));
+
+		Survey survey = Survey.builder()
+			.member(member)
+			.creatorName(member.getMemberId())
+			.coverUrl(request.coverUrl())
+			.title(request.title())
+			.purpose(request.purpose())
+			.startDateTime(request.startDateTime())
+			.endDateTime(request.endDateTime())
+			.endCondition(request.endCondition())
+			.submissionExpireDate(request.submissionExpireDate())
+			.description(request.description())
+			.privacyType(request.privacyType())
+			.privacyPurposeValue(request.privacyPurposeValue())
+			.privacyContents(request.privacyContents())
+			.privacyExpireDate(request.privacyExpireDate())
+			.primaryColor(request.primaryColor())
+			.secondaryColor(request.secondaryColor())
+			.rewardType(request.rewardType())
+			.requireSubmissionCount(request.requireSubmissionCount())
+			.estimatedTime(request.estimatedTime())
+			.rewardPoint(request.rewardPoint())
+			.gifticonProduct(gifticonProduct)
+			.rewardGifticonProductCount(request.rewardGifticonProductCount())
+			.availablePoint(0L)
+			.build();
+
+		List<String> tags = new ArrayList<>();
+		tags.add(request.targetGender());
+		tags.add(request.targetAge());
+		tags.add(request.targetJob());
+		tags.addAll(request.tags());
+		tags.removeIf(StringUtils::isBlank);
+
+		for (String tagString : tags) {
+			Tag tag = tagRepository.findByName(tagString)
+				.orElseThrow(() -> new BusinessException(TagErrorCode.TAG_NOT_FOUND));
+			SurveyTag surveyTag = SurveyTag.builder()
+				.tag(tag)
+				.build();
+			surveyTag.setSurvey(survey);
+			survey.addSurveyTag(surveyTag);
+		}
+
+		for (SurveyCreateQuestionRequest questionDto : request.questions()) {
+			Question question = Question.builder()
+				.page(questionDto.page())
+				.order(questionDto.order())
+				.title(questionDto.title())
+				.description(questionDto.description())
+				.type(questionDto.type())
+				.isRequired(questionDto.isRequired())
+				.isCheckTarget(questionDto.isCheckTarget())
+				.isCheckDiligent(questionDto.isCheckDiligent())
+				.imageUrl(questionDto.imageUrl())
+				.build();
+
+			for (SurveyCreateQuestionOptionRequest optionDto : questionDto.options()) {
+				QuestionOption option = QuestionOption.builder()
+					.order(optionDto.order())
+					.content(optionDto.content())
+					.imageUrl(optionDto.imageUrl())
+					.isCheckTarget(optionDto.isCheckTarget())
+					.isCheckDiligent(optionDto.isCheckDiligent())
+					.build();
+
+				question.addOption(option);
+			}
+
+			survey.addQuestion(question);
+		}
+
+		surveyRepository.save(survey);
 	}
 }
