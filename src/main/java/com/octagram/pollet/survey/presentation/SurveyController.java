@@ -344,7 +344,7 @@ public class SurveyController {
 			@AuthenticationPrincipal String memberId,
 			@PathVariable Long surveyId,
 			@PathVariable Long submissionId,
-			Pageable pageable
+			@PageableDefault(size = 10) Pageable pageable
 	) {
 		Slice<ParticipantResultResponse.QuestionAnswer> result = surveyService.getParticipantResult(memberId, surveyId, submissionId, pageable);
 		return ApiResponse.success(result);

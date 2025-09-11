@@ -2,6 +2,7 @@ package com.octagram.pollet.survey.application.mapper;
 
 import com.octagram.pollet.survey.domain.model.type.RewardType;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyGetRecentResponse;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyMetadataResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -11,6 +12,8 @@ import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyRespo
 import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyWithQuestionResponse;
 
 import org.mapstruct.Named;
+
+import java.time.LocalDateTime;
 
 @Mapper(uses = {GifticonMapper.class, TagMapper.class})
 public interface SurveyMapper {
@@ -31,5 +34,15 @@ public interface SurveyMapper {
 			return survey.getGifticonProduct().getName();
 		}
 		return null; // 보상 상품이 없거나 GIFTICON이 아닌 경우 null 반환
+	}
+
+	@Mapping(target = "status", expression = "java(resolveSurveyStatus(survey.getStartDateTime(), survey.getEndDateTime()))")
+	SurveyMetadataResponse toSurveyMetadataResponse(Survey survey);
+
+	default String resolveSurveyStatus(LocalDateTime start, LocalDateTime end) {
+		LocalDateTime now = LocalDateTime.now();
+		if (now.isBefore(start)) return "대기중";
+		if (now.isAfter(end)) return "종료";
+		return "진행중";
 	}
 }
