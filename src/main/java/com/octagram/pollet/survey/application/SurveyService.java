@@ -1,14 +1,26 @@
 package com.octagram.pollet.survey.application;
 
 import com.octagram.pollet.global.exception.BusinessException;
+import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.survey.application.mapper.QuestionMapper;
+import com.octagram.pollet.survey.application.mapper.QuestionOptionSubmissionMapper;
+import com.octagram.pollet.survey.application.mapper.QuestionSubmissionMapper;
 import com.octagram.pollet.survey.application.mapper.SurveyMapper;
+import com.octagram.pollet.survey.application.mapper.SurveySubmissionMapper;
 import com.octagram.pollet.survey.application.mapper.TagMapper;
 import com.octagram.pollet.survey.domain.model.Question;
+import com.octagram.pollet.survey.domain.model.QuestionOptionSubmission;
+import com.octagram.pollet.survey.domain.model.QuestionSubmission;
 import com.octagram.pollet.survey.domain.model.Survey;
+import com.octagram.pollet.survey.domain.model.SurveySubmission;
+import com.octagram.pollet.survey.domain.repository.QuestionOptionSubmissionRepository;
 import com.octagram.pollet.survey.domain.repository.QuestionRepository;
+import com.octagram.pollet.survey.domain.repository.QuestionSubmissionRepository;
+import com.octagram.pollet.survey.domain.repository.SurveySubmissionRepository;
 import com.octagram.pollet.survey.domain.status.SurveyErrorCode;
+import com.octagram.pollet.survey.presentation.dto.request.QuestionSubmissionRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyFilterRequest;
+import com.octagram.pollet.survey.presentation.dto.request.SurveySubmissionRequest;
 import com.octagram.pollet.survey.presentation.dto.response.*;
 import com.octagram.pollet.survey.domain.repository.SurveyRepository;
 import com.octagram.pollet.survey.domain.repository.SurveyTagRepository;
@@ -21,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +46,15 @@ public class SurveyService {
 	private final TagRepository tagRepository;
 	private final QuestionRepository questionRepository;
 	private final SurveyTagRepository surveyTagRepository;
+	private final SurveySubmissionRepository surveySubmissionRepository;
+	private final QuestionSubmissionRepository questionSubmissionRepository;
+	private final QuestionOptionSubmissionRepository questionOptionSubmissionRepository;
 	private final SurveyMapper surveyMapper;
 	private final TagMapper tagMapper;
 	private final QuestionMapper questionMapper;
+	private final SurveySubmissionMapper surveySubmissionMapper;
+	private final QuestionSubmissionMapper questionSubmissionMapper;
+	private final QuestionOptionSubmissionMapper questionOptionSubmissionMapper;
 
 	@Transactional(readOnly = true)
 	public List<TagResponse> getAllTags() {
@@ -118,5 +137,44 @@ public class SurveyService {
 		return result.stream()
 			.map(questionMapper::toResponse)
 			.toList();
+	}
+
+	@Transactional
+	public void submitSurvey(Long surveyId, Member member, SurveySubmissionRequest request) {
+		Survey survey = surveyRepository.findById(surveyId)
+			.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
+
+		SurveySubmission surveySubmission = saveSurveySubmission(request, survey, member);
+		List<QuestionSubmission> questionSubmissions = saveQuestionSubmissions(request.questionSubmissions(), surveySubmission);
+		saveQuestionOptionSubmissions(request.questionSubmissions(), questionSubmissions);
+	}
+
+	private SurveySubmission saveSurveySubmission(SurveySubmissionRequest request, Survey survey, Member member) {
+		SurveySubmission surveySubmission = surveySubmissionMapper.toEntityFromSurveySubmissionRequest(request, survey, member);
+		return surveySubmissionRepository.save(surveySubmission);
+	}
+
+	private List<QuestionSubmission> saveQuestionSubmissions(List<QuestionSubmissionRequest> requests, SurveySubmission surveySubmission) {
+		List<QuestionSubmission> questions = requests.stream()
+			.map(req -> questionSubmissionMapper.toEntityFromQuestionSubmissionRequest(req, surveySubmission))
+			.toList();
+		questionSubmissionRepository.saveAll(questions);
+		return questions;
+	}
+
+	private void saveQuestionOptionSubmissions(List<QuestionSubmissionRequest> requests, List<QuestionSubmission> questionSubmissions) {
+		List<QuestionOptionSubmission> optionSubs = new ArrayList<>();
+		for (int i = 0; i < questionSubmissions.size(); i++) {
+			QuestionSubmission submission = questionSubmissions.get(i);
+			QuestionSubmissionRequest submissionRequest = requests.get(i);
+
+			submissionRequest.questionOptionSubmissions().stream()
+				.map(request -> questionOptionSubmissionMapper.toEntityFromQuestionOptionSubmissionRequest(request, submission))
+				.forEach(optionSubs::add);
+		}
+
+		if (!optionSubs.isEmpty()) {
+			questionOptionSubmissionRepository.saveAll(optionSubs);
+		}
 	}
 }
