@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.EnumType;
@@ -45,14 +45,16 @@ public class Survey extends BaseEntity {
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "reward_gifticon_product_id", nullable = true)
 	private GifticonProduct gifticonProduct;
 
-	@OneToMany(mappedBy = "survey")
+	@Builder.Default
+	@OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<SurveyTag> surveyTags = new ArrayList<>();
 
-	@OneToMany(mappedBy = "survey")
+	@Builder.Default
+	@OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Question> questions = new ArrayList<>();
 
 	@Column(nullable = false)
@@ -73,18 +75,15 @@ public class Survey extends BaseEntity {
 	@Column(nullable = true)
 	private String secondaryColor;
 
+	@Builder.Default
 	@Column(nullable = false)
-	private Boolean isTemplate;
+	private Boolean isTemplate = false;
 
 	@Column(nullable = false)
 	private String creatorName;
 
 	@Column(nullable = false)
 	private String purpose;
-
-	@Column(nullable = false)
-	@Enumerated(EnumType.STRING)
-	private TargetGender targetGender;
 
 	@Column(nullable = false)
 	private LocalDateTime startDateTime;
@@ -106,9 +105,6 @@ public class Survey extends BaseEntity {
 	@Column(nullable = false)
 	private Long privacyContents;
 
-	@Column(nullable = false)
-	private Long privacyPurposeType;
-
 	@Column(nullable = true)
 	private String privacyPurposeValue;
 
@@ -121,8 +117,9 @@ public class Survey extends BaseEntity {
 	@Column(nullable = false)
 	private Long requireSubmissionCount;
 
+	@Builder.Default
 	@Column(nullable = false)
-	private Long currentSubmissionCount;
+	private Long currentSubmissionCount = 0L;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -131,6 +128,19 @@ public class Survey extends BaseEntity {
 	@Column(nullable = true)
 	private Long rewardPoint;
 
+	@Column(nullable = true)
+	private Long rewardGifticonProductCount;
+
 	@Column(nullable = false)
 	private Long availablePoint;
+
+	public void addSurveyTag(SurveyTag surveyTag) {
+		this.surveyTags.add(surveyTag);
+		surveyTag.setSurvey(this);
+	}
+
+	public void addQuestion(Question question) {
+		this.questions.add(question);
+		question.setSurvey(this);
+	}
 }
