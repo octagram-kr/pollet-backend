@@ -1,10 +1,12 @@
 package com.octagram.pollet.survey.domain.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.octagram.pollet.global.domain.model.BaseEntity;
 import com.octagram.pollet.survey.domain.model.type.QuestionType;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -22,6 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -35,12 +38,14 @@ public class Question extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Setter
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "survey_id", nullable = false)
 	private Survey survey;
 
-	@OneToMany(mappedBy = "question")
-	private List<QuestionOption> options;
+	@Builder.Default
+	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<QuestionOption> options = new ArrayList<>();
 
 	@Column(nullable = false)
 	private Long order;
@@ -69,4 +74,9 @@ public class Question extends BaseEntity {
 
 	@Column(nullable = true)
 	private String imageUrl;
+
+	public void addOption(QuestionOption option) {
+		this.options.add(option);
+		option.setQuestion(this);
+	}
 }
