@@ -1,19 +1,18 @@
 package com.octagram.pollet.survey.application.mapper;
 
-import com.octagram.pollet.survey.domain.model.type.RewardType;
-import com.octagram.pollet.survey.presentation.dto.response.SurveyGetRecentResponse;
-import com.octagram.pollet.survey.presentation.dto.response.SurveyMetadataResponse;
+import java.time.LocalDateTime;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 import com.octagram.pollet.gifticon.application.mapper.GifticonMapper;
 import com.octagram.pollet.survey.domain.model.Survey;
+import com.octagram.pollet.survey.domain.model.type.RewardType;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyGetRecentResponse;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyMetadataResponse;
 import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyResponse;
 import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyWithQuestionResponse;
-
-import org.mapstruct.Named;
-
-import java.time.LocalDateTime;
 
 @Mapper(uses = {GifticonMapper.class, TagMapper.class})
 public interface SurveyMapper {

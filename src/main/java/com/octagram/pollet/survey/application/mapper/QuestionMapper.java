@@ -1,14 +1,16 @@
 package com.octagram.pollet.survey.application.mapper;
 
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
 import com.octagram.pollet.survey.domain.model.Question;
 import com.octagram.pollet.survey.domain.model.QuestionOption;
 import com.octagram.pollet.survey.presentation.dto.response.QuestionOptionListResponse;
 import com.octagram.pollet.survey.presentation.dto.response.QuestionStatisticsResponse;
-import com.octagram.pollet.survey.presentation.dto.response.standard.QuestionResponse;
 import com.octagram.pollet.survey.presentation.dto.response.TargetQuestionResponse;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import java.util.List;
+import com.octagram.pollet.survey.presentation.dto.response.standard.QuestionResponse;
 
 @Mapper
 public interface QuestionMapper {
@@ -49,6 +51,4 @@ public interface QuestionMapper {
 			int responseCount,
 			double responseRatio
 	);
-
-
 }
