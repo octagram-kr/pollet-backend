@@ -326,7 +326,7 @@ public class SurveyController {
 		return ApiResponse.success(SurveySuccessCode.CREATE_SURVEY_SUCCESS);
 	}
 
-	@GetMapping("{surveyId}/results")
+	@GetMapping("{surveyId}/result")
 	@Operation(summary = "설문조사 전체 결과 조회(문항별 응답 통계 조회)", description = "특정 설문조사의 전체 결과를 조회합니다.(특정 설문조사의 각 문항별 응답 통계를 조회합니다.)")
 	public ApiResponse<Slice<QuestionStatisticsResponse>> getSurveyResults(
 			@AuthenticationPrincipal String memberId,
@@ -335,6 +335,18 @@ public class SurveyController {
 
 	) {
 		Slice<QuestionStatisticsResponse> result = surveyService.getSurveyResults(memberId, surveyId, pageable);
+		return ApiResponse.success(result);
+	}
+
+	@GetMapping("/{surveyId}/result/{submissionId}")
+	@Operation(summary = "참여자별 응답 결과 조회", description = "특정 설문조사에서 특정 참여자의 제출 결과를 조회합니다.")
+	public ApiResponse<Slice<ParticipantResultResponse.QuestionAnswer>> getParticipantResult(
+			@AuthenticationPrincipal String memberId,
+			@PathVariable Long surveyId,
+			@PathVariable Long submissionId,
+			Pageable pageable
+	) {
+		Slice<ParticipantResultResponse.QuestionAnswer> result = surveyService.getParticipantResult(memberId, surveyId, submissionId, pageable);
 		return ApiResponse.success(result);
 	}
 }
