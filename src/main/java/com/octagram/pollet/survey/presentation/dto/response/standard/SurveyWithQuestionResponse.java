@@ -8,7 +8,6 @@ import com.octagram.pollet.gifticon.presentation.dto.response.GifticonProductRes
 import com.octagram.pollet.survey.domain.model.type.EndCondition;
 import com.octagram.pollet.survey.domain.model.type.PrivacyType;
 import com.octagram.pollet.survey.domain.model.type.RewardType;
-import com.octagram.pollet.survey.domain.model.type.TargetGender;
 
 public record SurveyWithQuestionResponse(
 	Long id,
@@ -24,7 +23,6 @@ public record SurveyWithQuestionResponse(
 	EndCondition endCondition,
 	LocalDateTime endDateTime,
 	Boolean isTemplate,
-	TargetGender targetGender,
 	LocalDate submissionExpireDate,
 	PrivacyType privacyType,
 	Long privacyContents,
