@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springdoc.core.annotations.ParameterObject;
 
-import com.octagram.pollet.survey.domain.model.Question;
-
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 

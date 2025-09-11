@@ -1,7 +1,5 @@
 package com.octagram.pollet.survey.application;
 
-import static com.octagram.pollet.survey.domain.model.QSurveySubmission.*;
-
 import com.octagram.pollet.global.exception.BusinessException;
 import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.survey.application.mapper.QuestionMapper;
@@ -20,7 +18,6 @@ import com.octagram.pollet.survey.domain.repository.QuestionRepository;
 import com.octagram.pollet.survey.domain.repository.QuestionSubmissionRepository;
 import com.octagram.pollet.survey.domain.repository.SurveySubmissionRepository;
 import com.octagram.pollet.survey.domain.status.SurveyErrorCode;
-import com.octagram.pollet.survey.presentation.dto.request.QuestionOptionSubmissionRequest;
 import com.octagram.pollet.survey.presentation.dto.request.QuestionSubmissionRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyFilterRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveySubmissionRequest;
@@ -36,13 +33,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SurveyService {
