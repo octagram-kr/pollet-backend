@@ -346,4 +346,50 @@ public class SurveyService {
 			throw new BusinessException(SurveyErrorCode.INVALID_ACCESS);
 		}
 	}
+
+	@Transactional(readOnly = true)
+	public Slice<ParticipantResultResponse.QuestionAnswer> getParticipantResult(String memberId, Long surveyId, Long submissionId, Pageable pageable) {
+		// 설문조사 정보 조회
+		Survey survey = surveyRepository.findById(surveyId)
+				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
+
+		// 현재 사용자가 설문조사의 소유자인지 확인
+		if (!survey.getMember().getId().equals(memberId)) {
+			throw new BusinessException(SurveyErrorCode.INVALID_ACCESS);
+		}
+
+		// 설문 제출 정보 조회
+		SurveySubmission submission = surveySubmissionRepository.findById(submissionId)
+				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SUBMISSION_NOT_FOUND));
+
+		if (!submission.getSurvey().getId().equals(surveyId)) {
+			throw new BusinessException(SurveyErrorCode.INVALID_SUBMISSION);
+		}
+
+		// `QuestionSubmission` 조회 시 페이지 처리
+		Slice<QuestionSubmission> questionSubmissions = questionSubmissionRepository
+				.findBySurveySubmissionId(submissionId, pageable);
+
+		// `QuestionAnswer` 변환 및 생성
+		return questionSubmissions.map(qs -> {
+			Question question = qs.getQuestion();
+			// 객관식 응답(QuestionOptionSubmission) 조회
+			List<QuestionOptionSubmission> optionSubmissions = questionOptionSubmissionRepository
+					.findByQuestionSubmissionId(qs.getId());
+			List<ParticipantResultResponse.SelectedOption> selectedOptions = optionSubmissions.stream()
+					.map(qos -> new ParticipantResultResponse.SelectedOption(
+							qos.getQuestionOption().getId(),
+							qos.getQuestionOption().getContent()
+					))
+					.toList();
+
+			return new ParticipantResultResponse.QuestionAnswer(
+					question.getId(),
+					question.getTitle(),
+					question.getType().name(),
+					selectedOptions,
+					qs.getAnswer() // 주관식 응답
+			);
+		});
+	}
 }
