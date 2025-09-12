@@ -76,7 +76,15 @@ public class MemberService {
 
 		Point point = pointRepository.findByMember(member)
 			.orElseThrow(() -> new BusinessException(MemberErrorCode.POINT_NOT_FOUND));
+
+		validateBalance(point, amount);
 		return point.updateBalance(amount);
+	}
+
+	private void validateBalance(Point point, long amount) {
+		if (amount < 0 && point.getBalance() < -amount) {
+			throw new BusinessException(MemberErrorCode.BALANCE_NOT_ENOUGH);
+		}
 	}
 
 	private long savePoint(Member member, long amount) {
