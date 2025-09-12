@@ -2,6 +2,7 @@ package com.octagram.pollet.survey.infrastructure;
 
 import static com.octagram.pollet.gifticon.domain.model.QGifticonProduct.*;
 import static com.octagram.pollet.survey.domain.model.QSurvey.*;
+import static com.octagram.pollet.survey.domain.model.QSurveySubmission.*;
 import static com.octagram.pollet.survey.domain.model.QSurveyTag.*;
 import static com.octagram.pollet.survey.domain.model.QTag.*;
 
@@ -74,6 +75,24 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
 			.orderBy(orderSpecifier)
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
+			.fetch();
+	}
+
+	@Override
+	public List<Survey> findByMemberId(Long memberId, Pageable pageable) {
+		return queryFactory
+			.selectFrom(survey)
+			.where(survey.member.id.eq(memberId))
+			.orderBy(survey.createdAt.desc())
+			.fetch();
+	}
+
+	@Override
+	public List<Survey> findParticipatedByMemberId(Long memberId, Pageable pageable) {
+		return queryFactory
+			.select(surveySubmission.survey).distinct()
+			.from(surveySubmission)
+			.where(surveySubmission.member.id.eq(memberId))
 			.fetch();
 	}
 
