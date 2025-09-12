@@ -144,7 +144,7 @@ public class SurveyController {
 		@AuthenticationPrincipal String memberId,
 		@RequestBody @Valid SurveySubmissionRequest request
 	) {
-		Member member = memberService.getMember(memberId);
+		Member member = memberService.findByMemberId(memberId);
 		surveyService.submitSurvey(surveyId, member, request);
 		return ApiResponse.success(SurveySuccessCode.CREATE_SURVEY_SUBMISSION_SUCCESS);
 	}
