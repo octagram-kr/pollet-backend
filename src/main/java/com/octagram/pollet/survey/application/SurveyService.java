@@ -200,8 +200,7 @@ public class SurveyService {
 	@Transactional
 	public void createSurvey(String memberId, SurveyCreateRequest request) {
 		log.info(memberId);
-		Member member = memberService.findByMemberId(memberId)
-			.orElseThrow(() -> new BusinessException(MemberErrorCode.MEMBER_NOT_FOUND));
+		Member member = memberService.findByMemberId(memberId);
 
 		GifticonProduct gifticonProduct = gifticonService.findProductById(request.rewardGifticonProductId())
 			.orElseThrow(() -> new BusinessException(GifticonErrorCode.GIFTICON_PRODUCT_NOT_FOUND));

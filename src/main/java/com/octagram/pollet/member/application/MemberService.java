@@ -24,7 +24,7 @@ public class MemberService {
 
 	@Transactional
 	public void updateMember(String memberId, MemberUpdateRequest request) {
-		Member member = getMember(memberId);
+		Member member = findByMemberId(memberId);
 
 		if (memberRepository.existsByNicknameAndIdNot(request.nickname(), member.getId())) {
 			throw new BusinessException(MemberErrorCode.DUPLICATE_NICKNAME);
@@ -40,15 +40,9 @@ public class MemberService {
 		);
 	}
 
-	// TODO: getMember, findByMemberId 동일 동작 메서드 중복 제거 필요
 	@Transactional(readOnly = true)
-	public Member getMember(String memberId) {
+	public Member findByMemberId(String memberId) {
 		return memberRepository.findByMemberId(memberId)
 			.orElseThrow(() -> new BusinessException(MemberErrorCode.MEMBER_NOT_FOUND));
-	}
-
-	@Transactional(readOnly = true)
-	public Optional<Member> findByMemberId(String memberId) {
-		return memberRepository.findByMemberId(memberId);
 	}
 }
