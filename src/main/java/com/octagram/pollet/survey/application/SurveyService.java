@@ -349,13 +349,13 @@ public class SurveyService {
 		Member member = memberService.findByMemberId(memberId)
 				.orElseThrow(() -> new BusinessException(MemberErrorCode.MEMBER_NOT_FOUND));
 
-		if (!survey.getMember().equals(member)) {
+		if (!survey.getMember().getId().equals(member.getId())) {
 			throw new BusinessException(SurveyErrorCode.UNAUTHORIZED_ACCESS);
 		}
 	}
 
 	@Transactional(readOnly = true)
-	public SurveyMetadataResponse getSurveyMetadata(String memberId, Long surveyId) {
+	public SurveyMetadataResponse getSurveyMetadata(Long surveyId) {
 		Survey survey = surveyRepository.findById(surveyId)
 				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
 		return surveyMapper.toSurveyMetadataResponse(survey);
