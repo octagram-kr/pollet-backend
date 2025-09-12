@@ -345,8 +345,7 @@ public class SurveyService {
 	}
 
 	private void validateSurveyCreator(String memberId, Survey survey) {
-		Member member = memberService.findByMemberId(memberId)
-				.orElseThrow(() -> new BusinessException(MemberErrorCode.MEMBER_NOT_FOUND));
+		Member member = memberService.findByMemberId(memberId);
 
 		if (!survey.getMember().getId().equals(member.getId())) {
 			throw new BusinessException(SurveyErrorCode.UNAUTHORIZED_ACCESS);
