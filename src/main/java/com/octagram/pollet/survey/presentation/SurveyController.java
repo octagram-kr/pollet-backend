@@ -372,18 +372,21 @@ public class SurveyController {
 	}
 
 	@GetMapping("/me/created")
+	@Operation(summary = "내가 만든 설문조사 목록 조회")
 	public ApiResponse<List<SurveyResponse>> findMyCreatedSurveys(@AuthenticationPrincipal String memberId, @PageableDefault(size = 12) Pageable pageable) {
 		List<SurveyResponse> result = surveyService.findMyCreatedSurveys(memberId, pageable);
 		return ApiResponse.success(result);
 	}
 
 	@GetMapping("/me/participated")
+	@Operation(summary = "내가 참여한 설문조사 목록 조회")
 	public ApiResponse<List<SurveyResponse>> findMyParticipatedSurveys(@AuthenticationPrincipal String memberId, @PageableDefault(size = 12) Pageable pageable) {
 		List<SurveyResponse> result = surveyService.findMyParticipatedSurveys(memberId, pageable);
 		return ApiResponse.success(result);
 	}
 
 	@GetMapping("/me/participated/tags")
+	@Operation(summary = "내가 참여한 설문조사의 태그 목록 조회")
 	public ApiResponse<List<MemberTagResponse>> findTagsFromParticipatedSurveys(@AuthenticationPrincipal String memberId) {
 		List<MemberTagResponse> result = surveyService.findTagsFromParticipatedSurveys(memberId);
 		return ApiResponse.success(result);
