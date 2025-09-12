@@ -21,6 +21,7 @@ import com.octagram.pollet.survey.domain.model.QuestionOption;
 import com.octagram.pollet.survey.domain.model.QuestionOptionSubmission;
 import com.octagram.pollet.survey.domain.model.QuestionSubmission;
 import com.octagram.pollet.survey.domain.model.Survey;
+import com.octagram.pollet.survey.domain.model.SurveyPointHistory;
 import com.octagram.pollet.survey.domain.model.SurveySubmission;
 import com.octagram.pollet.survey.domain.model.SurveyTag;
 import com.octagram.pollet.survey.domain.model.Tag;
@@ -29,6 +30,7 @@ import com.octagram.pollet.survey.domain.model.type.RewardType;
 import com.octagram.pollet.survey.domain.repository.QuestionOptionSubmissionRepository;
 import com.octagram.pollet.survey.domain.repository.QuestionRepository;
 import com.octagram.pollet.survey.domain.repository.QuestionSubmissionRepository;
+import com.octagram.pollet.survey.domain.repository.SurveyPointHistoryRepository;
 import com.octagram.pollet.survey.domain.repository.SurveyRepository;
 import com.octagram.pollet.survey.domain.repository.SurveySubmissionRepository;
 import com.octagram.pollet.survey.domain.repository.SurveyTagRepository;
@@ -73,6 +75,7 @@ public class SurveyService {
 	private final QuestionOptionSubmissionRepository questionOptionSubmissionRepository;
 	private final QuestionSubmissionRepository questionSubmissionRepository;
 	private final SurveySubmissionRepository surveySubmissionRepository;
+	private final SurveyPointHistoryRepository surveyPointHistoryRepository;
 	private final SurveyRepository surveyRepository;
 	private final TagRepository tagRepository;
 	private final QuestionRepository questionRepository;
@@ -183,6 +186,22 @@ public class SurveyService {
 		List<QuestionSubmission> questionSubmissions = saveQuestionSubmissions(request.questionSubmissions(), surveySubmission);
 		saveQuestionOptionSubmissions(request.questionSubmissions(), questionSubmissions);
 		survey.submitSurvey();
+
+		if (survey.getRewardType().equals(RewardType.POINT)) {
+			survey.updateAvailablePoint();
+			long amount = survey.getPoint();
+			memberService.surveyPointHistory(member, survey, amount);
+			updateSurveyPointHistory(survey, member, amount);
+		}
+	}
+
+	private void updateSurveyPointHistory(Survey survey, Member member, long amount) {
+		SurveyPointHistory history = SurveyPointHistory.builder()
+			.survey(survey)
+			.member(member)
+			.amount(amount)
+			.build();
+		surveyPointHistoryRepository.save(history);
 	}
 
 	private void validateInProgressSurvey(Survey survey) {
@@ -203,8 +222,7 @@ public class SurveyService {
 	}
 
 	private void validateSurveyPoint(Survey survey) {
-		long point = survey.getEstimatedTime() * survey.getRewardPoint();
-		if (survey.getRewardType().equals(RewardType.POINT) && point > survey.getAvailablePoint()) {
+		if (survey.getRewardType().equals(RewardType.POINT) && survey.getPoint() > survey.getAvailablePoint()) {
 			throw new BusinessException(SurveyErrorCode.SURVEY_NOT_ENOUGH_POINTS);
 		}
 	}
@@ -335,6 +353,10 @@ public class SurveyService {
 		}
 
 		surveyRepository.save(survey);
+
+		if (request.rewardType().equals(RewardType.POINT)) {
+			memberService.surveyPointHistory(member, survey, -survey.getPoint());
+		}
 	}
 
 	@Transactional(readOnly = true)
