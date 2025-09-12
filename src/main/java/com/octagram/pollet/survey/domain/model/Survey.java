@@ -144,10 +144,15 @@ public class Survey extends BaseEntity {
 		question.setSurvey(this);
 	}
 
+	public long getPoint() {
+		return rewardPoint * estimatedTime;
+	}
+
 	public void submitSurvey() {
 		this.currentSubmissionCount++;
-		if (this.rewardType.equals(RewardType.POINT)) {
-			this.availablePoint -= this.rewardPoint * this.getEstimatedTime();
-		}
+	}
+
+	public void updateAvailablePoint() {
+		this.availablePoint -= getPoint();
 	}
 }
