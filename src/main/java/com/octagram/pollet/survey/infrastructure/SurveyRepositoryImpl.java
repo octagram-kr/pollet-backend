@@ -84,6 +84,8 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
 			.selectFrom(survey)
 			.where(survey.member.id.eq(memberId))
 			.orderBy(survey.createdAt.desc())
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize())
 			.fetch();
 	}
 
@@ -93,6 +95,9 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
 			.select(surveySubmission.survey).distinct()
 			.from(surveySubmission)
 			.where(surveySubmission.member.id.eq(memberId))
+			.orderBy(survey.createdAt.desc())
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize())
 			.fetch();
 	}
 
