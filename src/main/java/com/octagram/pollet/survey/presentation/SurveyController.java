@@ -23,6 +23,7 @@ import com.octagram.pollet.global.aws.service.S3Service;
 import com.octagram.pollet.global.dto.ApiResponse;
 import com.octagram.pollet.member.application.MemberService;
 import com.octagram.pollet.member.domain.model.Member;
+import com.octagram.pollet.member.presentation.dto.response.MemberTagResponse;
 import com.octagram.pollet.survey.application.SurveyService;
 import com.octagram.pollet.survey.domain.status.SurveySuccessCode;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyCreateRequest;
@@ -367,6 +368,27 @@ public class SurveyController {
 			@PathVariable Long surveyId
 	) {
 		SurveyMetadataResponse result = surveyService.getSurveyMetadata(surveyId);
+		return ApiResponse.success(result);
+	}
+
+	@GetMapping("/me/created")
+	@Operation(summary = "내가 만든 설문조사 목록 조회")
+	public ApiResponse<List<SurveyResponse>> findMyCreatedSurveys(@AuthenticationPrincipal String memberId, @PageableDefault(size = 12) Pageable pageable) {
+		List<SurveyResponse> result = surveyService.findMyCreatedSurveys(memberId, pageable);
+		return ApiResponse.success(result);
+	}
+
+	@GetMapping("/me/participated")
+	@Operation(summary = "내가 참여한 설문조사 목록 조회")
+	public ApiResponse<List<SurveyResponse>> findMyParticipatedSurveys(@AuthenticationPrincipal String memberId, @PageableDefault(size = 12) Pageable pageable) {
+		List<SurveyResponse> result = surveyService.findMyParticipatedSurveys(memberId, pageable);
+		return ApiResponse.success(result);
+	}
+
+	@GetMapping("/me/participated/tags")
+	@Operation(summary = "내가 참여한 설문조사의 태그 목록 조회")
+	public ApiResponse<List<MemberTagResponse>> findTagsFromParticipatedSurveys(@AuthenticationPrincipal String memberId) {
+		List<MemberTagResponse> result = surveyService.findTagsFromParticipatedSurveys(memberId);
 		return ApiResponse.success(result);
 	}
 }

@@ -14,4 +14,6 @@ public interface SurveyRepositoryCustom {
 	long getActiveCount(LocalDateTime now);
 	Optional<Survey> findByIdQueryDsl(Long id);
 	List<Survey> findByFilter(List<String> allTags, SurveyFilterRequest filter, Pageable pageable);
+	List<Survey> findByMemberId(Long memberId, Pageable pageable);
+	List<Survey> findParticipatedByMemberId(Long memberId, Pageable pageable);
 }

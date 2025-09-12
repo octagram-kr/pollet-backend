@@ -6,7 +6,10 @@ import com.octagram.pollet.gifticon.domain.model.GifticonProduct;
 import com.octagram.pollet.gifticon.domain.status.GifticonErrorCode;
 import com.octagram.pollet.global.exception.BusinessException;
 import com.octagram.pollet.member.application.MemberService;
+import com.octagram.pollet.member.application.mapper.MemberTagMapper;
 import com.octagram.pollet.member.domain.model.Member;
+import com.octagram.pollet.member.domain.model.MemberTag;
+import com.octagram.pollet.member.presentation.dto.response.MemberTagResponse;
 import com.octagram.pollet.survey.application.mapper.QuestionMapper;
 import com.octagram.pollet.survey.application.mapper.QuestionOptionSubmissionMapper;
 import com.octagram.pollet.survey.application.mapper.QuestionSubmissionMapper;
@@ -80,6 +83,7 @@ public class SurveyService {
 	private final MemberService memberService;
 	private final SurveySubmissionMapper surveySubmissionMapper;
 	private final QuestionOptionSubmissionMapper questionOptionSubmissionMapper;
+	private final MemberTagMapper memberTagMapper;
 
 	@Transactional(readOnly = true)
 	public List<TagResponse> getAllTags() {
@@ -415,5 +419,30 @@ public class SurveyService {
 		if (now.isBefore(start)) return "대기중";
 		if (now.isAfter(end)) return "종료";
 		return "진행중";
+	}
+
+	@Transactional(readOnly = true)
+	public List<SurveyResponse> findMyCreatedSurveys(String memberId, Pageable pageable) {
+		Member member = memberService.findByMemberId(memberId);
+		List<Survey> surveys = surveyRepository.findByMemberId(member.getId(), pageable);
+		return surveys.stream()
+			.map(surveyMapper::toSurveyResponse)
+			.toList();
+	}
+
+	public List<SurveyResponse> findMyParticipatedSurveys(String memberId, Pageable pageable) {
+		Member member = memberService.findByMemberId(memberId);
+		List<Survey> surveys = surveyRepository.findParticipatedByMemberId(member.getId(), pageable);
+		return surveys.stream()
+			.map(surveyMapper::toSurveyResponse)
+			.toList();
+	}
+
+	@Transactional(readOnly = true)
+	public List<MemberTagResponse> findTagsFromParticipatedSurveys(String memberId) {
+		List<MemberTag> memberTags = memberService.findMemberTags(memberId);
+		return memberTags.stream()
+			.map(memberTagMapper::toResponse)
+			.toList();
 	}
 }
