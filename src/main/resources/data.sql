@@ -164,3 +164,7 @@ INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES 
 INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (22,'2025-09-06 11:20:00.000000','2025-09-06 11:20:00.000000',4,14); -- 여자
 INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (23,'2025-09-06 11:20:00.000000','2025-09-06 11:20:00.000000',4,19); -- 50대
 INSERT INTO `survey_tag` (id, created_at, updated_at, survey_id, tag_id) VALUES (24,'2025-09-06 11:20:00.000000','2025-09-06 11:20:00.000000',4,28); -- 창업자
+
+INSERT INTO `member_tag` (member_id, tag_id, complete_count) VALUES (1, 1, 1);
+INSERT INTO `member_tag` (member_id, tag_id, complete_count) VALUES (1, 2, 1);
+INSERT INTO `member_tag` (member_id, tag_id, complete_count) VALUES (1, 3, 1);
