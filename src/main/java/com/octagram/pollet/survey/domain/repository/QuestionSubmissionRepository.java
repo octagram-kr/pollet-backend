@@ -1,8 +1,14 @@
 package com.octagram.pollet.survey.domain.repository;
 
+import com.octagram.pollet.survey.domain.model.Question;
+import com.octagram.pollet.survey.domain.model.QuestionSubmission;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.octagram.pollet.survey.domain.model.QuestionSubmission;
+public interface QuestionSubmissionRepository extends JpaRepository<QuestionSubmission, Long>, QuestionSubmissionRepositoryCustom {
 
-public interface QuestionSubmissionRepository extends JpaRepository<QuestionSubmission, Long> {
+	int countByQuestion(Question question);
+
+	Slice<QuestionSubmission> findBySurveySubmissionId(Long submissionId, Pageable pageable);
 }

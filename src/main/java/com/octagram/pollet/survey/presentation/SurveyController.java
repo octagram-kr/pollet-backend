@@ -1,5 +1,24 @@
 package com.octagram.pollet.survey.presentation;
 
+import java.time.Duration;
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.octagram.pollet.global.aws.service.S3Service;
 import com.octagram.pollet.global.dto.ApiResponse;
 import com.octagram.pollet.member.application.MemberService;
@@ -9,31 +28,24 @@ import com.octagram.pollet.survey.domain.status.SurveySuccessCode;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyCreateRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyFilterRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveySubmissionRequest;
-import com.octagram.pollet.survey.presentation.dto.response.*;
+import com.octagram.pollet.survey.presentation.dto.response.ParticipantResultResponse;
+import com.octagram.pollet.survey.presentation.dto.response.QuestionStatisticsResponse;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyGetRecentResponse;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyImageGetResponse;
 import com.octagram.pollet.survey.presentation.dto.response.SurveyImageUploadResponse;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyMetadataResponse;
+import com.octagram.pollet.survey.presentation.dto.response.TargetQuestionResponse;
 import com.octagram.pollet.survey.presentation.dto.response.standard.QuestionResponse;
 import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyResponse;
 import com.octagram.pollet.survey.presentation.dto.response.standard.TagResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
-
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.MediaType;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import java.time.Duration;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -323,5 +335,38 @@ public class SurveyController {
 	public ApiResponse<?> createSurvey(@AuthenticationPrincipal String memberId, @RequestBody @Valid SurveyCreateRequest request) {
 		surveyService.createSurvey(memberId, request);
 		return ApiResponse.success(SurveySuccessCode.CREATE_SURVEY_SUCCESS);
+	}
+
+	@GetMapping("{surveyId}/result")
+	@Operation(summary = "설문조사 전체 결과 조회(문항별 응답 통계 조회)", description = "특정 설문조사의 전체 결과를 조회합니다.(특정 설문조사의 각 문항별 응답 통계를 조회합니다.)")
+	public ApiResponse<Slice<QuestionStatisticsResponse>> getSurveyResults(
+			@AuthenticationPrincipal String memberId,
+			@PathVariable Long surveyId,
+			@PageableDefault(size = 10) Pageable pageable
+
+	) {
+		Slice<QuestionStatisticsResponse> result = surveyService.getSurveyResults(memberId, surveyId, pageable);
+		return ApiResponse.success(result);
+	}
+
+	@GetMapping("/{surveyId}/result/{submissionId}")
+	@Operation(summary = "참여자별 응답 결과 조회", description = "특정 설문조사에서 특정 참여자의 제출 결과를 조회합니다.")
+	public ApiResponse<Slice<ParticipantResultResponse.QuestionAnswer>> getParticipantResult(
+			@AuthenticationPrincipal String memberId,
+			@PathVariable Long surveyId,
+			@PathVariable Long submissionId,
+			@PageableDefault(size = 10) Pageable pageable
+	) {
+		Slice<ParticipantResultResponse.QuestionAnswer> result = surveyService.getParticipantResult(memberId, surveyId, submissionId, pageable);
+		return ApiResponse.success(result);
+	}
+
+	@GetMapping("/{surveyId}/result/metadata")
+	@Operation(summary = "설문조사 메타데이터 조회", description = "설문조사의 제목, 설명, 기간, 상태, 참여자 수 등을 조회합니다.")
+	public ApiResponse<SurveyMetadataResponse> getSurveyMetadata(
+			@PathVariable Long surveyId
+	) {
+		SurveyMetadataResponse result = surveyService.getSurveyMetadata(surveyId);
+		return ApiResponse.success(result);
 	}
 }

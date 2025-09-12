@@ -1,12 +1,18 @@
 package com.octagram.pollet.survey.application;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.octagram.pollet.gifticon.application.GifticonService;
 import com.octagram.pollet.gifticon.domain.model.GifticonProduct;
 import com.octagram.pollet.gifticon.domain.status.GifticonErrorCode;
 import com.octagram.pollet.global.exception.BusinessException;
 import com.octagram.pollet.member.application.MemberService;
-import com.octagram.pollet.member.domain.model.Member;
-import com.octagram.pollet.member.domain.status.MemberErrorCode;
 import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.survey.application.mapper.QuestionMapper;
 import com.octagram.pollet.survey.application.mapper.QuestionOptionSubmissionMapper;
@@ -19,40 +25,35 @@ import com.octagram.pollet.survey.domain.model.QuestionOption;
 import com.octagram.pollet.survey.domain.model.QuestionOptionSubmission;
 import com.octagram.pollet.survey.domain.model.QuestionSubmission;
 import com.octagram.pollet.survey.domain.model.Survey;
+import com.octagram.pollet.survey.domain.model.SurveySubmission;
 import com.octagram.pollet.survey.domain.model.SurveyTag;
 import com.octagram.pollet.survey.domain.model.Tag;
-import com.octagram.pollet.survey.domain.model.SurveySubmission;
 import com.octagram.pollet.survey.domain.repository.QuestionOptionSubmissionRepository;
 import com.octagram.pollet.survey.domain.repository.QuestionRepository;
 import com.octagram.pollet.survey.domain.repository.QuestionSubmissionRepository;
+import com.octagram.pollet.survey.domain.repository.SurveyRepository;
 import com.octagram.pollet.survey.domain.repository.SurveySubmissionRepository;
+import com.octagram.pollet.survey.domain.repository.SurveyTagRepository;
+import com.octagram.pollet.survey.domain.repository.TagRepository;
 import com.octagram.pollet.survey.domain.status.SurveyErrorCode;
 import com.octagram.pollet.survey.domain.status.TagErrorCode;
+import com.octagram.pollet.survey.presentation.dto.request.QuestionSubmissionRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyCreateQuestionOptionRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyCreateQuestionRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyCreateRequest;
-import com.octagram.pollet.survey.presentation.dto.request.QuestionSubmissionRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyFilterRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveySubmissionRequest;
-import com.octagram.pollet.survey.presentation.dto.response.*;
-import com.octagram.pollet.survey.domain.repository.SurveyRepository;
-import com.octagram.pollet.survey.domain.repository.SurveyTagRepository;
-import com.octagram.pollet.survey.domain.repository.TagRepository;
+import com.octagram.pollet.survey.presentation.dto.response.ParticipantResultResponse;
+import com.octagram.pollet.survey.presentation.dto.response.QuestionOptionListResponse;
+import com.octagram.pollet.survey.presentation.dto.response.QuestionStatisticsResponse;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyGetRecentResponse;
+import com.octagram.pollet.survey.presentation.dto.response.SurveyMetadataResponse;
+import com.octagram.pollet.survey.presentation.dto.response.TargetQuestionResponse;
 import com.octagram.pollet.survey.presentation.dto.response.standard.QuestionResponse;
 import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyResponse;
 import com.octagram.pollet.survey.presentation.dto.response.standard.TagResponse;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -60,19 +61,19 @@ import java.util.List;
 public class SurveyService {
 
 	private final GifticonService gifticonService;
+	private final QuestionSubmissionMapper questionSubmissionMapper;
+	private final QuestionOptionSubmissionRepository questionOptionSubmissionRepository;
+	private final QuestionSubmissionRepository questionSubmissionRepository;
+	private final SurveySubmissionRepository surveySubmissionRepository;
 	private final SurveyRepository surveyRepository;
 	private final TagRepository tagRepository;
 	private final QuestionRepository questionRepository;
 	private final SurveyTagRepository surveyTagRepository;
-	private final SurveySubmissionRepository surveySubmissionRepository;
-	private final QuestionSubmissionRepository questionSubmissionRepository;
-	private final QuestionOptionSubmissionRepository questionOptionSubmissionRepository;
 	private final SurveyMapper surveyMapper;
 	private final TagMapper tagMapper;
 	private final QuestionMapper questionMapper;
 	private final MemberService memberService;
 	private final SurveySubmissionMapper surveySubmissionMapper;
-	private final QuestionSubmissionMapper questionSubmissionMapper;
 	private final QuestionOptionSubmissionMapper questionOptionSubmissionMapper;
 
 	@Transactional(readOnly = true)
@@ -277,5 +278,89 @@ public class SurveyService {
 		}
 
 		surveyRepository.save(survey);
+	}
+
+	@Transactional(readOnly = true)
+	public Slice<QuestionStatisticsResponse> getSurveyResults(String memberId, Long surveyId, Pageable pageable) {
+		Survey survey = surveyRepository.findById(surveyId)
+				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
+
+		validateSurveyCreator(memberId, survey);
+
+		int respondentCount = surveySubmissionRepository.countBySurvey(survey);
+
+		Slice<Question> questionsPage = questionRepository.findBySurveyId(surveyId, pageable);
+
+		Slice<QuestionStatisticsResponse.QuestionResult> questionResults = questionsPage.map(question -> {
+			int answeredCount = questionSubmissionRepository.countByQuestion(question);
+
+			List<QuestionStatisticsResponse.OptionResult> options = question.getOptions().stream()
+					.map(option -> {
+						int responseCount = questionOptionSubmissionRepository.countByQuestionOption(option);
+						double ratio = answeredCount == 0 ? 0 : (double) responseCount / answeredCount;
+						return questionMapper.toOptionResult(option, responseCount, ratio);
+					})
+					.toList();
+
+			List<String> etcAnswers = switch (question.getType()) {
+				case SINGLE_CHOICE, MULTIPLE_CHOICE -> List.of();
+				case SHORT_ANSWER, LONG_ANSWER -> questionSubmissionRepository.findAnswersByQuestion(question);
+			};
+
+			return questionMapper.toQuestionResult(question, options, answeredCount, etcAnswers);
+		});
+
+		return questionResults.map(questionResult -> new QuestionStatisticsResponse(
+				survey.getId(),
+				survey.getTitle(),
+				respondentCount,
+				List.of(questionResult)
+		));
+	}
+
+	@Transactional(readOnly = true)
+	public Slice<ParticipantResultResponse.QuestionAnswer> getParticipantResult(String memberId, Long surveyId, Long submissionId, Pageable pageable) {
+		Survey survey = surveyRepository.findById(surveyId)
+				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
+
+		SurveySubmission surveySubmission = surveySubmissionRepository.findBySurveyIdAndId(surveyId, submissionId)
+				.orElseThrow(() -> new BusinessException(SurveyErrorCode.INVALID_SUBMISSION));
+
+		validateSurveyCreator(memberId, survey);
+
+		Slice<QuestionSubmission> questionSubmissions = questionSubmissionRepository
+				.findBySurveySubmissionId(submissionId, pageable);
+
+		return questionSubmissions.map(qs -> {
+			List<QuestionOptionSubmission> optionSubmissions = questionOptionSubmissionRepository
+					.findByQuestionSubmissionId(qs.getId());
+			List<ParticipantResultResponse.SelectedOption> selectedOptions = optionSubmissions.stream()
+					.map(questionSubmissionMapper::toSelectedOption)
+					.toList();
+
+			return questionSubmissionMapper.toQuestionAnswer(qs, selectedOptions);
+		});
+	}
+
+	private void validateSurveyCreator(String memberId, Survey survey) {
+		Member member = memberService.findByMemberId(memberId);
+
+		if (!survey.getMember().getId().equals(member.getId())) {
+			throw new BusinessException(SurveyErrorCode.UNAUTHORIZED_ACCESS);
+		}
+	}
+
+	@Transactional(readOnly = true)
+	public SurveyMetadataResponse getSurveyMetadata(Long surveyId) {
+		Survey survey = surveyRepository.findById(surveyId)
+				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
+		return surveyMapper.toSurveyMetadataResponse(survey);
+	}
+
+	private String resolveSurveyStatus(LocalDateTime start, LocalDateTime end) {
+		LocalDateTime now = LocalDateTime.now();
+		if (now.isBefore(start)) return "대기중";
+		if (now.isAfter(end)) return "종료";
+		return "진행중";
 	}
 }
