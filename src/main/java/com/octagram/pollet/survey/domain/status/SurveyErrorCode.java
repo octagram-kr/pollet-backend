@@ -24,7 +24,8 @@ public enum SurveyErrorCode implements BaseCode {
 	SURVEY_NOT_STARTED(HttpStatus.UNPROCESSABLE_ENTITY, "SE_011", "아직 설문조사가 시작되지 않았습니다."),
 	SURVEY_CLOSED(HttpStatus.UNPROCESSABLE_ENTITY, "SE_012", "종료된 설문조사입니다."),
 	ALREADY_SUBMIT_SURVEY(HttpStatus.CONFLICT, "SE_013", "이미 참여한 설문입니다."),
-	REQUIRED_QUESTION_SUBMISSION(HttpStatus.BAD_REQUEST, "SE_014", "필수 질문에 대한 응답이 필요합니다.");
+	REQUIRED_QUESTION_SUBMISSION(HttpStatus.BAD_REQUEST, "SE_014", "필수 질문에 대한 응답이 필요합니다."),
+	SURVEY_NOT_ENOUGH_POINTS(HttpStatus.CONFLICT, "SE_015", "설문의 예치 포인트가 부족하여 설문조사에 참여할 수 없습니다.");
 
 	private final HttpStatus status;
 	private final String code;

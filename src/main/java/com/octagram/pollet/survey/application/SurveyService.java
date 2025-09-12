@@ -22,6 +22,7 @@ import com.octagram.pollet.survey.domain.model.SurveySubmission;
 import com.octagram.pollet.survey.domain.model.SurveyTag;
 import com.octagram.pollet.survey.domain.model.Tag;
 import com.octagram.pollet.survey.domain.model.type.EndCondition;
+import com.octagram.pollet.survey.domain.model.type.RewardType;
 import com.octagram.pollet.survey.domain.repository.QuestionOptionSubmissionRepository;
 import com.octagram.pollet.survey.domain.repository.QuestionRepository;
 import com.octagram.pollet.survey.domain.repository.QuestionSubmissionRepository;
@@ -169,6 +170,7 @@ public class SurveyService {
 			.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
 
 		validateInProgressSurvey(survey);
+		validateSurveyPoint(survey);
 		validateSurveyNotSubmitted(survey, member);
 		validateRequiredQuestionSubmission(request.questionSubmissions());
 
@@ -176,7 +178,7 @@ public class SurveyService {
 		SurveySubmission surveySubmission = saveSurveySubmission(request, survey, member);
 		List<QuestionSubmission> questionSubmissions = saveQuestionSubmissions(request.questionSubmissions(), surveySubmission);
 		saveQuestionOptionSubmissions(request.questionSubmissions(), questionSubmissions);
-		survey.addCurrentSubmissionCount();
+		survey.submitSurvey();
 	}
 
 	private void validateInProgressSurvey(Survey survey) {
@@ -193,6 +195,13 @@ public class SurveyService {
 
 		if (isEndByDate || isEndBySubmissionCount) {
 			throw new BusinessException(SurveyErrorCode.SURVEY_CLOSED);
+		}
+	}
+
+	private void validateSurveyPoint(Survey survey) {
+		long point = survey.getEstimatedTime() * survey.getRewardPoint();
+		if (survey.getRewardType().equals(RewardType.POINT) && point > survey.getAvailablePoint()) {
+			throw new BusinessException(SurveyErrorCode.SURVEY_NOT_ENOUGH_POINTS);
 		}
 	}
 
