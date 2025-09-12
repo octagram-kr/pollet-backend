@@ -1,13 +1,6 @@
 package com.octagram.pollet.survey.application;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.octagram.pollet.gifticon.application.GifticonService;
 import com.octagram.pollet.gifticon.domain.model.GifticonProduct;
 import com.octagram.pollet.gifticon.domain.status.GifticonErrorCode;
@@ -28,6 +21,8 @@ import com.octagram.pollet.survey.domain.model.Survey;
 import com.octagram.pollet.survey.domain.model.SurveySubmission;
 import com.octagram.pollet.survey.domain.model.SurveyTag;
 import com.octagram.pollet.survey.domain.model.Tag;
+import com.octagram.pollet.survey.domain.model.type.EndCondition;
+import com.octagram.pollet.survey.domain.model.type.RewardType;
 import com.octagram.pollet.survey.domain.repository.QuestionOptionSubmissionRepository;
 import com.octagram.pollet.survey.domain.repository.QuestionRepository;
 import com.octagram.pollet.survey.domain.repository.QuestionSubmissionRepository;
@@ -52,8 +47,18 @@ import com.octagram.pollet.survey.presentation.dto.response.TargetQuestionRespon
 import com.octagram.pollet.survey.presentation.dto.response.standard.QuestionResponse;
 import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyResponse;
 import com.octagram.pollet.survey.presentation.dto.response.standard.TagResponse;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -164,9 +169,57 @@ public class SurveyService {
 		Survey survey = surveyRepository.findById(surveyId)
 			.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
 
+		validateInProgressSurvey(survey);
+		validateSurveyPoint(survey);
+		validateSurveyNotSubmitted(survey, member);
+		validateRequiredQuestionSubmission(request.questionSubmissions());
+
+		surveySubmissionRepository.existsBySurveyAndMember(survey, member);
 		SurveySubmission surveySubmission = saveSurveySubmission(request, survey, member);
 		List<QuestionSubmission> questionSubmissions = saveQuestionSubmissions(request.questionSubmissions(), surveySubmission);
 		saveQuestionOptionSubmissions(request.questionSubmissions(), questionSubmissions);
+		survey.submitSurvey();
+	}
+
+	private void validateInProgressSurvey(Survey survey) {
+		LocalDateTime now = LocalDateTime.now();
+
+		if (now.isBefore(survey.getStartDateTime())) {
+			throw new BusinessException(SurveyErrorCode.SURVEY_NOT_STARTED);
+		}
+
+		boolean isEndByDate = EndCondition.END_BY_DATE.equals(survey.getEndCondition()) && now.isAfter(survey.getEndDateTime());
+		boolean isEndBySubmissionCount =
+			EndCondition.END_BY_SUBMISSION_COUNT.equals(survey.getEndCondition())
+			&& survey.getCurrentSubmissionCount() >= survey.getRequireSubmissionCount();
+
+		if (isEndByDate || isEndBySubmissionCount) {
+			throw new BusinessException(SurveyErrorCode.SURVEY_CLOSED);
+		}
+	}
+
+	private void validateSurveyPoint(Survey survey) {
+		long point = survey.getEstimatedTime() * survey.getRewardPoint();
+		if (survey.getRewardType().equals(RewardType.POINT) && point > survey.getAvailablePoint()) {
+			throw new BusinessException(SurveyErrorCode.SURVEY_NOT_ENOUGH_POINTS);
+		}
+	}
+
+	private void validateSurveyNotSubmitted(Survey survey, Member member) {
+		if (surveySubmissionRepository.existsBySurveyAndMember(survey, member)) {
+			throw new BusinessException(SurveyErrorCode.ALREADY_SUBMIT_SURVEY);
+		}
+	}
+
+	private void validateRequiredQuestionSubmission(List<QuestionSubmissionRequest> requests) {
+		for (QuestionSubmissionRequest request : requests) {
+			Question question = questionRepository.findById(request.questionId())
+				.orElseThrow(() -> new BusinessException(SurveyErrorCode.QUESTION_NOT_FOUND));
+
+			if (question.getIsRequired() && request.questionOptionSubmissions().isEmpty()) {
+				throw new BusinessException(SurveyErrorCode.REQUIRED_QUESTION_SUBMISSION);
+			}
+		}
 	}
 
 	private SurveySubmission saveSurveySubmission(SurveySubmissionRequest request, Survey survey, Member member) {

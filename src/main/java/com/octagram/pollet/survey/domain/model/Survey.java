@@ -143,4 +143,11 @@ public class Survey extends BaseEntity {
 		this.questions.add(question);
 		question.setSurvey(this);
 	}
+
+	public void submitSurvey() {
+		this.currentSubmissionCount++;
+		if (this.rewardType.equals(RewardType.POINT)) {
+			this.availablePoint -= this.rewardPoint * this.getEstimatedTime();
+		}
+	}
 }
