@@ -14,7 +14,6 @@ import com.octagram.pollet.gifticon.domain.status.GifticonErrorCode;
 import com.octagram.pollet.global.exception.BusinessException;
 import com.octagram.pollet.member.application.MemberService;
 import com.octagram.pollet.member.domain.model.Member;
-import com.octagram.pollet.member.domain.status.MemberErrorCode;
 import com.octagram.pollet.survey.application.mapper.QuestionMapper;
 import com.octagram.pollet.survey.application.mapper.QuestionOptionSubmissionMapper;
 import com.octagram.pollet.survey.application.mapper.QuestionSubmissionMapper;
@@ -324,7 +323,6 @@ public class SurveyService {
 		Survey survey = surveyRepository.findById(surveyId)
 				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
 
-		// surveyId와 submissionId가 연관된 데이터인지 검증
 		SurveySubmission surveySubmission = surveySubmissionRepository.findBySurveyIdAndId(surveyId, submissionId)
 				.orElseThrow(() -> new BusinessException(SurveyErrorCode.INVALID_SUBMISSION));
 
