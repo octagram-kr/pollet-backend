@@ -3,13 +3,11 @@ package com.octagram.pollet.survey.application;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.octagram.pollet.gifticon.application.GifticonService;
 import com.octagram.pollet.gifticon.domain.model.GifticonProduct;
 import com.octagram.pollet.gifticon.domain.status.GifticonErrorCode;
@@ -55,7 +53,6 @@ import com.octagram.pollet.survey.presentation.dto.response.TargetQuestionRespon
 import com.octagram.pollet.survey.presentation.dto.response.standard.QuestionResponse;
 import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyResponse;
 import com.octagram.pollet.survey.presentation.dto.response.standard.TagResponse;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -328,14 +325,11 @@ public class SurveyService {
 		Survey survey = surveyRepository.findById(surveyId)
 				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
 
+		// surveyId와 submissionId가 연관된 데이터인지 검증
+		SurveySubmission surveySubmission = surveySubmissionRepository.findBySurveyIdAndId(surveyId, submissionId)
+				.orElseThrow(() -> new BusinessException(SurveyErrorCode.INVALID_SUBMISSION));
+
 		validateSurveyCreator(memberId, survey);
-
-		SurveySubmission submission = surveySubmissionRepository.findById(submissionId)
-				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SUBMISSION_NOT_FOUND));
-
-		if (!submission.getSurvey().getId().equals(surveyId)) {
-			throw new BusinessException(SurveyErrorCode.INVALID_SUBMISSION);
-		}
 
 		Slice<QuestionSubmission> questionSubmissions = questionSubmissionRepository
 				.findBySurveySubmissionId(submissionId, pageable);
@@ -352,11 +346,9 @@ public class SurveyService {
 	}
 
 	private void validateSurveyCreator(String memberId, Survey survey) {
-		// 회원 확인
 		Member member = memberService.findByMemberId(memberId)
 				.orElseThrow(() -> new BusinessException(MemberErrorCode.MEMBER_NOT_FOUND));
 
-		// 설문조사 생성자 확인
 		if (!survey.getMember().equals(member)) {
 			throw new BusinessException(SurveyErrorCode.UNAUTHORIZED_ACCESS);
 		}
