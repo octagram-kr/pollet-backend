@@ -364,10 +364,9 @@ public class SurveyController {
 	@GetMapping("/{surveyId}/result/metadata")
 	@Operation(summary = "설문조사 메타데이터 조회", description = "설문조사의 제목, 설명, 기간, 상태, 참여자 수 등을 조회합니다.")
 	public ApiResponse<SurveyMetadataResponse> getSurveyMetadata(
-			@AuthenticationPrincipal String memberId,
 			@PathVariable Long surveyId
 	) {
-		SurveyMetadataResponse result = surveyService.getSurveyMetadata(memberId, surveyId);
+		SurveyMetadataResponse result = surveyService.getSurveyMetadata(surveyId);
 		return ApiResponse.success(result);
 	}
 }
