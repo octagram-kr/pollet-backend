@@ -1,10 +1,13 @@
 package com.octagram.pollet.member.domain.model;
 
 import com.octagram.pollet.gifticon.domain.model.GifticonCode;
+import com.octagram.pollet.member.domain.model.type.TransactionType;
 import com.octagram.pollet.survey.domain.model.Survey;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -46,8 +49,9 @@ public class PointHistory {
 	@Column(nullable = true)
 	private Long transactionNumber;
 
+	@Enumerated(EnumType.STRING)
 	@Column(nullable = true)
-	private String transactionType;
+	private TransactionType transactionType;
 
 	@Column(nullable = true)
 	private String transactionDescription;
