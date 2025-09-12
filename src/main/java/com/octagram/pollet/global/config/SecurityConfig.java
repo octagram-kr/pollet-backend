@@ -32,6 +32,7 @@ public class SecurityConfig {
 	private static final List<String> ALLOWED_ORIGINS = List.of(
 		// frontend
 		"http://localhost:3000",
+		"https://pollet.vercel.app",
 
 		// backend
 		"http://localhost:8080",
