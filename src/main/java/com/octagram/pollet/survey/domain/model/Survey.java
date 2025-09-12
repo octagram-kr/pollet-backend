@@ -143,4 +143,8 @@ public class Survey extends BaseEntity {
 		this.questions.add(question);
 		question.setSurvey(this);
 	}
+
+	public void addCurrentSubmissionCount() {
+		this.currentSubmissionCount++;
+	}
 }
