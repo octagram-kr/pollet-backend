@@ -289,7 +289,6 @@ public class SurveyService {
 		Survey survey = surveyRepository.findById(surveyId)
 				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
 
-		// 설문조사 생성자 검증
 		validateSurveyCreator(memberId, survey);
 
 		int respondentCount = surveySubmissionRepository.countBySurvey(survey);
@@ -323,18 +322,12 @@ public class SurveyService {
 		));
 	}
 
-	private void validateSurveyCreator(String memberId, Survey survey) {
-		Member member = memberService.findByMemberId(memberId)
-				.orElseThrow(() -> new BusinessException(MemberErrorCode.MEMBER_NOT_FOUND));
-	}
-
 	@Transactional(readOnly = true)
 	public Slice<ParticipantResultResponse.QuestionAnswer> getParticipantResult(String memberId, Long surveyId, Long submissionId, Pageable pageable) {
 		Survey survey = surveyRepository.findById(surveyId)
 				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
 
-		Member member = memberService.findByMemberId(memberId)
-				.orElseThrow(() -> new BusinessException(MemberErrorCode.MEMBER_NOT_FOUND));
+		validateSurveyCreator(memberId, survey);
 
 		SurveySubmission submission = surveySubmissionRepository.findById(submissionId)
 				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SUBMISSION_NOT_FOUND));
@@ -355,6 +348,17 @@ public class SurveyService {
 
 			return questionSubmissionMapper.toQuestionAnswer(qs, selectedOptions);
 		});
+	}
+
+	private void validateSurveyCreator(String memberId, Survey survey) {
+		// 회원 확인
+		Member member = memberService.findByMemberId(memberId)
+				.orElseThrow(() -> new BusinessException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+		// 설문조사 생성자 확인
+		if (!survey.getMember().equals(member)) {
+			throw new BusinessException(SurveyErrorCode.UNAUTHORIZED_ACCESS);
+		}
 	}
 
 	@Transactional(readOnly = true)
