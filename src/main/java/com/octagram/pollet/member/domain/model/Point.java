@@ -33,4 +33,8 @@ public class Point {
 
 	@Column(nullable = false)
 	private long balance;
+
+	public long updateBalance(long amount) {
+		return this.balance += amount;
+	}
 }
