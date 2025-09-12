@@ -361,10 +361,6 @@ public class SurveyService {
 	public SurveyMetadataResponse getSurveyMetadata(String memberId, Long surveyId) {
 		Survey survey = surveyRepository.findById(surveyId)
 				.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
-
-		Member member = memberService.findByMemberId(memberId)
-				.orElseThrow(() -> new BusinessException(MemberErrorCode.MEMBER_NOT_FOUND));
-
 		return surveyMapper.toSurveyMetadataResponse(survey);
 	}
 
