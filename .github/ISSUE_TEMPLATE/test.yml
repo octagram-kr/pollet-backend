@@ -1,0 +1,58 @@
+name: ✅ Test
+description: 테스팅 작업을 구성하고, 수행합니다.
+title: "[TEST] "
+labels: 
+  - ✅ test
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### 이슈를 작성하기 전에 아래 내용을 확인해주세요:
+        - 동일한 작업에 대한 이슈가 없음을 확인했습니다.
+        - 테스팅 목적이 명확합니다.
+
+  - type: input
+    id: task-target
+    attributes:
+      label: 📄 테스팅 대상
+      description: 무엇을 대상으로 테스팅을 진행할 것인지 작성해주세요.
+      placeholder: ex) 사용자 추가 DB 관련 로직
+    validations:
+      required: true
+
+  - type: input
+    id: task-description
+    attributes:
+      label: 📄 테스팅 개요
+      description: 테스팅의 목적을 작성해주세요.
+      placeholder: ex) 사용자 정보가 정상적으로 DB에 반영되는 지 확인하기 위함.
+    validations:
+      required: true
+
+  - type: textarea
+    id: task-steps
+    attributes:
+      label: 📈 진행 체크리스트
+      description: 어떤 테스팅 작업을 진행할지 체크리스트 형식으로 작성해주세요.
+      value: |
+        - [ ] 작업 1
+        - [ ] 작업 2
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 👍🏻 추가 정보
+      description: 작업을 이해하는 데 도움이 될 스크린샷, 첨부파일, 링크 등 추가 정보를 작성해주세요. (선택 사항)
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### 이슈를 생성하기 전에 아래 내용을 확인해주세요:
+        - 제목이 테스팅의 내용을 잘 표현하고 있습니다.
+        - 작업자를 지정했습니다.
+        - Label이 단 하나만 선택되어 있습니다.
+        - 프로젝트를 연결했습니다.
