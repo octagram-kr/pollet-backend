@@ -1,4 +1,4 @@
-package com.octagram.pollet.member.presentation;
+package com.octagram.pollet.member.presentation.controller;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.octagram.pollet.global.dto.ApiResponse;
-import com.octagram.pollet.member.application.MemberService;
+import com.octagram.pollet.global.presentation.dto.ApiResponse;
+import com.octagram.pollet.member.application.service.MemberService;
 import com.octagram.pollet.member.domain.status.MemberSuccessCode;
 import com.octagram.pollet.member.presentation.dto.request.MemberUpdateRequest;
 

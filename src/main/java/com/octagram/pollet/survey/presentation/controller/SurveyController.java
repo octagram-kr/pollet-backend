@@ -1,4 +1,4 @@
-package com.octagram.pollet.survey.presentation;
+package com.octagram.pollet.survey.presentation.controller;
 
 import java.time.Duration;
 import java.util.List;
@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.octagram.pollet.global.aws.service.S3Service;
-import com.octagram.pollet.global.dto.ApiResponse;
-import com.octagram.pollet.member.application.MemberService;
+import com.octagram.pollet.global.presentation.dto.ApiResponse;
+import com.octagram.pollet.member.application.service.MemberService;
 import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.member.presentation.dto.response.MemberTagResponse;
-import com.octagram.pollet.survey.application.SurveyService;
+import com.octagram.pollet.survey.application.service.SurveyService;
 import com.octagram.pollet.survey.domain.status.SurveySuccessCode;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyCreateRequest;
 import com.octagram.pollet.survey.presentation.dto.request.SurveyFilterRequest;
