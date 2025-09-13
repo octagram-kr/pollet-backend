@@ -17,14 +17,14 @@ import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyWithQ
 @Mapper(uses = {GifticonMapper.class, TagMapper.class})
 public interface SurveyMapper {
 
-	@Mapping(source = "rewardPoint", target = "rewardPoint", defaultValue = "0L")
+	@Mapping(source = "rewardPointPerMinute", target = "rewardPointPerMinute", defaultValue = "0L")
 	SurveyResponse toSurveyResponse(Survey survey);
 
-	@Mapping(source = "rewardPoint", target = "rewardPoint", defaultValue = "0L")
+	@Mapping(source = "rewardPointPerMinute", target = "rewardPointPerMinute", defaultValue = "0L")
 	SurveyWithQuestionResponse toSurveyWithQuestionResponse(Survey survey);
 
 	@Mapping(source = "survey", target = "gifticonName", qualifiedByName = "resolveGifticonName")
-	@Mapping(source = "rewardPoint", target = "rewardPoint")
+	@Mapping(source = "rewardPointPerMinute", target = "rewardPointPerMinute")
 	SurveyGetRecentResponse toGetRecentResponse(Survey survey);
 
 	@Named("resolveGifticonName")

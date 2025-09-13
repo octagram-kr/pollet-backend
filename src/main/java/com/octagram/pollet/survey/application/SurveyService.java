@@ -21,6 +21,7 @@ import com.octagram.pollet.survey.domain.model.QuestionOption;
 import com.octagram.pollet.survey.domain.model.QuestionOptionSubmission;
 import com.octagram.pollet.survey.domain.model.QuestionSubmission;
 import com.octagram.pollet.survey.domain.model.Survey;
+import com.octagram.pollet.survey.domain.model.SurveyPointHistory;
 import com.octagram.pollet.survey.domain.model.SurveySubmission;
 import com.octagram.pollet.survey.domain.model.SurveyTag;
 import com.octagram.pollet.survey.domain.model.Tag;
@@ -29,6 +30,7 @@ import com.octagram.pollet.survey.domain.model.type.RewardType;
 import com.octagram.pollet.survey.domain.repository.QuestionOptionSubmissionRepository;
 import com.octagram.pollet.survey.domain.repository.QuestionRepository;
 import com.octagram.pollet.survey.domain.repository.QuestionSubmissionRepository;
+import com.octagram.pollet.survey.domain.repository.SurveyPointHistoryRepository;
 import com.octagram.pollet.survey.domain.repository.SurveyRepository;
 import com.octagram.pollet.survey.domain.repository.SurveySubmissionRepository;
 import com.octagram.pollet.survey.domain.repository.SurveyTagRepository;
@@ -73,6 +75,7 @@ public class SurveyService {
 	private final QuestionOptionSubmissionRepository questionOptionSubmissionRepository;
 	private final QuestionSubmissionRepository questionSubmissionRepository;
 	private final SurveySubmissionRepository surveySubmissionRepository;
+	private final SurveyPointHistoryRepository surveyPointHistoryRepository;
 	private final SurveyRepository surveyRepository;
 	private final TagRepository tagRepository;
 	private final QuestionRepository questionRepository;
@@ -174,6 +177,7 @@ public class SurveyService {
 			.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
 
 		validateInProgressSurvey(survey);
+		validateOwnSurvey(survey, member);
 		validateSurveyPoint(survey);
 		validateSurveyNotSubmitted(survey, member);
 		validateRequiredQuestionSubmission(request.questionSubmissions());
@@ -183,6 +187,22 @@ public class SurveyService {
 		List<QuestionSubmission> questionSubmissions = saveQuestionSubmissions(request.questionSubmissions(), surveySubmission);
 		saveQuestionOptionSubmissions(request.questionSubmissions(), questionSubmissions);
 		survey.submitSurvey();
+
+		if (survey.getRewardType().equals(RewardType.POINT)) {
+			long amount = survey.getRewardPoint();
+			survey.updateAvailablePoint(-amount);
+			memberService.surveyPointHistory(member, survey, amount);
+			updateSurveyPointHistory(survey, member, amount);
+		}
+	}
+
+	private void updateSurveyPointHistory(Survey survey, Member member, long amount) {
+		SurveyPointHistory history = SurveyPointHistory.builder()
+			.survey(survey)
+			.member(member)
+			.amount(amount)
+			.build();
+		surveyPointHistoryRepository.save(history);
 	}
 
 	private void validateInProgressSurvey(Survey survey) {
@@ -202,9 +222,14 @@ public class SurveyService {
 		}
 	}
 
+	private void validateOwnSurvey(Survey survey, Member member) {
+		if (survey.getMember().getId().equals(member.getId())) {
+			throw new BusinessException(SurveyErrorCode.SURVEY_SELF_SUBMISSION_NOT_ALLOWED);
+		}
+	}
+
 	private void validateSurveyPoint(Survey survey) {
-		long point = survey.getEstimatedTime() * survey.getRewardPoint();
-		if (survey.getRewardType().equals(RewardType.POINT) && point > survey.getAvailablePoint()) {
+		if (survey.getRewardType().equals(RewardType.POINT) && survey.getRewardPoint() > survey.getAvailablePoint()) {
 			throw new BusinessException(SurveyErrorCode.SURVEY_NOT_ENOUGH_POINTS);
 		}
 	}
@@ -283,7 +308,7 @@ public class SurveyService {
 			.rewardType(request.rewardType())
 			.requireSubmissionCount(request.requireSubmissionCount())
 			.estimatedTime(request.estimatedTime())
-			.rewardPoint(request.rewardPoint())
+			.rewardPointPerMinute(request.rewardPointPerMinute())
 			.gifticonProduct(gifticonProduct)
 			.rewardGifticonProductCount(request.rewardGifticonProductCount())
 			.availablePoint(0L)
@@ -335,6 +360,12 @@ public class SurveyService {
 		}
 
 		surveyRepository.save(survey);
+
+		if (request.rewardType().equals(RewardType.POINT)) {
+			long amount = survey.getRequireSubmissionCount() * survey.getRewardPoint();
+			memberService.surveyPointHistory(member, survey, -amount);
+			survey.updateAvailablePoint(amount);
+		}
 	}
 
 	@Transactional(readOnly = true)

@@ -31,7 +31,7 @@ public record SurveyCreateRequest(
 	RewardType rewardType,
 	Long requireSubmissionCount,
 	Long estimatedTime,
-	Long rewardPoint,
+	Long rewardPointPerMinute,
 	Long rewardGifticonProductId,
 	Long rewardGifticonProductCount
 ) {

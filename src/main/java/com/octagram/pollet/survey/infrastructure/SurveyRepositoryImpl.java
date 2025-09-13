@@ -120,11 +120,11 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
 
 	private BooleanExpression pointCondition(Long minPoint, Long maxPoint) {
 		if (minPoint != null && maxPoint != null) {
-			return survey.rewardPoint.between(minPoint, maxPoint);
+			return survey.rewardPointPerMinute.between(minPoint, maxPoint);
 		} else if (minPoint != null) {
-			return survey.rewardPoint.goe(minPoint);
+			return survey.rewardPointPerMinute.goe(minPoint);
 		} else if (maxPoint != null) {
-			return survey.rewardPoint.loe(maxPoint);
+			return survey.rewardPointPerMinute.loe(maxPoint);
 		} else {
 			return null;
 		}
@@ -152,7 +152,7 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
 		}
 
 		return switch (sortType) {
-			case HIGHEST_POINTS -> survey.rewardPoint.desc();
+			case HIGHEST_POINTS -> survey.rewardPointPerMinute.desc();
 			case SHORTEST_TIME -> survey.estimatedTime.asc();
 			case LONGEST_TIME -> survey.estimatedTime.desc();
 			case FEWEST_SUBMISSIONS -> survey.currentSubmissionCount.asc();

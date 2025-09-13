@@ -126,7 +126,7 @@ public class Survey extends BaseEntity {
 	private RewardType rewardType;
 
 	@Column(nullable = true)
-	private Long rewardPoint;
+	private Long rewardPointPerMinute;
 
 	@Column(nullable = true)
 	private Long rewardGifticonProductCount;
@@ -144,10 +144,15 @@ public class Survey extends BaseEntity {
 		question.setSurvey(this);
 	}
 
+	public long getRewardPoint() {
+		return rewardPointPerMinute * estimatedTime;
+	}
+
 	public void submitSurvey() {
 		this.currentSubmissionCount++;
-		if (this.rewardType.equals(RewardType.POINT)) {
-			this.availablePoint -= this.rewardPoint * this.getEstimatedTime();
-		}
+	}
+
+	public void updateAvailablePoint(long point) {
+		this.availablePoint += point;
 	}
 }

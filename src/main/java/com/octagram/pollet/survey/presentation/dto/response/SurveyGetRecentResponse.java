@@ -5,7 +5,7 @@ public record SurveyGetRecentResponse(
 		String title,
 		String coverUrl,
 		String gifticonName,
-		String rewardPoint,
+		String rewardPointPerMinute,
 		String estimatedTime
 ) {
 }

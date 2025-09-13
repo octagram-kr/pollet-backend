@@ -1,7 +1,4 @@
-package com.octagram.pollet.survey.domain.model;
-
-import com.octagram.pollet.global.domain.model.BaseEntity;
-import com.octagram.pollet.member.domain.model.Member;
+package com.octagram.pollet.member.domain.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,7 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,21 +20,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@Table(name = "survey_point_history")
-public class SurveyPointHistory extends BaseEntity {
+@Table(name = "point")
+public class Point {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "survey_id", nullable = false)
-	private Survey survey;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "target_member_id", nullable = false)
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
 	@Column(nullable = false)
-	private Long amount;
+	private long balance;
+
+	public long updateBalance(long amount) {
+		return this.balance += amount;
+	}
 }
