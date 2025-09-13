@@ -1,4 +1,4 @@
-package com.octagram.pollet.member.application;
+package com.octagram.pollet.member.application.service;
 
 import java.util.List;
 

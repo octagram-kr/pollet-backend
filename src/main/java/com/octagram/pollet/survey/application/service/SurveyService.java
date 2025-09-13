@@ -1,11 +1,11 @@
-package com.octagram.pollet.survey.application;
+package com.octagram.pollet.survey.application.service;
 
 import org.springframework.data.domain.Slice;
-import com.octagram.pollet.gifticon.application.GifticonService;
+import com.octagram.pollet.gifticon.application.service.GifticonService;
 import com.octagram.pollet.gifticon.domain.model.GifticonProduct;
 import com.octagram.pollet.gifticon.domain.status.GifticonErrorCode;
 import com.octagram.pollet.global.exception.BusinessException;
-import com.octagram.pollet.member.application.MemberService;
+import com.octagram.pollet.member.application.service.MemberService;
 import com.octagram.pollet.member.application.mapper.MemberTagMapper;
 import com.octagram.pollet.member.domain.model.Member;
 import com.octagram.pollet.member.domain.model.MemberTag;

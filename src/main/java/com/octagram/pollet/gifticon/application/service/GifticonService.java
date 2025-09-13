@@ -1,4 +1,4 @@
-package com.octagram.pollet.gifticon.application;
+package com.octagram.pollet.gifticon.application.service;
 
 import java.util.Optional;
 
