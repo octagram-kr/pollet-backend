@@ -173,7 +173,7 @@ public class SurveyService {
 
 	@Transactional
 	public void submitSurvey(Long surveyId, Member member, SurveySubmissionRequest request) {
-		Survey survey = surveyRepository.findById(surveyId)
+		Survey survey = surveyRepository.findByIdForUpdate(surveyId)
 			.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
 
 		validateInProgressSurvey(survey);
