@@ -48,7 +48,13 @@ public class SecurityConfig {
 		"/api/v1/auth/reissue",
 		"/health",
 		"/actuator/**",
-		"/swagger-ui/**"
+		"/swagger-ui/**",
+		// 비회원도 접근 가능한 엔드포인트
+		"/api/v1/surveys/{surveyId}",
+		"/api/v1/surveys/{surveyId}/**",
+		"/api/v1/surveys/count",
+		"/api/v1/surveys/recent",
+		"/api/v1/surveys"
 	};
 
 	private final JwtExceptionFilter jwtExceptionFilter;

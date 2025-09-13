@@ -36,7 +36,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		"/health",
 		"/actuator/**",
 		"/swagger-ui/**",
-		"/v3/api-docs/**"
+		"/v3/api-docs/**",
+		// 비회원도 접근 가능한 엔드포인트
+		"/api/v1/surveys/{surveyId}",
+		"/api/v1/surveys/{surveyId}/**",
+		"/api/v1/surveys/count",
+		"/api/v1/surveys/recent",
+		"/api/v1/surveys"
 	);
 
 	private final JwtService jwtService;
