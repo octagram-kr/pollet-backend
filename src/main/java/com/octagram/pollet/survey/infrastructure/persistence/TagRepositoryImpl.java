@@ -1,4 +1,4 @@
-package com.octagram.pollet.survey.infrastructure;
+package com.octagram.pollet.survey.infrastructure.persistence;
 
 import static com.octagram.pollet.member.domain.model.QMemberTag.*;
 import static com.octagram.pollet.survey.domain.model.QTag.*;

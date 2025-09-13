@@ -1,4 +1,4 @@
-package com.octagram.pollet.survey.infrastructure;
+package com.octagram.pollet.survey.infrastructure.persistence;
 
 import com.octagram.pollet.survey.domain.model.QQuestionSubmission;
 import com.octagram.pollet.survey.domain.model.Question;
