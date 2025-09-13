@@ -21,6 +21,7 @@ import com.octagram.pollet.auth.application.service.CustomUserOAuth2Service;
 import com.octagram.pollet.auth.handler.OAuth2LoginFailureHandler;
 import com.octagram.pollet.auth.handler.OAuth2LoginSuccessHandler;
 import com.octagram.pollet.global.jwt.filter.JwtAuthFilter;
+import com.octagram.pollet.global.jwt.filter.JwtExceptionFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -50,6 +51,7 @@ public class SecurityConfig {
 		"/swagger-ui/**"
 	};
 
+	private final JwtExceptionFilter jwtExceptionFilter;
 	private final JwtAuthFilter jwtAuthFilter;
 	private final CustomUserOAuth2Service customUserOAuth2Service;
 	private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
@@ -90,7 +92,8 @@ public class SecurityConfig {
 			.exceptionHandling(ex -> ex
 				.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
 			)
-			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class);
 
 		return http.build();
 	}
