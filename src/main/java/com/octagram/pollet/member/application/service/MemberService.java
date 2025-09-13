@@ -70,12 +70,16 @@ public class MemberService {
 	}
 
 	private long updatePoint(Member member, long amount) {
-		if (!pointRepository.existsByMember(member)) {
+		Point point = pointRepository.findByMember(member)
+			.orElse(null);
+
+		if (point == null) {
 			return savePoint(member, amount);
 		}
-
-		Point point = pointRepository.findByMember(member)
-			.orElseThrow(() -> new BusinessException(MemberErrorCode.POINT_NOT_FOUND));
+		else {
+			point = pointRepository.findByMemberForUpdate(member)
+				.orElseThrow(() -> new BusinessException(MemberErrorCode.POINT_NOT_FOUND));
+		}
 
 		validateBalance(point, amount);
 		return point.updateBalance(amount);
@@ -88,11 +92,7 @@ public class MemberService {
 	}
 
 	private long savePoint(Member member, long amount) {
-		Point point = Point.builder()
-			.member(member)
-			.balance(amount)
-			.build();
-		pointRepository.save(point);
+		Point point = pointRepository.findByMemberOrCreateWithLock(member, amount);
 		return point.getBalance();
 	}
 
