@@ -1,6 +1,6 @@
 package com.octagram.pollet.global.exception;
 
-import com.octagram.pollet.global.status.BaseCode;
+import com.octagram.pollet.global.domain.status.BaseCode;
 
 import lombok.Getter;
 

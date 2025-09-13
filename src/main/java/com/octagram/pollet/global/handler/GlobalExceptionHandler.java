@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import com.octagram.pollet.global.dto.ApiResponse;
-import com.octagram.pollet.global.dto.FieldErrorResponse;
+import com.octagram.pollet.global.presentation.dto.ApiResponse;
+import com.octagram.pollet.global.presentation.dto.FieldErrorResponse;
 import com.octagram.pollet.global.exception.BusinessException;
-import com.octagram.pollet.global.status.BaseCode;
-import com.octagram.pollet.global.status.GlobalErrorCode;
+import com.octagram.pollet.global.domain.status.BaseCode;
+import com.octagram.pollet.global.domain.status.GlobalErrorCode;
 
 import jakarta.validation.ConstraintViolationException;
 

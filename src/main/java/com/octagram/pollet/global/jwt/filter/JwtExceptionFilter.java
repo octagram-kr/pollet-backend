@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.octagram.pollet.global.dto.ApiResponse;
+import com.octagram.pollet.global.presentation.dto.ApiResponse;
 import com.octagram.pollet.global.exception.BusinessException;
 
 import jakarta.servlet.FilterChain;

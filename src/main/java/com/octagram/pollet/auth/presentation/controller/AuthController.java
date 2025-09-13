@@ -12,7 +12,7 @@ import com.octagram.pollet.auth.application.service.AuthService;
 import com.octagram.pollet.auth.domain.status.AuthSuccessCode;
 import com.octagram.pollet.auth.presentation.dto.response.AuthReissueResponse;
 import com.octagram.pollet.auth.presentation.dto.response.TestJwtGetResponse;
-import com.octagram.pollet.global.dto.ApiResponse;
+import com.octagram.pollet.global.presentation.dto.ApiResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

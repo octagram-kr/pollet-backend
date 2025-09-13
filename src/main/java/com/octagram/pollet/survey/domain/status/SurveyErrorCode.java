@@ -2,7 +2,7 @@ package com.octagram.pollet.survey.domain.status;
 
 import org.springframework.http.HttpStatus;
 
-import com.octagram.pollet.global.status.BaseCode;
+import com.octagram.pollet.global.domain.status.BaseCode;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
