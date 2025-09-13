@@ -14,7 +14,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -26,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder(toBuilder = true)
+@Builder
 @Table(name = "point_history")
 public class PointHistory {
 
@@ -38,11 +37,11 @@ public class PointHistory {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "survey_id", nullable = true)
 	private Survey survey;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "gifticon_code_id", nullable = true)
 	private GifticonCode gifticonCode;
 

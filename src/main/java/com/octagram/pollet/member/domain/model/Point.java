@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder(toBuilder = true)
+@Builder
 @Table(name = "point")
 public class Point {
 
