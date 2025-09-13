@@ -81,3 +81,9 @@ cloud:
       bucket: pollet-prod-bucket
     region:
       static: ap-northeast-2
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus
