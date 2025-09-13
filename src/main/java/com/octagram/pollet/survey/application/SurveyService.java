@@ -189,7 +189,7 @@ public class SurveyService {
 
 		if (survey.getRewardType().equals(RewardType.POINT)) {
 			survey.updateAvailablePoint();
-			long amount = survey.getPoint();
+			long amount = survey.getRewardPoint();
 			memberService.surveyPointHistory(member, survey, amount);
 			updateSurveyPointHistory(survey, member, amount);
 		}
@@ -222,7 +222,7 @@ public class SurveyService {
 	}
 
 	private void validateSurveyPoint(Survey survey) {
-		if (survey.getRewardType().equals(RewardType.POINT) && survey.getPoint() > survey.getAvailablePoint()) {
+		if (survey.getRewardType().equals(RewardType.POINT) && survey.getRewardPoint() > survey.getAvailablePoint()) {
 			throw new BusinessException(SurveyErrorCode.SURVEY_NOT_ENOUGH_POINTS);
 		}
 	}
@@ -301,7 +301,7 @@ public class SurveyService {
 			.rewardType(request.rewardType())
 			.requireSubmissionCount(request.requireSubmissionCount())
 			.estimatedTime(request.estimatedTime())
-			.rewardPoint(request.rewardPoint())
+			.rewardPointPerMinute(request.rewardPointPerMinute())
 			.gifticonProduct(gifticonProduct)
 			.rewardGifticonProductCount(request.rewardGifticonProductCount())
 			.availablePoint(0L)
@@ -355,7 +355,7 @@ public class SurveyService {
 		surveyRepository.save(survey);
 
 		if (request.rewardType().equals(RewardType.POINT)) {
-			memberService.surveyPointHistory(member, survey, -survey.getPoint());
+			memberService.surveyPointHistory(member, survey, -survey.getRewardPoint());
 		}
 	}
 

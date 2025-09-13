@@ -84,7 +84,7 @@ public record SurveyResponse(
 	RewardType rewardType,
 
 	@Schema(description = "보상 포인트")
-	Long rewardPoint,
+	Long rewardPointPerMinute,
 
 	@Schema(description = "예치 포인트")
 	Long availablePoint,

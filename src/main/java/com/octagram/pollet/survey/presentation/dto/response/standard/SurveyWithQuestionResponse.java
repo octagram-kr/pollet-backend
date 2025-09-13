@@ -33,7 +33,7 @@ public record SurveyWithQuestionResponse(
 	Long requireSubmissionCount,
 	Long currentSubmissionCount,
 	RewardType rewardType,
-	Long rewardPoint,
+	Long rewardPointPerMinute,
 	Long availablePoint,
 	GifticonProductResponse gifticonProduct,
 	List<TagResponse> surveyTags,
