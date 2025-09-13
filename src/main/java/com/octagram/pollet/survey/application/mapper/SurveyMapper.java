@@ -14,12 +14,14 @@ import com.octagram.pollet.survey.presentation.dto.response.SurveyMetadataRespon
 import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyResponse;
 import com.octagram.pollet.survey.presentation.dto.response.standard.SurveyWithQuestionResponse;
 
-@Mapper(uses = {GifticonMapper.class, TagMapper.class})
+@Mapper(uses = {GifticonMapper.class, TagMapper.class, QuestionMapper.class})
 public interface SurveyMapper {
 
+	@Mapping(target = "privacyPurposeType", ignore = true)
 	@Mapping(source = "rewardPointPerMinute", target = "rewardPointPerMinute", defaultValue = "0L")
 	SurveyResponse toSurveyResponse(Survey survey);
 
+	@Mapping(target = "privacyPurposeType", ignore = true)
 	@Mapping(source = "rewardPointPerMinute", target = "rewardPointPerMinute", defaultValue = "0L")
 	SurveyWithQuestionResponse toSurveyWithQuestionResponse(Survey survey);
 
