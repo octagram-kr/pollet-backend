@@ -188,8 +188,8 @@ public class SurveyService {
 		survey.submitSurvey();
 
 		if (survey.getRewardType().equals(RewardType.POINT)) {
-			survey.updateAvailablePoint();
 			long amount = survey.getRewardPoint();
+			survey.updateAvailablePoint(-amount);
 			memberService.surveyPointHistory(member, survey, amount);
 			updateSurveyPointHistory(survey, member, amount);
 		}
@@ -355,7 +355,9 @@ public class SurveyService {
 		surveyRepository.save(survey);
 
 		if (request.rewardType().equals(RewardType.POINT)) {
-			memberService.surveyPointHistory(member, survey, -survey.getRewardPoint());
+			long amount = survey.getRequireSubmissionCount() * survey.getRewardPoint();
+			memberService.surveyPointHistory(member, survey, -amount);
+			survey.updateAvailablePoint(amount);
 		}
 	}
 

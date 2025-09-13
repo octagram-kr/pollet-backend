@@ -152,7 +152,7 @@ public class Survey extends BaseEntity {
 		this.currentSubmissionCount++;
 	}
 
-	public void updateAvailablePoint() {
-		this.availablePoint -= getRewardPoint();
+	public void updateAvailablePoint(long point) {
+		this.availablePoint += point;
 	}
 }
