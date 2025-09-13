@@ -1,10 +1,10 @@
-package com.octagram.pollet.global.dto;
+package com.octagram.pollet.global.presentation.dto;
 
 import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.octagram.pollet.global.status.BaseCode;
+import com.octagram.pollet.global.domain.status.BaseCode;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

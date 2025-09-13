@@ -1,4 +1,4 @@
-package com.octagram.pollet.global.dto;
+package com.octagram.pollet.global.presentation.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

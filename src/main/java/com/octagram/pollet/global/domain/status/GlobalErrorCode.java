@@ -1,4 +1,4 @@
-package com.octagram.pollet.global.status;
+package com.octagram.pollet.global.domain.status;
 
 import org.springframework.http.HttpStatus;
 
