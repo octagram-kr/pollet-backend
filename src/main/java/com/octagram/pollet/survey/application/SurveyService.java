@@ -177,6 +177,7 @@ public class SurveyService {
 			.orElseThrow(() -> new BusinessException(SurveyErrorCode.SURVEY_NOT_FOUND));
 
 		validateInProgressSurvey(survey);
+		validateOwnSurvey(survey, member);
 		validateSurveyPoint(survey);
 		validateSurveyNotSubmitted(survey, member);
 		validateRequiredQuestionSubmission(request.questionSubmissions());
@@ -218,6 +219,12 @@ public class SurveyService {
 
 		if (isEndByDate || isEndBySubmissionCount) {
 			throw new BusinessException(SurveyErrorCode.SURVEY_CLOSED);
+		}
+	}
+
+	private void validateOwnSurvey(Survey survey, Member member) {
+		if (survey.getMember().getId().equals(member.getId())) {
+			throw new BusinessException(SurveyErrorCode.SURVEY_SELF_SUBMISSION_NOT_ALLOWED);
 		}
 	}
 
