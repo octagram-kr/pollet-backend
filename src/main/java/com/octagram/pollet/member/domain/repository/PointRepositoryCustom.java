@@ -7,7 +7,6 @@ import com.octagram.pollet.member.domain.model.Point;
 
 public interface PointRepositoryCustom {
 
-	Optional<Point> findByMemberForUpdate(Member m);
-
+	Optional<Point> findByMemberForUpdate(Member member);
 	Point findByMemberOrCreateWithLock(Member member, long amount);
 }
