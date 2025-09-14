@@ -16,4 +16,5 @@ public interface SurveyRepositoryCustom {
 	List<Survey> findByFilter(List<String> allTags, SurveyFilterRequest filter, Pageable pageable);
 	List<Survey> findByMemberId(Long memberId, Pageable pageable);
 	List<Survey> findParticipatedByMemberId(Long memberId, Pageable pageable);
+	Optional<Survey> findByIdForUpdate(Long id);
 }

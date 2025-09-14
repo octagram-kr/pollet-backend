@@ -5,11 +5,39 @@ spring:
     password:
     driver-class-name: org.h2.Driver
 
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password:
+
   jpa:
     hibernate:
       ddl-auto: create-drop
+    defer-datasource-initialization: true
     show-sql: true
     properties:
       hibernate:
         format_sql: true
         globally_quoted_identifiers: true
+
+jwt:
+  secret: dummy-secret-for-test
+  access:
+    expiration: 600
+    header: Authorization
+  refresh:
+    expiration: 1200
+    header: Authorization-refresh
+
+cloud:
+  aws:
+    credentials:
+      access-key: test-access
+      secret-key: test-secret
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: test-bucket
+    stack:
+      auto: false
