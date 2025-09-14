@@ -20,6 +20,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -165,5 +166,17 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public Optional<Survey> findByIdForUpdate(Long id) {
+		QSurvey survey = QSurvey.survey;
+
+		return Optional.ofNullable(
+			queryFactory.selectFrom(survey)
+				.where(survey.id.eq(id))
+				.setLockMode(LockModeType.PESSIMISTIC_WRITE)
+				.fetchOne()
+		);
 	}
 }
