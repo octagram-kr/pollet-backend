@@ -181,7 +181,7 @@ class SurveyServiceTest {
 
 		pool.shutdown();
 
-		assertThat(result1 || result2).isTrue();
+		assertThat(result1 ^ result2).isTrue();
 	}
 
 	private SurveySubmissionRequest buildSurveySubmissionRequest() {
