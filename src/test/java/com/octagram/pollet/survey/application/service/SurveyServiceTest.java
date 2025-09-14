@@ -1,4 +1,4 @@
-package com.octagram.pollet.survey.application;
+package com.octagram.pollet.survey.application.service;
 
 import static org.assertj.core.api.Assertions.*;
 
